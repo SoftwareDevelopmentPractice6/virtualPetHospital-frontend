@@ -1,7 +1,6 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png" />
   <HelloWorld msg="Welcome to Your Vue.js App" />
-  <div>随便改下</div>
 </template>
 
 <script>
