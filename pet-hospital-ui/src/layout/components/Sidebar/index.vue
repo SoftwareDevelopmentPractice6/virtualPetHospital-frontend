@@ -1,15 +1,13 @@
 <template>
-  <div
-    class="sidebar has-logo"
-    :style="{ backgroundColor: variables.menuBackground }"
-  >
+  <div class="sidebar" :style="{ backgroundColor: variables.menuBackground }">
     <logo :collapse="!isCollapse" />
     <el-menu
-      default-active="2"
+      default-active="1"
       class="el-menu-vertical-demo"
       :background-color="variables.menuBackground"
       :text-color="variables.menuColor"
       :collapse="!isCollapse"
+      unique-opened="true"
       @open="handleOpen"
       @close="handleClose"
     >
@@ -98,14 +96,5 @@ let handleClose = (key, keyPath) => {
 <style lang="scss" scoped>
 .el-menu {
   border-right: none;
-}
-
-.el-menu--collapse {
-  width: 65px !important;
-}
-
-.el-menu-vertical-demo:not(.el-menu--collase) {
-  width: 200px;
-  min-height: 400px;
 }
 </style>
