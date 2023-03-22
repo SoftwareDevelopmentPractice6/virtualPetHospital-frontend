@@ -14,14 +14,14 @@
           <img src="@/assets/images/profile.jpg" class="user-avatar" />
           <i class="el-icon-caret-bottom" />
         </div>
-        <el-dropdown-menu slot="dropdown">
-          <router-link to="/user/profile">
-            <el-dropdown-item>个人中心</el-dropdown-item>
-          </router-link>
-          <el-dropdown-item divided @click="logout">
-            <span>退出登录</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <router-link to="/user/profile">
+              <el-dropdown-item>个人中心</el-dropdown-item>
+            </router-link>
+            <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
       </el-dropdown>
     </div>
   </div>
@@ -32,10 +32,27 @@ import Hamburger from "@/components/Hamburger.vue";
 import HospitalGit from "@/components/HospitalGit.vue";
 import Screenfull from "@/components/Screenfull.vue";
 import { appStore } from "@/store/app";
+import { userStore } from "@/store/user";
+import { ElMessageBox } from "element-plus";
 
-const store = appStore();
+const myAppStore = appStore();
 let toggleSideBar = () => {
-  store.toggleSideBar();
+  myAppStore.toggleSideBar();
+};
+
+const myUserStore = userStore();
+const logout = async () => {
+  ElMessageBox.confirm("确定注销并退出系统吗？", "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(() => {
+      myUserStore.LogOut().then(() => {
+        location.href = "/";
+      });
+    })
+    .catch(() => {});
 };
 </script>
 
@@ -97,9 +114,9 @@ let toggleSideBar = () => {
         position: relative;
         .user-avatar {
           cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
+          width: 39px;
+          height: 39px;
+          border-radius: 8px;
         }
         .el-icon-caret-bottom {
           cursor: pointer;
@@ -108,8 +125,27 @@ let toggleSideBar = () => {
           top: 25px;
           font-size: 12px;
         }
+
+        .el-icon-caret-bottom::before {
+          position: relative;
+          top: 9px;
+          right: 4px;
+          content: "";
+          width: 0;
+          height: 0;
+          border-top: 4px solid #000;
+          border-right: 4px solid transparent;
+          border-left: 4px solid transparent;
+        }
       }
     }
   }
+}
+
+.example-showcase .el-dropdown-link {
+  cursor: pointer;
+  color: var(--el-color-primary);
+  display: flex;
+  align-items: center;
 }
 </style>

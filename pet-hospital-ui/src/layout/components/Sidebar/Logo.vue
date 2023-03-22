@@ -128,7 +128,6 @@
             p-id="6191"
           ></path>
         </svg>
-
         <h1 class="sidebar-title" :style="{ color: variables.logoTitleColor }">
           {{ title }}
         </h1>
@@ -186,7 +185,7 @@ const props = defineProps({
       color: #fff;
       font-weight: 600;
       line-height: 50px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
     }
