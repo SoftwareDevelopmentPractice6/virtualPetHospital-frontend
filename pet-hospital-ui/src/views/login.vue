@@ -54,7 +54,7 @@
 import { ref, reactive, watch } from "vue";
 import { useRoute } from "vue-router";
 import router from "@/router";
-import { userStore } from "@/store/modules/user";
+import { userStore } from "@/store/user";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
 
@@ -156,7 +156,7 @@ const handleLogin = (loginFormRef) => {
 };
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
+<style lang="scss" scoped>
 .login {
   display: flex;
   justify-content: center;
