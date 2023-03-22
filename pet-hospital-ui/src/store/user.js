@@ -29,21 +29,6 @@ export const userStore = defineStore("user", {
     },
   },
   actions: {
-    SET_TOKEN: (token) => {
-      this.token = token;
-    },
-    SET_NAME: (name) => {
-      this.name = name;
-    },
-    SET_AVATAR: (avatar) => {
-      this.avatar = avatar;
-    },
-    SET_ROLES: (roles) => {
-      this.roles = roles;
-    },
-    SET_PERMISSIONS: (permissions) => {
-      this.permissions = permissions;
-    },
     // 登录
     Login(userInfo) {
       const username = userInfo.username.trim(); // 移除前后空格
@@ -72,7 +57,7 @@ export const userStore = defineStore("user", {
                 ? require("@/assets/images/profile.jpg")
                 : process.env.VUE_APP_BASE_API + user.avatar;
             if (res.roles && res.roles.length > 0) {
-              // 验证返回的roles是否是一个非空数组
+              // 验证返回的 roles 是否是一个非空数组
               this.roles = res.roles;
               this.permissions = res.permissions;
             } else {
