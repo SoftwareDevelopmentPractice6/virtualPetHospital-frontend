@@ -8,14 +8,15 @@
       class="el-menu-vertical-demo"
       :background-color="variables.menuBackground"
       :text-color="variables.menuColor"
+      :unique-opened="isUnique"
+      :default-openeds="openeds"
       :collapse="!isCollapse"
-      unique-opened="true"
       @open="handleOpen"
       @close="handleClose"
     >
-      <AdminMenu v-if="role === 'admin'" />
-      <StudentMenu v-else-if="role === 'student'" />
-      <TeacherMenu v-else />
+      <AdminMenu @getData="getData" v-if="role === 'admin'" />
+      <StudentMenu @getData="getData" v-else-if="role === 'student'" />
+      <TeacherMenu @getData="getData" v-else />
     </el-menu>
   </div>
 </template>
@@ -23,17 +24,13 @@
 <script setup>
 import Logo from "./Logo";
 import { appStore } from "@/store/app";
-// import { userStore } from "@/store/user";
 import variables from "@/assets/styles/variables.module.scss";
-// import { computed, ref } from "vue";
-import { computed } from "vue";
+import { computed, reactive, ref } from "vue";
 import AdminMenu from "./AdminMenu.vue";
 import StudentMenu from "./StudentMenu.vue";
 import TeacherMenu from "./TeacherMenu.vue";
 import Cookies from "js-cookie";
 
-// const myUserStore = userStore();
-// const role = ref(myUserStore.$state.role);
 const role = Cookies.get("role");
 
 const myAppStore = appStore();
@@ -41,13 +38,15 @@ const sidebar = myAppStore.sidebar;
 
 let isCollapse = computed(() => !sidebar.opened);
 
-// let handleOpen = (key, keyPath) => {
-//   console.log("open", key, keyPath);
-// };
-
-// let handleClose = (key, keyPath) => {
-//   console.log("close", key, keyPath);
-// };
+let isUnique = ref(false);
+let openeds = reactive();
+if (role === "student") {
+  openeds = ["1", "2", "3"];
+} else if (role === "teacher") {
+  openeds = ["1"];
+} else {
+  isUnique.value = true;
+}
 </script>
 
 <style lang="scss" scoped>
