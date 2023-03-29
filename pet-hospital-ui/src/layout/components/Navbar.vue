@@ -11,7 +11,7 @@
         trigger="click"
       >
         <div class="username-container">
-          {{ username }}
+          {{ name }}
           <i class="el-icon-caret-bottom" />
         </div>
         <template #dropdown>
@@ -29,19 +29,17 @@ import Hamburger from "@/components/Hamburger.vue";
 import HospitalGit from "@/components/HospitalGit.vue";
 import Screenfull from "@/components/Screenfull.vue";
 import { appStore } from "@/store/app";
-import { userStore } from "@/store/user";
 import { ElMessageBox } from "element-plus";
-import { ref } from "vue-demi";
+import Cookies from "js-cookie";
 
-let store = userStore();
-const username = ref(store.$state.name);
+const name = Cookies.get("name");
+console.log("name", name);
 
 const myAppStore = appStore();
 let toggleSideBar = () => {
   myAppStore.toggleSideBar();
 };
 
-const myUserStore = userStore();
 const logout = async () => {
   ElMessageBox.confirm("确定注销并退出系统吗？", "提示", {
     confirmButtonText: "确定",
@@ -49,7 +47,9 @@ const logout = async () => {
     type: "warning",
   })
     .then(() => {
-      myUserStore.LogOut();
+      Cookies.remove("isLogin");
+      Cookies.remove("role");
+      Cookies.remove("name");
       location.href = "/login";
     })
     .catch(() => {});
