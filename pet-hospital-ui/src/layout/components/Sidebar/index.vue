@@ -23,15 +23,18 @@
 <script setup>
 import Logo from "./Logo";
 import { appStore } from "@/store/app";
-import { userStore } from "@/store/user";
+// import { userStore } from "@/store/user";
 import variables from "@/assets/styles/variables.module.scss";
-import { computed, ref } from "vue";
+// import { computed, ref } from "vue";
+import { computed } from "vue";
 import AdminMenu from "./AdminMenu.vue";
 import StudentMenu from "./StudentMenu.vue";
 import TeacherMenu from "./TeacherMenu.vue";
+import Cookies from "js-cookie";
 
-const myUserStore = userStore();
-const role = ref(myUserStore.$state.role);
+// const myUserStore = userStore();
+// const role = ref(myUserStore.$state.role);
+const role = Cookies.get("role");
 
 const myAppStore = appStore();
 const sidebar = myAppStore.sidebar;

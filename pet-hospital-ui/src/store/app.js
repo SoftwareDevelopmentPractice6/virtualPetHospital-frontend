@@ -1,3 +1,5 @@
+// app 的设置信息
+
 import { defineStore } from "pinia";
 import Cookies from "js-cookie";
 

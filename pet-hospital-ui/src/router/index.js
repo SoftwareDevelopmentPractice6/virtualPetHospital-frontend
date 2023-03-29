@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import Cookies from "js-cookie";
 import Layout from "@/layout";
 
 const routes = [
@@ -12,6 +13,13 @@ const routes = [
         component: () => import("@/views/index"),
         name: "Index",
         meta: { title: "首页", icon: "dashboard", affix: true },
+        beforeEnter: (to, from, next) => {
+          if (Cookies.get("isLogin")) {
+            next();
+          } else {
+            router.push("login");
+          }
+        },
       },
     ],
   },
@@ -19,6 +27,13 @@ const routes = [
     path: "/login",
     name: "login",
     component: () => import("@/views/login"),
+    beforeEnter: (to, from, next) => {
+      if (Cookies.get("isLogin")) {
+        router.push("index");
+      } else {
+        next();
+      }
+    },
   },
 ];
 

@@ -56,9 +56,11 @@
 import { ref, reactive, watch } from "vue";
 import { useRoute } from "vue-router";
 import router from "@/router";
-import { userStore } from "@/store/user";
+// import { userStore } from "@/store/user";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
+import { login } from "@/api/login";
+import { getRole } from "@/utils/role";
 
 const loginFormRef = ref();
 
@@ -114,6 +116,32 @@ watch(
   { immediate: true }
 );
 
+// 登录
+const Login = (userInfo) => {
+  const username = userInfo.username.trim(); // 移除前后空格
+  const password = userInfo.password;
+  return new Promise((resolve, reject) => {
+    login(username, password)
+      // 登录后储存登录态，获取用户角色
+      .then((res) => {
+        let data = res.data;
+        Cookies.set("isLogin", true, {
+          expires: 30,
+        });
+        Cookies.set("role", getRole(data.userAuthority), {
+          expires: 30,
+        });
+        Cookies.set("name", data.userName, {
+          expires: 30,
+        });
+        resolve();
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 // 处理登录
 const handleLogin = (loginFormRef) => {
   // 登录校验
@@ -141,10 +169,9 @@ const handleLogin = (loginFormRef) => {
         Cookies.remove("password");
         Cookies.remove("rememberMe");
       }
-      const store = userStore();
-      store
-        // 存储登录信息
-        .Login(loginForm)
+
+      // 存储登录信息
+      Login(loginForm)
         .then(() => {
           console.log("login成功");
           // 更改路由
