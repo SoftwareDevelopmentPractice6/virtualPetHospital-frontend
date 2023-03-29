@@ -5,7 +5,7 @@
         <el-icon><location /></el-icon> <span>医院科室导览</span></template
       >
       <el-menu-item index="1-1">3D 医院地图</el-menu-item>
-      <el-menu-item index="1-2">全景科室导览</el-menu-item>
+      <el-menu-item index="1-2">科室全景导览</el-menu-item>
     </el-sub-menu>
     <el-sub-menu index="2">
       <template #title>
