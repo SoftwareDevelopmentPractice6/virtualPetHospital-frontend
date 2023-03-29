@@ -1,3 +1,5 @@
+<!-- 登录页 -->
+
 <template>
   <div class="login">
     <el-form
@@ -118,7 +120,7 @@ const handleLogin = (loginFormRef) => {
   loginFormRef.validate((valid) => {
     if (valid) {
       // 登录加载中
-      loading = true;
+      loading.value = true;
       const loginForm = loginData.loginForm;
       // 已选择记住我，将登录信息存入 Cookies（有效期为 30 天）
       if (loginForm.rememberMe) {
@@ -144,10 +146,12 @@ const handleLogin = (loginFormRef) => {
         // 存储登录信息
         .Login(loginForm)
         .then(() => {
+          console.log("login成功");
           // 更改路由
           router.push({ path: loginData.redirect || "/" }).catch(() => {});
         })
         .catch(() => {
+          console.log("login发生错误");
           // 发生错误
           loading = false;
         });

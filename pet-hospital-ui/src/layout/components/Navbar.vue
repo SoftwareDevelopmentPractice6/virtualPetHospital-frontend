@@ -7,18 +7,15 @@
       <screenfull class="right-menu-item hover-effect" />
 
       <el-dropdown
-        class="avatar-wrapper right-menu-item hover-effect"
+        class="username-wrapper right-menu-item hover-effect"
         trigger="click"
       >
-        <div class="avatar-container">
-          <img src="@/assets/images/profile.jpg" class="user-avatar" />
+        <div class="username-container">
+          {{ username }}
           <i class="el-icon-caret-bottom" />
         </div>
         <template #dropdown>
           <el-dropdown-menu>
-            <router-link to="/user/profile">
-              <el-dropdown-item>个人中心</el-dropdown-item>
-            </router-link>
             <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -34,6 +31,10 @@ import Screenfull from "@/components/Screenfull.vue";
 import { appStore } from "@/store/app";
 import { userStore } from "@/store/user";
 import { ElMessageBox } from "element-plus";
+import { ref } from "vue-demi";
+
+let store = userStore();
+const username = ref(store.$state.name);
 
 const myAppStore = appStore();
 let toggleSideBar = () => {
@@ -48,9 +49,8 @@ const logout = async () => {
     type: "warning",
   })
     .then(() => {
-      myUserStore.LogOut().then(() => {
-        location.href = "/";
-      });
+      myUserStore.LogOut();
+      location.href = "/login";
     })
     .catch(() => {});
 };
@@ -107,17 +107,13 @@ const logout = async () => {
         }
       }
     }
-    .avatar-wrapper {
-      margin: 0 30px 10px 10px;
-      .avatar-container {
-        margin-top: 5px;
-        position: relative;
-        .user-avatar {
-          cursor: pointer;
-          width: 39px;
-          height: 39px;
-          border-radius: 8px;
-        }
+    .username-wrapper {
+      margin: 0 35px 10px 5px;
+      .username-container {
+        font-size: 17px;
+        margin-top: 16px;
+        color: var(--el-color-primary-dark-2);
+        text-decoration: underline;
         .el-icon-caret-bottom {
           cursor: pointer;
           position: absolute;
@@ -129,7 +125,7 @@ const logout = async () => {
         .el-icon-caret-bottom::before {
           position: relative;
           top: 9px;
-          right: 4px;
+          right: 10px;
           content: "";
           width: 0;
           height: 0;
