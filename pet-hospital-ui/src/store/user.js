@@ -1,33 +1,15 @@
+import { login } from "@/api/login";
+import { getRole } from "@/utils/role";
 import { defineStore } from "pinia";
-import { login, logout, getInfo } from "@/api/login";
-import { getToken, setToken, removeToken } from "@/utils/auth";
+import Cookies from "js-cookie";
 
 export const userStore = defineStore("user", {
   state: () => ({
-    token: getToken(),
     name: "",
-    avatar: "",
-    roles: [],
-    permissions: [],
+    role: "",
+    isLogin: false,
   }),
-  getters: {
-    finishedTodos(state) {
-      // 自动完成
-      return state.todos.filter((todo) => todo.isFinished);
-    },
-    unfinishedTodos(state) {
-      return state.todos.filter((todo) => !todo.isFinished);
-    },
-    filteredTodos() {
-      if (this.filter === "finished") {
-        // 自动调用其他 getter
-        return this.finishedTodos;
-      } else if (this.filter === "unfinished") {
-        return this.unfinishedTodos;
-      }
-      return this.todos;
-    },
-  },
+  getters: {},
   actions: {
     // 登录
     Login(userInfo) {
@@ -35,37 +17,16 @@ export const userStore = defineStore("user", {
       const password = userInfo.password;
       return new Promise((resolve, reject) => {
         login(username, password)
-          // 登录后设置并储存 token
+          // 登录后储存登录态，获取用户角色
           .then((res) => {
-            setToken(res.token);
-            this.token = res.token;
+            let data = res.data;
+            Cookies.set("isLogin", true, {
+              expires: 30,
+            });
+            this.isLogin = true;
+            this.name = data.userName;
+            this.role = getRole(data.userAuthority);
             resolve();
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
-    },
-    // 获取用户信息
-    GetInfo() {
-      return new Promise((resolve, reject) => {
-        getInfo()
-          .then((res) => {
-            const user = res.user;
-            const avatar =
-              user.avatar == "" || user.avatar == null
-                ? require("@/assets/images/profile.jpg")
-                : process.env.VUE_APP_BASE_API + user.avatar;
-            if (res.roles && res.roles.length > 0) {
-              // 验证返回的 roles 是否是一个非空数组
-              this.roles = res.roles;
-              this.permissions = res.permissions;
-            } else {
-              this.roles = ["ROLE_DEFAULT"];
-            }
-            this.name = user.userName;
-            this.avatar = avatar;
-            resolve(res);
           })
           .catch((error) => {
             reject(error);
@@ -74,27 +35,10 @@ export const userStore = defineStore("user", {
     },
     // 退出系统
     LogOut() {
-      return new Promise((resolve, reject) => {
-        logout(this.token)
-          .then(() => {
-            this.token = "";
-            this.roles = [];
-            this.permissions = [];
-            removeToken();
-            resolve();
-          })
-          .catch((error) => {
-            reject(error);
-          });
-      });
-    },
-    // 前端登出
-    FedLogOut() {
-      return new Promise((resolve) => {
-        this.token = "";
-        removeToken();
-        resolve();
-      });
+      Cookies.remove("isLogin");
+      this.name = "";
+      this.role = "";
+      this.isLogin = false;
     },
   },
 });
