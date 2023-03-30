@@ -26,7 +26,7 @@ const routes = [
   },
   {
     path: "/login",
-    component: () => import("@/views/login"),
+    component: () => import("@/views/Login"),
     beforeEnter: (to, from, next) => {
       if (Cookies.get("isLogin")) {
         router.push("index");

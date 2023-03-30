@@ -4,19 +4,27 @@
   <div class="sidebar" :style="{ backgroundColor: variables.menuBackground }">
     <logo :collapse="!isCollapse" />
     <el-menu
-      default-active="1"
+      default-active="/index"
       class="el-menu-vertical-demo"
       :background-color="variables.menuBackground"
       :text-color="variables.menuColor"
       :unique-opened="isUnique"
       :default-openeds="openeds"
       :collapse="!isCollapse"
-      @open="handleOpen"
-      @close="handleClose"
+      router
+      @selsect="handleSelect"
     >
-      <AdminMenu @getData="getData" v-if="role === 'admin'" />
-      <StudentMenu @getData="getData" v-else-if="role === 'student'" />
-      <TeacherMenu @getData="getData" v-else />
+      <el-menu-item index="/index">
+        <template #title>
+          <el-icon><homeFilled /></el-icon> <span>系统首页</span></template
+        ></el-menu-item
+      >
+      <AdminMenu @getData="getData" v-if="role === 'admin' && isCollapse" />
+      <StudentMenu
+        @getData="getData"
+        v-else-if="role === 'student' && isCollapse"
+      />
+      <TeacherMenu @getData="getData" v-else-if="isCollapse" />
     </el-menu>
   </div>
 </template>
@@ -30,16 +38,16 @@ import AdminMenu from "./AdminMenu.vue";
 import StudentMenu from "./StudentMenu.vue";
 import TeacherMenu from "./TeacherMenu.vue";
 import Cookies from "js-cookie";
+import { useRouter } from "vue-router";
 
 const role = Cookies.get("role");
 
 const myAppStore = appStore();
 const sidebar = myAppStore.sidebar;
+let isCollapse = computed(() => !sidebar.opened); // 侧边栏是否展开
 
-let isCollapse = computed(() => !sidebar.opened);
-
-let isUnique = ref(false);
-let openeds = reactive();
+let isUnique = ref(false); // 是否只能展开一个子目录
+let openeds = reactive(); // 默认展开的子目录 index
 if (role === "student") {
   openeds = ["1", "2", "3"];
 } else if (role === "teacher") {
@@ -47,6 +55,14 @@ if (role === "student") {
 } else {
   isUnique.value = true;
 }
+
+let router = useRouter();
+// 选中菜单项, 跳转至对应路由
+const handleSelect = (key) => {
+  router.push({
+    path: key,
+  });
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,11 +1,23 @@
+<!-- 首页 (欢迎页) -->
+
 <template>
-  <div class="app-container home">
-    <h3>
-      <el-link
-        type="primary"
-        href="https://github.com/orgs/SoftwareDevelopmentPractice6/repositories"
-        >查看码源请点击此处</el-link
-      >
-    </h3>
+  <div class="app-container">
+    <Welcome />
   </div>
 </template>
+
+<script setup>
+import Welcome from "./Welcome/index.vue";
+</script>
+
+<style lang="scss" scoped>
+// .app-container {
+//   display: flex;
+//   min-height: calc(100vh - 50px);
+//   background-image: url(@/assets/images/pet-hospital-background.jpg);
+//   background-repeat: no-repeat;
+//   background-attachment: fixed;
+//   background-size: cover;
+//   opacity: 0.7;
+// }
+</style>
