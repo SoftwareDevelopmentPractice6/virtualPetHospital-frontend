@@ -1,3 +1,5 @@
+<!-- 学生侧边菜单 -->
+
 <template>
   <div class="studentBar">
     <el-sub-menu index="1">
