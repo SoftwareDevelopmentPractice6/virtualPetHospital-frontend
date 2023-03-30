@@ -1,3 +1,5 @@
+<!-- 全屏 -->
+
 <template>
   <div class="screenfull">
     <el-tooltip content="全屏" effect="dark" placement="bottom">

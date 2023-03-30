@@ -1,5 +1,4 @@
-import { OfficeBuilding } from '@element-plus/icons-vue/dist/types'; import {
-DataBoard } from '@element-plus/icons-vue/dist/types';
+<!-- 管理员侧边菜单 -->
 
 <template>
   <div class="adminBar">

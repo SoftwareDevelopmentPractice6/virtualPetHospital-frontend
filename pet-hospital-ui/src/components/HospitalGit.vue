@@ -1,3 +1,5 @@
+<!-- 源码地址 -->
+
 <template>
   <div class="hospital-git">
     <el-tooltip content="源码地址" effect="dark" placement="bottom">
