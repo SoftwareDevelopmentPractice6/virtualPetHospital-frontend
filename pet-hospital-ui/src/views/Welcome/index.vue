@@ -46,7 +46,7 @@ h3 {
 
 h1 {
   color: rgb(31, 42, 56);
-  font-size: 55px;
+  font-size: 53px;
   margin: 12.5% 0 5px;
 }
 
@@ -58,7 +58,7 @@ hr {
 }
 
 h2 {
-  font-size: 22px;
+  font-size: 23px;
 }
 
 h3 {
