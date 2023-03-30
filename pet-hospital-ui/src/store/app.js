@@ -7,8 +7,8 @@ export const appStore = defineStore("app", {
   state: () => ({
     sidebar: {
       opened: Cookies.get("sidebarStatus")
-        ? !!+Cookies.get("sidebarStatus")
-        : true,
+        ? !!Cookies.get("sidebarStatus")
+        : false,
       withoutAnimation: false,
       hide: false,
     },
