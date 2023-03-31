@@ -32,13 +32,17 @@
 <script setup>
 import Logo from "./Logo";
 import { appStore } from "@/store/app";
-import variables from "@/assets/styles/variables.module.scss";
 import { computed, reactive, ref } from "vue";
 import AdminMenu from "./AdminMenu.vue";
 import StudentMenu from "./StudentMenu.vue";
 import TeacherMenu from "./TeacherMenu.vue";
 import Cookies from "js-cookie";
 import { useRouter } from "vue-router";
+
+const variables = reactive({
+  menuColor: "#bfcbd9",
+  menuBackground: "#304156",
+});
 
 const role = Cookies.get("role");
 
