@@ -139,8 +139,11 @@
 </template>
 
 <script setup>
-import variables from "@/assets/styles/variables.module.scss";
-import { ref, defineProps } from "vue";
+import { ref, defineProps, reactive } from "vue";
+
+const variables = reactive({
+  logoTitleColor: "#ffffff",
+});
 
 let title = ref("虚拟宠物医院学习系统");
 
