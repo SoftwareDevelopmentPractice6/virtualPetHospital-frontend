@@ -52,7 +52,28 @@ const routes = [
       },
     ],
   },
+  {
+        path: "/StudentExam/ExamSelection",
+        name: "ExamSelection",
+        component: () => import("@/views/StudentExam/ExamSelection"),
+      },
+      {
+        path: "/StudentExam/ExamContent",
+        name: "ExamContent",
+        component: () => import("@/views/StudentExam/ExamContent"),
+      },
+      {
+        path: "/StudentExam/SubmitSuccess",
+        name: "SubmitSuccess",
+        component: () => import("@/views/StudentExam/SubmitSuccess"),
+      },
+      {
+        path: "/StudentExam/ScoreQuery",
+        name: "ScoreQuery",
+        component: () => import("@/views/StudentExam/ScoreQuery"),
+      },
 ];
+
 
 const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
