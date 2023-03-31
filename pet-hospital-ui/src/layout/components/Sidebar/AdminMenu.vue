@@ -42,7 +42,7 @@
         ></el-menu-item
       >
     </el-sub-menu>
-    <el-menu-item index="xxx">
+    <el-menu-item index="cases">
       <template #title>
         <el-icon><FirstAidKit /></el-icon> <span>病例管理</span></template
       >
@@ -52,31 +52,31 @@
         <el-icon><setting /></el-icon>
         <span>基本功能管理</span></template
       >
-      <el-menu-item index="3-1"
+      <el-menu-item index="medicine"
         ><template #title>
           <el-icon><box /></el-icon> <span>药品管理</span></template
         ></el-menu-item
       >
-      <el-menu-item index="3-3"
+      <el-menu-item index="hospitalized"
         ><template #title>
           <el-icon><OfficeBuilding /></el-icon> <span>住院管理</span></template
         ></el-menu-item
       >
-      <el-menu-item index="3-3"
+      <el-menu-item index="charge"
         ><template #title>
           <el-icon><money /></el-icon> <span>收费管理</span></template
         ></el-menu-item
       >
-      <el-menu-item index="3-2"
+      <el-menu-item index="archives"
         ><template #title>
           <el-icon><tickets /></el-icon> <span>档案管理</span></template
         ></el-menu-item
       >
-      <el-menu-item index="3-3"
+      <el-menu-item index="laboratory"
         ><template #title>
           <el-icon><setUp /></el-icon> <span>化验项目管理</span></template
         ></el-menu-item
-      >
+        >
     </el-sub-menu>
   </div>
 </template>

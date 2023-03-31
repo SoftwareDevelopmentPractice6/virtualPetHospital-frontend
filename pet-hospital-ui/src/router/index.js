@@ -52,6 +52,91 @@ const routes = [
       },
     ],
   },
+  {
+    path: "",
+     component: Layout,
+     children: [
+       {
+        path: "cases",
+        component: () => import("@/views/cases"),
+        name: "cases",
+        meta: { title: "病例管理", icon: "dashboard", affix: true },
+       },
+     ],
+   },
+   {
+    path: "",
+      component: Layout,
+      children: [
+        {
+          path: "medicine",
+         component: () => import("@/views/medicine"),
+         name: "medicine",
+         meta: { title: "药品管理", icon: "dashboard", affix: true },
+        },
+      ],
+    },
+    {
+        path: "",
+        component: Layout,
+        children: [
+          {
+            path: "hospitalized",
+           component: () => import("@/views/hospitalized"),
+           name: "hospitalized",
+           meta: { title: "住院管理", icon: "dashboard", affix: true },
+          },
+        ],
+      },
+      {
+        path: "",
+        component: Layout,
+        children: [
+          {
+            path: "charge",
+           component: () => import("@/views/charge"),
+           name: "charge",
+           meta: { title: "收费管理", icon: "dashboard", affix: true },
+          },
+        ],
+      },
+      {
+        path: "",
+        component: Layout,
+        children: [
+          {
+            path: "laboratory",
+           component: () => import("@/views/laboratory"),
+           name: "laboratory",
+           meta: { title: "化验项目管理", icon: "dashboard", affix: true },
+          },
+        ],
+      },
+      {
+        path: "",
+        component: Layout,
+        children: [
+          {
+            path: "archives",
+           component: () => import("@/views/archives"),
+           name: "archives",
+           meta: { title: "档案管理", icon: "dashboard", affix: true },
+          },
+        ],
+      },
+      {
+        path: "",
+        component: Layout,
+        children: [
+          {
+            path: "data",
+           component: () => import("@/views/data"),
+           name: "data",
+           meta: { title: "数据管理", icon: "dashboard", affix: true },
+          },
+        ],
+      },
+  
 ];
 
 const router = createRouter({
