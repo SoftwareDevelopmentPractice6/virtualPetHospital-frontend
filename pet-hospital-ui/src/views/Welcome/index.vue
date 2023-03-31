@@ -1,4 +1,5 @@
 <!-- 欢迎页 -->
+
 <template>
   <div class="welcome-wrapper">
     <div class="container">
