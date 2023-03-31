@@ -30,12 +30,12 @@
 			/>
 		</div>
 		<div class="button">
-			<router-link to="/SubmitSuccess">
+			<router-link to="/StudentExam/SubmitSuccess">
 				<el-button class="submitButton" type="primary"
 					>提交</el-button
 				></router-link
 			>
-			<router-link to="/ExamSelection">
+			<router-link to="/StudentExam/ExamSelection">
 				<el-button class="cancelButton">取消</el-button></router-link
 			>
 		</div>

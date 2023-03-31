@@ -47,12 +47,12 @@
 
       <el-table-column prop="Operations" label="操作">
         <template #default="scope">
-          <router-link to="/ExamContent">
+          <router-link to="/StudentExam/ExamContent">
           <el-button size="small" @click="handleAnwser(scope.$index, scope.row)"
             >答题</el-button
           >
         </router-link>
-        <router-link to="ScoreQuery">
+        <router-link to="/StudentExam/ScoreQuery">
           <el-button size="small" @click="handleScoreQuery(scope.$index, scope.row)"
             >成绩查询</el-button
           ></router-link>

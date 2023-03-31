@@ -50,22 +50,18 @@
 				width="180"
 			></el-table-column>
 
-			<!-- <el-table-column prop="Operations" label="操作">
+			<el-table-column prop="Operations" label="操作">
 				<template #default="scope">
-					<router-link to="/ExamContent">
+					<router-link to="/StudentExam/ExamSelection">
 						<el-button
 							size="small"
 							@click="handleAnwser(scope.$index, scope.row)"
-							>答题</el-button
+							>返回考试列表</el-button
 						>
 					</router-link>
-					<el-button
-						size="small"
-						@click="handleScoreQuery(scope.$index, scope.row)"
-						>成绩查询</el-button
-					>
+					
 				</template>
-			</el-table-column> -->
+			</el-table-column>
 		</el-table>
 	</div>
 </template>
