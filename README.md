@@ -6,9 +6,9 @@
 - 杭海培 10195101465
 
 ## 技术选型
-- Node.JS v19.8.1
-- Vue.JS v3.2
-- Vue CLI v5
+- Node.js v19.8.1
+- Vue.js v3.2
+- Vue-cli v5
 - Element Plus v2.3
 - Axios v1.3
 - Pinia v2
