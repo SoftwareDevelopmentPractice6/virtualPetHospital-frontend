@@ -59,19 +59,7 @@
               <el-table-column prop="check" label="病例检查" width="120" />
               <el-table-column prop="result" label="检查结果" width="120" />
               <el-table-column prop="treatment" label="治疗方案" width="120" />
-              <el-table-column prop="hospitalized" label="住院需求" width="120"
-                :filters="[
-                 { text: '是', value: '是' },
-                 { text: '否', value: '否' },]"
-                 :filter-method="filterTag"
-                filter-placement="bottom-end">
-                <template #default="scope">
-                <el-tag
-                :type="scope.row.tag === 'Home' ? '' : 'success'"
-                      disable-transitions
-                 >{{ scope.row.tag }}
-                </el-tag>
-               </template>
+              <el-table-column prop="hospitalized" label="住院需求" width="120">
               </el-table-column>
          </el-table>
         </el-main>
