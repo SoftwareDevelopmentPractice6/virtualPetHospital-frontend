@@ -17,18 +17,14 @@ export const appStore = defineStore("app", {
   actions: {
     // 展开/折叠侧边栏
     toggleSideBar() {
-      console.log("toggleSideBar");
       if (this.sidebar.hide) {
-        console.log("已隐藏");
         return false;
       }
       this.sidebar.opened = !this.sidebar.opened;
       this.sidebar.withoutAnimation = false;
       if (this.sidebar.opened) {
-        console.log("1");
         Cookies.set("sidebarStatus", 1);
       } else {
-        console.log("0");
         Cookies.set("sidebarStatus", 0);
       }
     },
