@@ -35,7 +35,6 @@ import { ElMessageBox } from "element-plus";
 import Cookies from "js-cookie";
 
 const name = Cookies.get("name");
-console.log("name", name);
 
 const myAppStore = appStore();
 let toggleSideBar = () => {

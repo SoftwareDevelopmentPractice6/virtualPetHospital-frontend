@@ -21,12 +21,12 @@
       <template #title>
         <el-icon><reading /></el-icon> <span>职能学习</span></template
       >
-      <el-menu-item index="2-1"
+      <el-menu-item index="/functionStudy/rolePlay"
         ><template #title>
           <el-icon><medal /></el-icon> <span>角色扮演模式</span></template
         ></el-menu-item
       >
-      <el-menu-item index="2-2"
+      <el-menu-item index="/functionStudy/caseStudy"
         ><template #title>
           <el-icon><document /></el-icon> <span>病例学习模式</span></template
         ></el-menu-item

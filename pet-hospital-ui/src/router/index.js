@@ -56,109 +56,134 @@ const routes = [
     path: "/StudentExam/ExamSelection",
     name: "ExamSelection",
     component: () => import("@/views/StudentExam/ExamSelection"),
-    },
-     {
+  },
+  {
     path: "/StudentExam/ExamContent",
     name: "ExamContent",
-     component: () => import("@/views/StudentExam/ExamContent"),
-      },
+    component: () => import("@/views/StudentExam/ExamContent"),
+  },
   {
-     path: "/StudentExam/SubmitSuccess",
+    path: "/StudentExam/SubmitSuccess",
     name: "SubmitSuccess",
     component: () => import("@/views/StudentExam/SubmitSuccess"),
-     },
-    {
-     path: "/StudentExam/ScoreQuery",
+  },
+  {
+    path: "/StudentExam/ScoreQuery",
     name: "ScoreQuery",
-     component: () => import("@/views/StudentExam/ScoreQuery"),
-     },
-     {
-      path: "",
-       component: Layout,
-       children: [
-         {
-          path: "cases",
-          component: () => import("@/views/Cases/cases"),
-          name: "cases",
-          meta: { title: "病例管理", icon: "dashboard", affix: true },
-         },
-       ],
-     },
-     {
-      path: "",
-        component: Layout,
-        children: [
-          {
-            path: "medicine",
-           component: () => import("@/views/System/medicine"),
-           name: "medicine",
-           meta: { title: "药品管理", icon: "dashboard", affix: true },
-          },
-        ],
+    component: () => import("@/views/StudentExam/ScoreQuery"),
+  },
+  {
+    path: "",
+    component: Layout,
+    children: [
+      {
+        path: "cases",
+        component: () => import("@/views/Cases/cases"),
+        name: "cases",
+        meta: { title: "病例管理", icon: "dashboard", affix: true },
+      },
+    ],
+  },
+  {
+    path: "",
+    component: Layout,
+    children: [
+      {
+        path: "medicine",
+        component: () => import("@/views/System/medicine"),
+        name: "medicine",
+        meta: { title: "药品管理", icon: "dashboard", affix: true },
+      },
+    ],
+  },
+  {
+    path: "",
+    component: Layout,
+    children: [
+      {
+        path: "hospitalized",
+        component: () => import("@/views/System/hospitalized"),
+        name: "hospitalized",
+        meta: { title: "住院管理", icon: "dashboard", affix: true },
+      },
+    ],
+  },
+  {
+    path: "",
+    component: Layout,
+    children: [
+      {
+        path: "charge",
+        component: () => import("@/views/System/charge"),
+        name: "charge",
+        meta: { title: "收费管理", icon: "dashboard", affix: true },
+      },
+    ],
+  },
+  {
+    path: "",
+    component: Layout,
+    children: [
+      {
+        path: "laboratory",
+        component: () => import("@/views/System/laboratory"),
+        name: "laboratory",
+        meta: { title: "化验项目管理", icon: "dashboard", affix: true },
+      },
+    ],
+  },
+  {
+    path: "",
+    component: Layout,
+    children: [
+      {
+        path: "archives",
+        component: () => import("@/views/System/archives"),
+        name: "archives",
+        meta: { title: "档案管理", icon: "dashboard", affix: true },
+      },
+    ],
+  },
+  {
+    path: "",
+    component: Layout,
+    children: [
+      {
+        path: "data",
+        component: () => import("@/views/System/data"),
+        name: "data",
+        meta: { title: "数据管理", icon: "dashboard", affix: true },
+      },
+    ],
+  },
+  {
+    path: "/functionStudy",
+    component: Layout,
+    redirect: "/functionStudy/rolePlay",
+    children: [
+      {
+        path: "rolePlay",
+        component: () => import("@/views/FunctionStudy/RolePlay"),
+        beforeEnter: myBeforeEnter,
       },
       {
-          path: "",
-          component: Layout,
-          children: [
-            {
-              path: "hospitalized",
-             component: () => import("@/views/System/hospitalized"),
-             name: "hospitalized",
-             meta: { title: "住院管理", icon: "dashboard", affix: true },
-            },
-          ],
-        },
-        {
-          path: "",
-          component: Layout,
-          children: [
-            {
-              path: "charge",
-             component: () => import("@/views/System/charge"),
-             name: "charge",
-             meta: { title: "收费管理", icon: "dashboard", affix: true },
-            },
-          ],
-        },
-        {
-          path: "",
-          component: Layout,
-          children: [
-            {
-              path: "laboratory",
-             component: () => import("@/views/System/laboratory"),
-             name: "laboratory",
-             meta: { title: "化验项目管理", icon: "dashboard", affix: true },
-            },
-          ],
-        },
-        {
-          path: "",
-          component: Layout,
-          children: [
-            {
-              path: "archives",
-             component: () => import("@/views/System/archives"),
-             name: "archives",
-             meta: { title: "档案管理", icon: "dashboard", affix: true },
-            },
-          ],
-        },
-        {
-          path: "",
-          component: Layout,
-          children: [
-            {
-              path: "data",
-             component: () => import("@/views/System/data"),
-             name: "data",
-             meta: { title: "数据管理", icon: "dashboard", affix: true },
-            },
-          ],
-        },
-    
-]
-
+        path: "rolePlay/detail/:role",
+        component: () => import("@/views/FunctionStudy/RolePlay/PlayDetail"),
+        beforeEnter: myBeforeEnter,
+      },
+      {
+        path: "caseStudy",
+        component: () => import("@/views/FunctionStudy/CaseStudy"),
+        beforeEnter: myBeforeEnter,
+      },
+      {
+        path: "caseStudy/detail",
+        component: () => import("@/views/FunctionStudy/CaseStudy/CaseDetail"),
+        beforeEnter: myBeforeEnter,
+      },
+    ],
+  },
+];
 
 const router = createRouter({
   history: createWebHashHistory(process.env.BASE_URL),
