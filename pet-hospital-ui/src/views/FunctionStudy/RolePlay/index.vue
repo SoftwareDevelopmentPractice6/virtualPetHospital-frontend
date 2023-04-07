@@ -1,8 +1,10 @@
+<!-- 角色扮演：选择角色 -->
+
 <template>
-  <div class="wrapper">
+  <div class="roleplay-wrapper">
     <div class="container">
+      <!-- 角色卡片 -->
       <div class="card-container">
-        <!-- 前台卡片 -->
         <div class="card" v-for="(item1, index1) in cardArr" :key="index1">
           <div class="content">
             <h3>{{ item1.title }}</h3>
@@ -17,10 +19,11 @@
           </div>
         </div>
       </div>
+      <!-- 角色名称 -->
       <div class="title-container">
-        <div class="title"><span>前台</span></div>
-        <div class="title"><span>医助</span></div>
-        <div class="title"><span>医生</span></div>
+        <div class="title" v-for="(item3, index3) in cardArr" :key="index3">
+          <span>{{ item3.role }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -30,9 +33,11 @@
 import { reactive } from "vue";
 import { useRouter } from "vue-router";
 
+// 角色数组
 const cardArr = reactive([
   {
     title: "Receptionist",
+    role: "前台",
     content: [
       {
         place: "前台",
@@ -46,6 +51,7 @@ const cardArr = reactive([
   },
   {
     title: "Assistant",
+    role: "医助",
     content: [
       {
         place: "注射室",
@@ -60,6 +66,7 @@ const cardArr = reactive([
   },
   {
     title: "Doctor",
+    role: "医生",
     content: [
       {
         place: "诊室",
@@ -96,6 +103,7 @@ const routerPush = (role) => {
   router.push({ path: base + role, params: { role: role } });
 };
 
+// 处理点击跳转事件
 const handleClick = (index) => {
   if (index === 0) {
     routerPush("receptionist");
@@ -109,119 +117,117 @@ const handleClick = (index) => {
 
 <style lang="scss" scoped>
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
 
-.wrapper {
+.roleplay-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: calc(100vh - 50px);
   background: #f4faff;
-}
 
-.card-container {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  z-index: 1;
-  .card {
+  .card-container {
     position: relative;
-    width: 280px;
-    height: 400px;
-    margin: 30px;
-    box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
-    border-radius: 15px;
-    background-repeat: no-repeat;
-    background-size: cover;
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
-    border-top: 1px solid rgba(255, 255, 255, 0.5);
-    border-left: 1px solid rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(5px);
-    .content {
+    flex-wrap: wrap;
+    z-index: 1;
+    .card {
       position: relative;
-      z-index: 1;
-      padding: 20px;
-      text-align: center;
-      transform: translateY(100px);
-      opacity: 0;
-      transition: 0.5s;
-      h3 {
-        font-size: 1.8em;
-        color: #fff;
-        z-index: 1;
-        margin-bottom: 12px;
-      }
-      p {
-        font-size: 0.9em;
-        color: #fff;
-        font-weight: 300;
-        line-height: 26px;
-      }
-      .btn {
+      width: 280px;
+      height: 400px;
+      margin: 30px;
+      box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+      border-radius: 15px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.5);
+      border-left: 1px solid rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(5px);
+      .content {
         position: relative;
-        display: inline-block;
-        padding: 8px 25px;
-        margin-top: 10px;
-        background: #fff;
-        color: #000;
-        border-radius: 20px;
-        text-decoration: none;
-        font-weight: 500;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        letter-spacing: 1.5px;
-      }
-      .btn:hover {
-        cursor: pointer;
+        z-index: 1;
+        padding: 20px;
+        text-align: center;
+        transform: translateY(100px);
+        opacity: 0;
+        transition: 0.5s;
+        h3 {
+          font-size: 1.8em;
+          color: #fff;
+          z-index: 1;
+          margin-bottom: 12px;
+        }
+        p {
+          font-size: 0.9em;
+          color: #fff;
+          font-weight: 300;
+          line-height: 26px;
+        }
+        .btn {
+          position: relative;
+          display: inline-block;
+          padding: 8px 25px;
+          margin-top: 10px;
+          background: #fff;
+          color: #000;
+          border-radius: 20px;
+          text-decoration: none;
+          font-weight: 500;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+          letter-spacing: 1.5px;
+        }
+        .btn:hover {
+          cursor: pointer;
+        }
       }
     }
+    .card:nth-of-type(1) {
+      background-image: url(../../../assets/images/receptionist.jpg);
+    }
+    .card:nth-of-type(2) {
+      background-image: url(../../../assets/images/assistant.jpg);
+    }
+    .card:nth-of-type(3) {
+      background-image: url(../../../assets/images/doctor.png);
+      background-color: rgb(249, 239, 252);
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.25);
+      border-radius: 15px;
+      z-index: -1;
+    }
+    .card:hover .content {
+      transform: translateY(0px);
+      opacity: 1;
+    }
   }
-  .card:nth-of-type(1) {
-    background-image: url(../../../assets/images/receptionist.jpg);
-  }
-  .card:nth-of-type(2) {
-    background-image: url(../../../assets/images/assistant.jpg);
-  }
-  .card:nth-of-type(3) {
-    background-image: url(../../../assets/images/doctor.png);
-    background-color: rgb(249, 239, 252);
-  }
-  .card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
-    z-index: -1;
-  }
-  .card:hover .content {
-    transform: translateY(0px);
-    opacity: 1;
-  }
-}
 
-.title-container {
-  display: flex;
-  justify-content: center;
-  .title {
-    width: 280px;
-    margin: 0 30px 60px;
-    text-align: center;
-    font-size: 29px;
-    word-spacing: 10px;
-    letter-spacing: 5px;
-    color: #333;
+  .title-container {
+    display: flex;
+    justify-content: center;
+    .title {
+      width: 280px;
+      margin: 0 30px 60px;
+      text-align: center;
+      font-size: 29px;
+      word-spacing: 10px;
+      letter-spacing: 5px;
+      color: #333;
+    }
   }
 }
 </style>
