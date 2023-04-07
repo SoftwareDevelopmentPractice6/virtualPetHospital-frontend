@@ -1,3 +1,5 @@
+<!-- 角色扮演：详情页 -->
+
 <template>
   <div>play detail</div>
 </template>
