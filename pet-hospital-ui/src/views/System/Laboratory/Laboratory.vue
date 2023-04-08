@@ -25,11 +25,17 @@
         <div class="common-layout">
         <el-container>
         <el-header>
-          <el-row class="button">
-           <el-button type="primary">新增</el-button>
-           <el-button type="primary">修改</el-button>
-           <el-button type="primary">删除</el-button>
-           </el-row> 
+          <el-form-item class="button">
+              <router-link to="/laboratory/add">
+           <el-button class="AddButton"  type="primary">新增</el-button>
+              </router-link>
+
+              <router-link to="/laboratory/add">
+           <el-button class="ChangeButton" type="primary">修改</el-button>
+              </router-link>
+             
+           <el-button class="DeleteButton" @click="open" type="primary">删除</el-button>
+          </el-form-item> 
         </el-header>
         <el-main class="inmain">   
           <el-table
@@ -151,5 +157,20 @@ const onSubmit = () => {
   justify-content: flex-start;
   align-items: flex-start;
  
+}
+.AddButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 90px 30px 30px;
+}
+.DeleteButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 30px 30px 90px;
+}
+.ChangeButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 60px 30px 60px;
 }
 </style>

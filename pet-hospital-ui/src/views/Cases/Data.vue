@@ -1,12 +1,10 @@
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header class="header" height="40px">
-       <el-page-header @back="goBack">
-      <template #content>
-      <span class="text-default font-600 mr-3"> 数据管理 </span>
-      </template>
-       </el-page-header>
+      <el-header class="header" height="20px">
+        <router-link to="/cases/list">
+          <el-button type="plain" @click="back">Back</el-button>
+        </router-link>
       </el-header>
       <el-main>
     <el-form>  
@@ -45,8 +43,11 @@
       </el-radio-group>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="onSubmit">保存</el-button>
-      <el-button>取消</el-button>
+      <el-button class="SubmitButton" type="primary" @click="onSubmit">保存</el-button>
+      <router-link to="/cases/list">
+      <el-button class="CancelButton">取消</el-button>
+      </router-link>
+      
     </el-form-item>
   </el-form>
 </el-main>
@@ -56,7 +57,11 @@
 
 <script  setup>
 import { reactive } from 'vue'
+import { ElMessage } from 'element-plus'
 
+const onSubmit = () => {
+  ElMessage('提交成功！')
+}
 // do not use same name with ref
 const form = reactive({
   id:'',
@@ -69,12 +74,7 @@ const form = reactive({
   hospitalized: '',
 })
 
-const goBack = () => {
-  console.log('go back')
-}
-const onSubmit = () => {
-  console.log('submit!')
-}
+
 </script>
 <style lang="scss" scoped>
 .ID {
@@ -96,4 +96,15 @@ const onSubmit = () => {
   padding:10px 10px 0px 10px;
  
 }
+.CancelButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 30px 0px 60px;
+}
+.SubmitButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 60px 0px 30px;
+}
+
 </style>

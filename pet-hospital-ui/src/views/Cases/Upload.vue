@@ -14,7 +14,7 @@
       <el-input v-model="form.text" type="textarea"  />
     </el-form-item>
     <!-- 以下是图片上传 -->
-  <el-upload
+  <!-- <el-upload
     v-model="fileList"
     class="upload-demo"
     action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
@@ -32,9 +32,9 @@
         jpg/png files with a size less than 500kb
       </div>
     </template>
-  </el-upload>
+  </el-upload> -->
 <!-- 以下是视频上传 -->
-  <el-upload
+ <!--  <el-upload
     class="upload-demo"
     drag
     action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
@@ -49,7 +49,25 @@
         jpg/png files with a size less than 500kb
       </div>
     </template>
-    </el-upload>
+    </el-upload> -->
+    <el-upload
+    v-model="fileList"
+    class="upload-demo"
+    action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+    multiple
+    :on-preview="handlePreview"
+    :on-remove="handleRemove"
+    :before-remove="beforeRemove"
+    :limit="3"
+    :on-exceed="handleExceed"
+  >
+    <el-button type="primary">Click to upload</el-button>
+    <template #tip>
+      <div class="el-upload__tip">
+        jpg/png files with a size less than 500KB.
+      </div>
+    </template>
+  </el-upload>
   </el-form> 
 </el-main>
 <el-footer>
@@ -64,25 +82,29 @@
 import { ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { UploadFilled } from '@element-plus/icons-vue'
+import  { UploadProps, UploadUserFile } from 'element-plus'
 
-const fileList =ref([
+
+const fileList = ref([
   {
-    name:"",
-    url:"",
-  }
+    name: 'element-plus-logo.svg',
+    url: 'https://element-plus.org/images/element-plus-logo.svg',
+  },
+  {
+    name: 'element-plus-logo2.svg',
+    url: 'https://element-plus.org/images/element-plus-logo.svg',
+  },
 ])
 
-const handleChange= () => {
-  fileList.value = fileList.value.slice(-3)
-}
-const handleRemove= (uploadFile, uploadFiles) => {
-  console.log(uploadFile, uploadFiles)
+  const handleRemove = (file, uploadFiles) => {
+  console.log(file, uploadFiles)
 }
 
-const handlePreview = (file) => {
-  console.log(file)
+const handlePreview= (uploadFile) => {
+  console.log(uploadFile)
 }
-const handleExceed= (files, uploadFiles) => {
+
+const handleExceed = (files, uploadFiles) => {
   ElMessage.warning(
     `The limit is 3, you selected ${files.length} files this time, add up to ${
       files.length + uploadFiles.length
