@@ -2,9 +2,9 @@
   <div class="app-container home">
     <el-container>
       <el-header>
-        <el-form :inline="true" :model="formInline" class="search">
+        <el-form :inline="true" :model="archives" class="search">
           <el-form-item label="宠物类别">
-      <el-select v-model="formInline.petclassification" placeholder="宠物类别">
+      <el-select v-model="archives.petclassification" placeholder="宠物类别">
         <el-option label="哺乳类动物" value="哺乳类动物" />
         <el-option label="爬行类宠物" value="爬行类宠物" />
         <el-option label="鸟类宠物" value="鸟类宠物" />
@@ -13,7 +13,7 @@
       </el-select>
       </el-form-item>
      <el-form-item label="宠物名称">
-      <el-input v-model="formInline.name" placeholder="宠物名称" />
+      <el-input v-model="archives.name" placeholder="宠物名称" />
        </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">搜索</el-button>
@@ -24,11 +24,17 @@
         <div class="common-layout">
         <el-container>
         <el-header>
-          <el-row class="button">
-           <el-button type="primary">新增</el-button>
-           <el-button type="primary">修改</el-button>
-           <el-button type="primary">删除</el-button>
-           </el-row> 
+          <el-form-item class="button">
+              <router-link to="/archives/add">
+           <el-button class="AddButton"  type="primary">新增</el-button>
+              </router-link>
+
+              <router-link to="/archives/add">
+           <el-button class="ChangeButton" type="primary">修改</el-button>
+              </router-link>
+             
+           <el-button class="DeleteButton" @click="open" type="primary">删除</el-button>
+          </el-form-item>
         </el-header>
         <el-main class="inmain">   
           <el-table
@@ -61,9 +67,14 @@
 <script setup>
 import { reactive } from 'vue'
 
-const formInline = reactive({
-  petclassification:'',
-  name: '',
+const archives = reactive({
+    id: '',
+    date:'',
+    name: '',
+    classification: '',
+    petclassification: '',
+    gender: '',
+    phone: '',
 })
 const tableData = [
   {
@@ -166,5 +177,20 @@ const onSubmit = () => {
   justify-content: flex-start;
   align-items: flex-start;
  
+}
+.AddButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 90px 30px 30px;
+}
+.DeleteButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 30px 30px 90px;
+}
+.ChangeButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 60px 30px 60px;
 }
 </style>

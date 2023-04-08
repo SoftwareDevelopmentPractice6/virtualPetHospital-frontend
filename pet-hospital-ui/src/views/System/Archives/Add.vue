@@ -1,170 +1,129 @@
 <template>
-  <div class="app-container home">
+  <div class="common-layout">
     <el-container>
-      <el-header>
-        <el-form :inline="true" :model="formInline" class="search">
-          <el-form-item label="宠物类别">
-      <el-select v-model="formInline.petclassification" placeholder="宠物类别">
+    <el-header class="header" height="20px">
+        <router-link to="/archives/list">
+          <el-button type="plain" @click="back">Back</el-button>
+        </router-link>
+      </el-header>
+     <el-main>
+ <div style="margin: 20px" />
+ <el-form
+   :label-position="right"
+   label-width="100px"
+   :model="formLabelAlign"
+   style="max-width: 460px"
+ >
+   <el-form-item label="档案编号">
+     <el-input v-model="archives.id" />
+   </el-form-item>
+   <el-form-item label="宠物名称">
+     <el-input v-model="archives.name" />
+   </el-form-item>
+   <el-form-item label="宠物性别">
+     <el-input v-model="archives.gender" />
+   </el-form-item>
+   <el-form-item label="保存时间">
+      <el-col :span="11">
+    <div class="block">
+      <el-date-picker
+        v-model="archives.date"
+        type="date"
+        placeholder="选择一个日期"
+        :size="size"
+      />
+    </div>
+  </el-col>
+  </el-form-item>
+   <el-form-item label="宠物类别">
+     <el-select v-model="archives.petclassification" placeholder="请选择宠物类别">
         <el-option label="哺乳类动物" value="哺乳类动物" />
-        <el-option label="爬行类宠物" value="爬行类宠物" />
+         <el-option label="爬行类宠物" value="爬行类宠物" />
         <el-option label="鸟类宠物" value="鸟类宠物" />
         <el-option label="鱼类宠物" value="鱼类宠物" />
         <el-option label="昆虫类宠物" value="昆虫类宠物" />
-      </el-select>
-      </el-form-item>
-     <el-form-item label="宠物名称">
-      <el-input v-model="formInline.name" placeholder="宠物名称" />
-       </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">搜索</el-button>
-            </el-form-item>
-         </el-form>
-      </el-header>
-      <el-main class="main">
-        <div class="common-layout">
-        <el-container>
-        <el-header>
-          <el-row class="button">
-           <el-button type="primary">新增</el-button>
-           <el-button type="primary">修改</el-button>
-           <el-button type="primary">删除</el-button>
-           </el-row> 
-        </el-header>
-        <el-main class="inmain">   
-          <el-table
-                  ref="multipleTableRef"
-                 :data="tableData"
-                  style="width: 100%"
-                  height="400px"
-                 @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="55" />
-              <el-table-column  prop="id" label="档案编号" width="150" />
-              <el-table-column prop="date" label="保存时间" width="150" />
-              <el-table-column prop="name" label="宠物名称" width="150" />
-              <el-table-column prop="classification" label="疾病名称" width="150" />
-              <el-table-column prop="petclassification" label="宠物类别" width="150" />
-              <el-table-column prop="gender" label="宠物性别" width="150" />
-              <el-table-column prop="phone" label="主人联系方式" width="150" />
-         </el-table>
-        </el-main>
-       </el-container>
-      </div>
-      </el-main>
-      <el-footer>
-         <el-pagination background layout="prev, pager, next" :total="1000"
-      class="page" />
-      </el-footer>
-    </el-container>
+     </el-select>
+   </el-form-item>
+   <el-form-item label="疾病名称">
+     <el-input v-model="archives.classification" />
+   </el-form-item>
+   
+   <el-form-item label="主人联系方式">
+         <el-input v-model="archives.phone" />
+   </el-form-item>
+   <el-form-item>
+   <el-button class="SubmitButton" type="primary" @click="onSubmit">保存</el-button>
+   <router-link to="/archives/list">
+    <el-button class="CancelButton">取消</el-button>
+   </router-link>
+ </el-form-item>
+ </el-form>
+ </el-main>
+ </el-container> 
   </div>
+  
 </template>
 
 <script setup>
 import { reactive } from 'vue'
+import { ElMessage } from 'element-plus'
 
-const formInline = reactive({
-  petclassification:'',
-  name: '',
-})
-const tableData = [
-  {
-    id: '001',
-    date:'2023-3-6',
-    name: '麻薯',
-    classification: '气管支气管炎',
-    petclassification: '猫',
-    gender: '男',
-    phone: '13323332333',
-  },
-  {
-    id: '001',
-    date:'2023-3-6',
-    name: '麻薯',
-    classification: '气管支气管炎',
-    petclassification: '猫',
-    gender: '男',
-    phone: '13323332333',
-  },
-  {
-    id: '001',
-    date:'2023-3-6',
-    name: '麻薯',
-    classification: '气管支气管炎',
-    petclassification: '猫',
-    gender: '男',
-    phone: '13323332333',
-  },
-  {
-    id: '001',
-    date:'2023-3-6',
-    name: '麻薯',
-    classification: '气管支气管炎',
-    petclassification: '猫',
-    gender: '男',
-    phone: '13323332333',
-  },
-  {
-    id: '001',
-    date:'2023-3-6',
-    name: '麻薯',
-    classification: '气管支气管炎',
-    petclassification: '猫',
-    gender: '男',
-    phone: '13323332333',
-  },
-  {
-    id: '001',
-    date:'2023-3-6',
-    name: '麻薯',
-    classification: '气管支气管炎',
-    petclassification: '猫',
-    gender: '男',
-    phone: '13323332333',
-  },
-  {
-    id: '001',
-    date:'2023-3-6',
-    name: '麻薯',
-    classification: '气管支气管炎',
-    petclassification: '猫',
-    gender: '男',
-    phone: '13323332333',
-  },
-]
 const onSubmit = () => {
-  console.log('submit!')
+  ElMessage('提交成功！')
 }
+
+const archives = reactive({
+    id: '',
+    date:'',
+    name: '',
+    classification: '',
+    petclassification: '',
+    gender: '',
+    phone: '',
+})
+
 </script>
 
 <style lang="scss" scoped>
-.page {
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  padding:30px 0px 0px 0px;
+.demo-date-picker {
+ display: flex;
+ width: 100%;
+ padding: 0;
+ flex-wrap: wrap;
 }
-.search {
-  display: flex;
-  justify-content:center;
-  align-items: center;
-  height: 100%;
-  
+
+.demo-date-picker .block {
+ padding: 30px 0;
+ text-align: center;
+ border-right: solid 1px var(--el-border-color);
+ flex: 1;
 }
-.main {
+
+.demo-date-picker .block:last-child {
+ border-right: none;
+}
+
+.demo-date-picker .demonstration {
+ display: block;
+ color: var(--el-text-color-secondary);
+ font-size: 14px;
+ margin-bottom: 20px;
+}
+.header {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   padding:10px 10px 0px 10px;
-}
-.inmain {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding:10px 0px 0px 0px;
-}
-.button {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
  
+}
+.CancelButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 30px 0px 60px;
+}
+.SubmitButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 60px 0px 30px;
 }
 </style>

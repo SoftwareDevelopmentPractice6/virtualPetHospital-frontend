@@ -1,10 +1,26 @@
 <template>
-  <div class="app-container home">
-    <el-container>
-      <el-header>
-        <el-form :inline="true" :model="formInline" class="search">
-          <el-form-item label="疾病类别">
-      <el-select v-model="formInline.classification" placeholder="疾病类别">
+  <el-container>
+    <el-header class="header" height="20px">
+        <router-link to="/medicine/list">
+          <el-button type="plain" @click="back">Back</el-button>
+        </router-link>
+      </el-header>
+      <el-main>
+     <div style="margin: 20px" />
+  <el-form
+    :label-position="right"
+    label-width="100px"
+    :model="formLabelAlign"
+    style="max-width: 460px"
+  >
+    <el-form-item label="药品ID">
+      <el-input v-model="medicine.id" />
+    </el-form-item>
+    <el-form-item label="药品名称">
+      <el-input v-model="medicine.name" />
+    </el-form-item>
+    <el-form-item label="疾病类别">
+      <el-select v-model="medicine.classification" placeholder="请选择药品类别">
         <el-option label="传染病" value="传染病" />
         <el-option label="寄生虫病" value="寄生虫病" />
         <el-option label="内科" value="内科" />
@@ -12,169 +28,109 @@
         <el-option label="常用手术" value="常用手术" />
         <el-option label="免疫" value="免疫" />
       </el-select>
-      </el-form-item>
-     <el-form-item label="药品名称">
-      <el-input v-model="formInline.name" placeholder="药品名称" />
-       </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">搜索</el-button>
-            </el-form-item>
-         </el-form>
-      </el-header>
-      <el-main class="main">
-        <div class="common-layout">
-        <el-container>
-        <el-header>
-          <el-row class="button">
-           <el-button type="primary">新增</el-button>
-           <el-button type="primary">修改</el-button>
-           <el-button type="primary">删除</el-button>
-           </el-row> 
-        </el-header>
-        <el-main class="inmain">   
-          <el-table
-                  ref="multipleTableRef"
-                 :data="tableData"
-                  style="width: 100%"
-                  height="400px"
-                 @selection-change="handleSelectionChange">
-          <el-table-column type="selection" width="55" />
-              <el-table-column  prop="id" label="药品编号" width="120" />
-              <el-table-column prop="name" label="药品名称" width="120" />
-              <el-table-column prop="classification" label="疾病类型" width="120" />
-              <el-table-column prop="price" label="药品价格" width="120" />
-              <el-table-column prop="manufacturer" label="生产厂家" width="120" />
-              <el-table-column prop="specifications" label="药品规格" width="120" />
-              <el-table-column prop="date" label="保质期" width="120" />
-              <el-table-column prop="vaccine" label="是否是疫苗" width="120">
-              </el-table-column>
-         </el-table>
-        </el-main>
-       </el-container>
-      </div>
-      </el-main>
-      <el-footer>
-         <el-pagination background layout="prev, pager, next" :total="1000"
-      class="page" />
-      </el-footer>
-    </el-container>
-  </div>
+    </el-form-item>
+    <el-form-item label="生产厂家">
+      <el-input v-model="medicine.manufacturer" />
+    </el-form-item>
+    
+    <el-form-item label="药品价格">
+      <el-input v-model="medicine.price" />
+    </el-form-item>
+    <el-form-item label="药品规格">
+      <el-input v-model="medicine.specifications" />
+    </el-form-item>
+    <el-form-item label="保质期">
+      <el-col :span="11">
+    <div class="block">
+      <el-date-picker
+        v-model="medicine.date"
+        type="date"
+        placeholder="选择一个日期"
+        :size="size"
+      />
+    </div>
+  </el-col>
+  </el-form-item>
+    <el-form-item label="是否是疫苗">
+      <el-input v-model="medicine.vaccine" />
+    </el-form-item>
+    <el-form-item label="是否是疫苗">
+      <el-radio-group v-model="medicine.vaccine">
+        <el-radio label="是" />
+        <el-radio label="否" />
+      </el-radio-group>
+    </el-form-item>
+    <el-form-item>
+   <el-button class="SubmitButton" type="primary" @click="onSubmit">保存</el-button>
+   <router-link to="/medicine/list">
+    <el-button class="CancelButton">取消</el-button>
+   </router-link>
+ </el-form-item>
+  </el-form>
+  </el-main>
+</el-container>       
 </template>
 
 <script setup>
 import { reactive } from 'vue'
+import { ElMessage } from 'element-plus'
 
-const formInline = reactive({
-  classification:'',
-  name: '',
-})
-const tableData = [
-  {
-    id: '001',
-    name: '内科药品1',
-    classification: '内科',
-    price: '23',
-    manufacturer: '上海某某厂家',
-    specifications: '24粒/盒',
-    date:'2024-7-1',
-    vaccine:'否',
-  },
-  {
-    id: '001',
-    name: '内科药品1',
-    classification: '内科',
-    price: '23',
-    manufacturer: '上海某某厂家',
-    specifications: '24粒/盒',
-    date:'2024-7-1',
-    vaccine:'否',
-  },
-  {
-    id: '001',
-    name: '内科药品1',
-    classification: '内科',
-    price: '23',
-    manufacturer: '上海某某厂家',
-    specifications: '24粒/盒',
-    date:'2024-7-1',
-    vaccine:'否',
-  },
-  {
-    id: '001',
-    name: '内科药品1',
-    classification: '内科',
-    price: '23',
-    manufacturer: '上海某某厂家',
-    specifications: '24粒/盒',
-    date:'2024-7-1',
-    vaccine:'否',
-  },
-  {
-    id: '001',
-    name: '内科药品1',
-    classification: '内科',
-    price: '23',
-    manufacturer: '上海某某厂家',
-    specifications: '24粒/盒',
-    date:'2024-7-1',
-    vaccine:'否',
-  },
-  {
-    id: '001',
-    name: '内科药品1',
-    classification: '内科',
-    price: '23',
-    manufacturer: '上海某某厂家',
-    specifications: '24粒/盒',
-    date:'2024-7-1',
-    vaccine:'否',
-  },
-  {
-    id: '001',
-    name: '内科药品1',
-    classification: '内科',
-    price: '23',
-    manufacturer: '上海某某厂家',
-    specifications: '24粒/盒',
-    date:'2024-7-1',
-    vaccine:'否',
-  },
-]
 const onSubmit = () => {
-  console.log('submit!')
+  ElMessage('提交成功！')
 }
+
+const medicine = reactive({
+    id: '',
+    name: '',
+    classification: '',
+    price: '',
+    manufacturer: '',
+    specifications: '',
+    date:'',
+    vaccine:'',
+})
 </script>
 
 <style lang="scss" scoped>
-.page {
+.demo-date-picker {
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  padding:30px 0px 0px 0px;
+  width: 100%;
+  padding: 0;
+  flex-wrap: wrap;
 }
-.search {
-  display: flex;
-  justify-content:center;
-  align-items: center;
-  height: 100%;
-  
+
+.demo-date-picker .block {
+  padding: 30px 0;
+  text-align: center;
+  border-right: solid 1px var(--el-border-color);
+  flex: 1;
 }
-.main {
+
+.demo-date-picker .block:last-child {
+  border-right: none;
+}
+
+.demo-date-picker .demonstration {
+  display: block;
+  color: var(--el-text-color-secondary);
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.header {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   padding:10px 10px 0px 10px;
-}
-.inmain {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding:10px 0px 0px 0px;
-}
-.button {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
  
+}
+.CancelButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 30px 0px 60px;
+}
+.SubmitButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 60px 0px 30px;
 }
 </style>

@@ -2,9 +2,9 @@
   <div class="app-container home">
     <el-container>
       <el-header>
-        <el-form :inline="true" :model="formInline" class="search">
+        <el-form :inline="true" :model="cases" class="search">
           <el-form-item label="疾病类别">
-      <el-select v-model="formInline.classification" placeholder="疾病类别">
+      <el-select v-model="cases.classification" placeholder="疾病类别">
         <el-option label="传染病" value="传染病" />
         <el-option label="寄生虫病" value="寄生虫病" />
         <el-option label="内科" value="内科" />
@@ -14,7 +14,7 @@
       </el-select>
       </el-form-item>
      <el-form-item label="搜索内容">
-      <el-input v-model="formInline.name" placeholder="搜索内容" />
+      <el-input v-model="cases.name" placeholder="搜索内容" />
        </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">搜索</el-button>
@@ -25,12 +25,18 @@
         <div class="common-layout">
         <el-container>
         <el-header>
-          <el-row class="button">
-           <el-button type="primary">新增</el-button>
-           <el-button type="primary">修改</el-button>
-           <el-button type="primary">删除</el-button>
-           </el-row> 
-        </el-header>
+            <el-form-item class="button">
+              <router-link to="/cases/data">
+           <el-button class="AddButton"  type="primary">新增</el-button>
+              </router-link>
+
+              <router-link to="/cases/data">
+           <el-button class="ChangeButton" type="primary">修改</el-button>
+              </router-link>
+             
+           <el-button class="DeleteButton" @click="open" type="primary">删除</el-button>
+          </el-form-item>
+    </el-header>
         <el-main class="inmain">   
           <el-table
                   ref="multipleTableRef"
@@ -42,7 +48,6 @@
             <el-table-column type="expand">
                    <template #default="props">
                     <div m="4">
-                     
                       <el-table :data="props.row.text" :border="childBorder">
                       <el-table-column label="接诊" prop="admissions" />
                       <el-table-column label="病例检查" prop="check" />
@@ -76,11 +81,24 @@
 
 <script setup>
 import { reactive } from 'vue'
+import { ElMessage } from 'element-plus'
 
-const formInline = reactive({
-  classification:'',
-  name: '',
+const open = () => {
+  ElMessage('删除成功！')
+}
+
+
+const cases = reactive({
+    id: '',
+    name: '',
+    classification: '',
+    admissions: '',
+    check: '',
+    result: '',
+    treatment:'',
+    hospitalized:'否',
 })
+
 const tableData = [
   {
     id: '098738009',
@@ -90,7 +108,7 @@ const tableData = [
     check: '检查项目',
     result: '检查结果',
     treatment:'消毒',
-    hospitalized:'否',
+    hospitalized:'是',
     text: [
       {
         admissions: '病例的基本情况',
@@ -205,9 +223,23 @@ const onSubmit = () => {
   padding:10px 0px 0px 0px;
 }
 .button {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
- 
+	text-align: center;
+	margin-block-end: 10px;
 }
+.AddButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 90px 30px 30px;
+}
+.DeleteButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 30px 30px 90px;
+}
+.ChangeButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 60px 30px 60px;
+}
+
 </style>

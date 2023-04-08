@@ -1,156 +1,112 @@
 <template>
-  <div class="app-container home">
-    <el-container>
-      <el-header>
-        <el-form :inline="true" :model="formInline" class="search">
-          <el-form-item label="护理级别">
-      <el-select v-model="formInline.classification" placeholder="护理级别">
-        <el-option label="特别护理" value="特别护理" />
-        <el-option label="一级护理" value="一级护理" />
-        <el-option label="二级护理" value="二级护理" />
-        <el-option label="普通护理" value="普通护理" />
-        <el-option label="夜间监护" value="夜间监护" />
-      </el-select>
-      </el-form-item>
-      <el-form-item label="病房标准">
-      <el-input v-model="formInline.roomclassification" placeholder="病房标准" />
-       </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit" >搜索</el-button>
-            </el-form-item>
-         </el-form>
+  <el-container>
+    <el-header class="header" height="20px">
+        <router-link to="/hospitalized/list">
+          <el-button type="plain" @click="back">Back</el-button>
+        </router-link>
       </el-header>
-      <el-main class="main">
-        <div class="common-layout">
-        <el-container>
-        <el-header>
-          <el-row class="button">
-           <el-button type="primary">新增</el-button>
-           <el-button type="primary">修改</el-button>
-           <el-button type="primary">删除</el-button>
-           </el-row> 
-        </el-header>
-        <el-main class="inmain">   
-          <el-table :data="tableData" style="width: 100%" height="400">
-            <el-table-column type="selection" width="55" />
-              <el-table-column  prop="id" label="病房编号" width="180" />
-              <el-table-column prop="roomclassification" label="病房标准" width="180" />  
-              <el-table-column prop="classification" label="护理级别" width="180" />
-              <el-table-column prop="price" label="收费价格" width="180" />
-              <el-table-column prop="position" label="病房位置" width="180"/>
-              <el-table-column prop="text" label="备注" width="180"/>
-         </el-table>
-        </el-main>
-       </el-container>
-      </div>
-      </el-main>
-      <el-footer>
-         <el-pagination background layout="prev, pager, next" :total="1000"
-      class="page" />
-      </el-footer>
-    </el-container>
-  </div>
+     <el-main>
+ <div style="margin: 20px" />
+ <el-form
+   :label-position="right"
+   label-width="100px"
+   :model="formLabelAlign"
+   style="max-width: 460px"
+ >
+   <el-form-item label="病房编号">
+     <el-input v-model="hospitalized.id" />
+   </el-form-item>
+   <el-form-item label="病房标准">
+     <el-input v-model="hospitalized.name" />
+   </el-form-item>
+   <el-form-item label="护理级别">
+     <el-select v-model="hospitalized.classification" placeholder="请选择药品类别">
+       <el-option label="传染病" value="传染病" />
+       <el-option label="寄生虫病" value="寄生虫病" />
+       <el-option label="内科" value="内科" />
+       <el-option label="外产科" value="外产科" />
+       <el-option label="常用手术" value="常用手术" />
+       <el-option label="免疫" value="免疫" />
+     </el-select>
+   </el-form-item>
+   <el-form-item label="收费价格">
+     <el-input v-model="hospitalized.price" />
+   </el-form-item>
+   <el-form-item label="病房位置">
+     <el-input v-model="hospitalized.position" />
+   </el-form-item>
+   <el-form-item label="备注">
+     <el-input v-model="hospitalized.text" />
+   </el-form-item>
+   <el-form-item>
+   <el-button class="SubmitButton" type="primary" @click="onSubmit">保存</el-button>
+   <router-link to="/hospitalized/list">
+    <el-button class="CancelButton">取消</el-button>
+   </router-link>
+ </el-form-item>
+ </el-form>
+ </el-main>
+ </el-container> 
 </template>
 
 <script setup>
 import { reactive } from 'vue'
+import { ElMessage } from 'element-plus'
 
-const formInline = reactive({
-  classification:'',
-  roomclassification: '',
-})
-const tableData = [
-  {
-    id: 'K001',
-    roomclassification: '普通病房',
-    classification: '一般护理',
-    price: '230/天',
-    position: '4楼401',
-    text: '空房',
-  },
-  {
-    id: 'K001',
-    roomclassification: '普通病房',
-    classification: '一般护理',
-    price: '230/天',
-    position: '4楼401',
-    text: '空房',
-  },
-  {
-    id: 'K001',
-    roomclassification: '普通病房',
-    classification: '一般护理',
-    price: '230/天',
-    position: '4楼401',
-    text: '空房',
-  },
-  {
-    id: 'K001',
-    roomclassification: '普通病房',
-    classification: '一般护理',
-    price: '230/天',
-    position: '4楼401',
-    text: '空房',
-  },
-  {
-    id: 'K001',
-    roomclassification: '普通病房',
-    classification: '一般护理',
-    price: '230/天',
-    position: '4楼401',
-    text: '空房',
-  },
-  {
-    id: 'K001',
-    roomclassification: '普通病房',
-    classification: '一般护理',
-    price: '230/天',
-    position: '4楼401',
-    text: '空房',
-  },
-  {
-    id: 'K001',
-    roomclassification: '普通病房',
-    classification: '一般护理',
-    price: '230/天',
-    position: '4楼401',
-    text: '空房',
-  },
-]
 const onSubmit = () => {
-  console.log('submit!')
+  ElMessage('提交成功！')
 }
+
+const hospitalized = reactive({
+    id: '',
+    roomclassification: '',
+    classification: '',
+    price: '',
+    position: '',
+    text: '',
+})
 </script>
 
 <style lang="scss" scoped>
-.page {
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  padding:30px 0px 0px 0px;
+.demo-date-picker {
+ display: flex;
+ width: 100%;
+ padding: 0;
+ flex-wrap: wrap;
 }
-.search {
-  display: flex;
-  justify-content:center;
-  align-items: center;
-  height: 100%;
+
+.demo-date-picker .block {
+ padding: 30px 0;
+ text-align: center;
+ border-right: solid 1px var(--el-border-color);
+ flex: 1;
 }
-.main {
+
+.demo-date-picker .block:last-child {
+ border-right: none;
+}
+
+.demo-date-picker .demonstration {
+ display: block;
+ color: var(--el-text-color-secondary);
+ font-size: 14px;
+ margin-bottom: 20px;
+}
+.header {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   padding:10px 10px 0px 10px;
-}
-.inmain {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding:10px 0px 0px 0px;
-}
-.button {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
  
+}
+.CancelButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 30px 0px 60px;
+}
+.SubmitButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 60px 0px 30px;
 }
 </style>

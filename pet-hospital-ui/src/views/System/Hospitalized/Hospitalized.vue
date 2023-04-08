@@ -2,9 +2,9 @@
   <div class="app-container home">
     <el-container>
       <el-header>
-        <el-form :inline="true" :model="formInline" class="search">
+        <el-form :inline="true" :model="hospitalized" class="search">
           <el-form-item label="护理级别">
-      <el-select v-model="formInline.classification" placeholder="护理级别">
+      <el-select v-model="hospitalized.classification" placeholder="护理级别">
         <el-option label="特别护理" value="特别护理" />
         <el-option label="一级护理" value="一级护理" />
         <el-option label="二级护理" value="二级护理" />
@@ -13,7 +13,7 @@
       </el-select>
       </el-form-item>
       <el-form-item label="病房标准">
-      <el-input v-model="formInline.roomclassification" placeholder="病房标准" />
+      <el-input v-model="hospitalized.roomclassification" placeholder="病房标准" />
        </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit" >搜索</el-button>
@@ -24,11 +24,17 @@
         <div class="common-layout">
         <el-container>
         <el-header>
-          <el-row class="button">
-           <el-button type="primary">新增</el-button>
-           <el-button type="primary">修改</el-button>
-           <el-button type="primary">删除</el-button>
-           </el-row> 
+          <el-form-item class="button">
+              <router-link to="/hospitalized/add">
+           <el-button class="AddButton"  type="primary">新增</el-button>
+              </router-link>
+
+              <router-link to="/hospitalized/add">
+           <el-button class="ChangeButton" type="primary">修改</el-button>
+              </router-link>
+             
+           <el-button class="DeleteButton" @click="open" type="primary">删除</el-button>
+          </el-form-item> 
         </el-header>
         <el-main class="inmain">   
           <el-table :data="tableData" style="width: 100%" height="400">
@@ -55,9 +61,13 @@
 <script setup>
 import { reactive } from 'vue'
 
-const formInline = reactive({
-  classification:'',
-  roomclassification: '',
+const hospitalized = reactive({
+    id: '',
+    roomclassification: '',
+    classification: '',
+    price: '',
+    position: '',
+    text: '',
 })
 const tableData = [
   {
@@ -152,5 +162,20 @@ const onSubmit = () => {
   justify-content: flex-start;
   align-items: flex-start;
  
+}
+.AddButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 90px 30px 30px;
+}
+.DeleteButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 30px 30px 90px;
+}
+.ChangeButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 60px 30px 60px;
 }
 </style>

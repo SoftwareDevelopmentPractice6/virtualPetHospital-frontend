@@ -2,9 +2,9 @@
   <div class="app-container home">
     <el-container>
       <el-header>
-       <el-form :inline="true" :model="formInline" class="search">
+       <el-form :inline="true" :model="charge" class="search">
      <el-form-item label="收费项目名称">
-      <el-input v-model="formInline.name" placeholder="收费项目名称" />
+      <el-input v-model="charge.name" placeholder="收费项目名称" />
        </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">搜索</el-button>
@@ -15,11 +15,17 @@
         <div class="common-layout">
         <el-container>
         <el-header>
-          <el-row class="button">
-           <el-button type="primary">新增</el-button>
-           <el-button type="primary">修改</el-button>
-           <el-button type="primary">删除</el-button>
-           </el-row> 
+          <el-form-item class="button">
+              <router-link to="/charge/add">
+           <el-button class="AddButton"  type="primary">新增</el-button>
+              </router-link>
+
+              <router-link to="/charge/add">
+           <el-button class="ChangeButton" type="primary">修改</el-button>
+              </router-link>
+             
+           <el-button class="DeleteButton" @click="open" type="primary">删除</el-button>
+          </el-form-item>
         </el-header>
         <el-main class="inmain">   
           <el-table
@@ -51,57 +57,61 @@
 <script setup>
 import { reactive } from 'vue'
 
-const formInline = reactive({
-  name: '',
+const charge = reactive({
+    id: '',
+    name: '',
+    price: '',
+    time:'',
+    method:'',
 })
 const tableData = [
   {
     id: '001',
     name: '内科药品1',
     price: '23',
-    date:'2024-7-1 10：39',
+    time:'2024-7-1 10：39',
     method:'微信支付',
   },
   {
     id: '001',
     name: '内科药品1',
     price: '23',
-    date:'2024-7-1 10：39',
+    time:'2024-7-1 10：39',
     method:'微信支付',
   },
   {
     id: '001',
     name: '内科药品1',
     price: '23',
-    date:'2024-7-1 10：39',
+    time:'2024-7-1 10：39',
     method:'微信支付',
   },
   {
     id: '001',
     name: '内科药品1',
     price: '23',
-    date:'2024-7-1 10：39',
+    time:'2024-7-1 10：39',
     method:'微信支付',
   },
   {
     id: '001',
     name: '内科药品1',
     price: '23',
-    date:'2024-7-1 10：39',
+    time:'2024-7-1 10：39',
     method:'微信支付',
   },
   {
     id: '001',
     name: '内科药品1',
     price: '23',
-    date:'2024-7-1 10：39',
+    time:'2024-7-1 10：39',
     method:'微信支付',
   },
   {
     id: '001',
     name: '内科药品1',
     price: '23',
-    date:'2024-7-1 10：39',
+    time:'2024-7-1 10：39',
     method:'微信支付',
   },
 ]
@@ -141,5 +151,20 @@ const onSubmit = () => {
   justify-content: flex-start;
   align-items: flex-start;
  
+}
+.AddButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 90px 30px 30px;
+}
+.DeleteButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 30px 30px 90px;
+}
+.ChangeButton {
+	width: 80px;
+	height: 40px;
+  margin: 0px 60px 30px 60px;
 }
 </style>
