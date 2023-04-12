@@ -13,7 +13,7 @@
           @change="handleSelect(selectValue)"
         >
           <el-option
-            v-for="item in options"
+            v-for="item in diseaseDatas.options"
             :key="item.value"
             :label="item.label"
             :value="item.value"
@@ -25,7 +25,7 @@
         <div
           :id="item1[0]"
           class="table"
-          v-for="(item1, key1) in diseaseMap"
+          v-for="(item1, key1) in diseaseDatas.diseaseMap"
           :key="key1"
         >
           <div class="title">
@@ -51,15 +51,17 @@
 
 <script setup>
 import { getDisease } from "@/api/case";
+import { caseStore } from "@/store/case";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 
-// 获取疾病列表并处理数据
 let selectValue = ref("");
 let diseaseData = null; // 疾病列表
-let diseaseMap = reactive(new Map()); // 病种->病例数组
-let diseaseSet = reactive(new Set()); // 病种集合
-let options = reactive([]); // select options
+let diseaseDatas = reactive({
+  diseaseMap: new Map(), // 病种->病例数组
+  diseaseSet: new Set(), // 病种集合
+  options: [], // select options
+});
 
 // 获取疾病列表
 getDisease()
@@ -70,18 +72,18 @@ getDisease()
     for (let item of diseaseData) {
       const curCate = item.diseaseNameCategory;
       let value = [];
-      if (!diseaseSet.has(curCate)) {
-        options.push({
+      if (!diseaseDatas.diseaseSet.has(curCate)) {
+        diseaseDatas.options.push({
           value: curCate,
           label: curCate,
         });
-        diseaseSet.add(curCate);
+        diseaseDatas.diseaseSet.add(curCate);
         value = new Array(item);
       } else {
-        value = diseaseMap.get(curCate);
+        value = diseaseDatas.diseaseMap.get(curCate);
         value.push(item);
       }
-      diseaseMap.set(curCate, value);
+      diseaseDatas.diseaseMap.set(curCate, value);
     }
   })
   .catch((error) => {
@@ -93,15 +95,20 @@ const handleSelect = (selected) => {
   document.querySelector("#" + selected).scrollIntoView(false);
 };
 
-// 处理点击跳转事件
 const router = useRouter();
+const myCaseStore = caseStore();
+
+// 处理点击跳转事件
 const handleClick = (disease) => {
   const diseaseName = disease.diseaseNameContent,
-    diseaseId = disease.diseaseNameId;
+    diseaseId = disease.diseaseNameId,
+    diseaseCategory = disease.diseaseNameCategory;
   router.push({
     path: "caseStudy/detail/" + diseaseName,
-    params: { diseaseName: diseaseName, diseaseId: diseaseId },
   });
+  myCaseStore.setName(diseaseName);
+  myCaseStore.setId(diseaseId);
+  myCaseStore.setCategory(diseaseCategory);
 };
 </script>
 
