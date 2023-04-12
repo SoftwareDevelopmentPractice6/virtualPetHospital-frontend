@@ -36,9 +36,9 @@ import Cookies from "js-cookie";
 
 const name = Cookies.get("name");
 
-const myAppStore = appStore();
+const store = appStore();
 let toggleSideBar = () => {
-  myAppStore.toggleSideBar();
+  store.toggleSideBar();
 };
 
 const logout = async () => {

@@ -46,8 +46,8 @@ const variables = reactive({
 
 const role = Cookies.get("role");
 
-const myAppStore = appStore();
-const sidebar = myAppStore.sidebar;
+const store = appStore();
+const sidebar = store.sidebar;
 let isCollapse = computed(() => !sidebar.opened); // 侧边栏是否展开
 
 let isUnique = ref(false); // 是否只能展开一个子目录
