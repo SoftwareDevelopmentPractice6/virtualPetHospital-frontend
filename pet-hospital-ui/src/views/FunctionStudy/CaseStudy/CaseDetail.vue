@@ -2,6 +2,7 @@
 
 <template>
   <div class="casedetail-wrapper">
+    <!-- 上方 fixed bar -->
     <div class="top-wrapper">
       <div class="top-container">
         <div class="disease-name">
@@ -24,6 +25,8 @@
         </div>
       </div>
     </div>
+
+    <!-- 病例详情 -->
     <div class="case-wrapper">
       <div
         class="case-container"
@@ -31,9 +34,11 @@
         :key="index"
       >
         <div class="case-inner" v-if="item.flag">
+          <!-- 病例号 -->
           <div class="triangle"></div>
           <div class="case-title">病例 {{ index + 1 }}</div>
           <div class="case-content">
+            <!-- 疾病名称 -->
             <div class="name-wrapper wrapper">
               <div class="sub-title">
                 <div class="dot pink"></div>
@@ -42,9 +47,7 @@
               <div class="text-wrapper subwrapper">
                 <div class="title">文字信息：</div>
                 <div class="text-content">
-                  {{
-                    item.medicalCaseDiseaseName.diseaseNameContent
-                  }}
+                  {{ item.medicalCaseDiseaseName.diseaseNameContent }}
                   &nbsp;&#40;
                   {{ item.medicalCaseDiseaseName.diseaseNameCategory }} &#41;
                 </div>
@@ -71,15 +74,23 @@
               </div>
               <div class="video-wrapper subwrapper">
                 <div class="title">视频信息：</div>
-                <video width="800" height="400" controls>
-                  <source
-                    src="../../../assets/images/video-demo.mp4"
-                    type="video/mp4"
-                  />
-                  您的浏览器不支持 video 标签。
-                </video>
+                <div class="allvideo" @click="navigateToAll()">
+                  全部视频&nbsp;&gt;&gt;
+                </div>
+                <div class="video-container">
+                  <video width="680" height="420" controls>
+                    <source
+                      src="../../../assets/images/video-demo.mp4"
+                      type="video/mp4"
+                    />
+                    您的浏览器不支持 video 标签。
+                  </video>
+                  <div>视频 1</div>
+                </div>
               </div>
             </div>
+
+            <!-- 接诊 -->
             <div class="admission-wrapper wrapper">
               <div class="sub-title">
                 <div class="dot blue"></div>
@@ -113,15 +124,24 @@
               </div>
               <div class="video-wrapper subwrapper">
                 <div class="title">视频信息：</div>
-                <video width="800" height="400" controls>
-                  <source
-                    src="../../../assets/images/video-demo.mp4"
-                    type="video/mp4"
-                  />
-                  您的浏览器不支持 video 标签。
-                </video>
+                <div class="allvideo" @click="navigateToAll()">
+                  全部视频&nbsp;&gt;&gt;
+                </div>
+
+                <div class="video-container">
+                  <video width="680" height="420" controls>
+                    <source
+                      src="../../../assets/images/video-demo.mp4"
+                      type="video/mp4"
+                    />
+                    您的浏览器不支持 video 标签。
+                  </video>
+                  <div>视频 1</div>
+                </div>
               </div>
             </div>
+
+            <!-- 病例检查 -->
             <div class="check-wrapper wrapper">
               <div class="sub-title">
                 <div class="dot green"></div>
@@ -155,15 +175,24 @@
               </div>
               <div class="video-wrapper subwrapper">
                 <div class="title">视频信息：</div>
-                <video width="800" height="400" controls>
-                  <source
-                    src="../../../assets/images/video-demo.mp4"
-                    type="video/mp4"
-                  />
-                  您的浏览器不支持 video 标签。
-                </video>
+                <div class="allvideo" @click="navigateToAll()">
+                  全部视频&nbsp;&gt;&gt;
+                </div>
+
+                <div class="video-container">
+                  <video width="680" height="420" controls>
+                    <source
+                      src="../../../assets/images/video-demo.mp4"
+                      type="video/mp4"
+                    />
+                    您的浏览器不支持 video 标签。
+                  </video>
+                  <div>视频 1</div>
+                </div>
               </div>
             </div>
+
+            <!-- 诊断结果 -->
             <div class="diagnoseRes-wrapper wrapper">
               <div class="sub-title">
                 <div class="dot orange"></div>
@@ -197,15 +226,24 @@
               </div>
               <div class="video-wrapper subwrapper">
                 <div class="title">视频信息：</div>
-                <video width="800" height="400" controls>
-                  <source
-                    src="../../../assets/images/video-demo.mp4"
-                    type="video/mp4"
-                  />
-                  您的浏览器不支持 video 标签。
-                </video>
+                <div class="allvideo" @click="navigateToAll()">
+                  全部视频&nbsp;&gt;&gt;
+                </div>
+
+                <div class="video-container">
+                  <video width="680" height="420" controls>
+                    <source
+                      src="../../../assets/images/video-demo.mp4"
+                      type="video/mp4"
+                    />
+                    您的浏览器不支持 video 标签。
+                  </video>
+                  <div>视频 1</div>
+                </div>
               </div>
             </div>
+
+            <!-- 治疗方案 -->
             <div class="treatment-wrapper wrapper">
               <div class="sub-title">
                 <div class="dot purple"></div>
@@ -239,13 +277,20 @@
               </div>
               <div class="video-wrapper subwrapper">
                 <div class="title">视频信息：</div>
-                <video width="800" height="400" controls>
-                  <source
-                    src="../../../assets/images/video-demo.mp4"
-                    type="video/mp4"
-                  />
-                  您的浏览器不支持 video 标签。
-                </video>
+                <div class="allvideo" @click="navigateToAll()">
+                  全部视频&nbsp;&gt;&gt;
+                </div>
+
+                <div class="video-container">
+                  <video width="680" height="420" controls>
+                    <source
+                      src="../../../assets/images/video-demo.mp4"
+                      type="video/mp4"
+                    />
+                    您的浏览器不支持 video 标签。
+                  </video>
+                  <div>视频 1</div>
+                </div>
               </div>
             </div>
           </div>
@@ -261,8 +306,14 @@ import "@jambonn/vue-concise-carousel/lib/vue-concise-carousel.css";
 import { getCase } from "@/api/case";
 import { caseStore } from "@/store/case";
 import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 
+// 图片列表
 let cards = reactive([
+  {
+    cardSrc:
+      "https://images.pexels.com/photos/3265460/pexels-photo-3265460.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+  },
   {
     cardSrc:
       "https://images.pexels.com/photos/3265460/pexels-photo-3265460.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
@@ -309,14 +360,16 @@ let cards = reactive([
   },
 ]);
 
+// 病例数据
 let caseData = reactive({
   caseList: [],
-  caseArr: [],
   options: [],
 });
 
+// 选中病例
 let selectedCase = ref("病例 1");
 
+// 获取疾病 id, name, category
 const store = caseStore();
 let diseaseId = store.diseaseId ? ref(store.diseaseId) : ref(""),
   diseaseName = store.diseaseName ? ref(store.diseaseName) : ref(""),
@@ -324,7 +377,7 @@ let diseaseId = store.diseaseId ? ref(store.diseaseId) : ref(""),
     ? ref(store.diseaseCategory)
     : ref("");
 
-// 防止 pinia 中的 id 和 name 由于刷新而丢失
+// 防止 pinia 中的 id, name, category 由于刷新而丢失
 if (!diseaseId.value || !diseaseName.value || !diseaseCategory.value) {
   console.log("已丢失");
   // 使用 sessionStorage 中的值
@@ -333,7 +386,7 @@ if (!diseaseId.value || !diseaseName.value || !diseaseCategory.value) {
   diseaseCategory.value = sessionStorage.getItem("diseaseCategory");
 }
 
-// 缓存 diseaseId 和 diseaseName
+// 缓存 diseaseId, diseaseName, diseaseCategory
 sessionStorage.setItem("diseaseId", diseaseId.value);
 sessionStorage.setItem("diseaseName", diseaseName.value);
 sessionStorage.setItem("diseaseCategory", diseaseCategory.value);
@@ -344,12 +397,16 @@ async function getCaseList() {
     .then((res) => {
       let list = res.data.medicalCaseList.medicalCaseList;
       console.log("获取病例列表成功", list);
+
+      // 初始化 select 数据
       for (let i = 0; i < list.length; ++i) {
         caseData.options.push({
           value: "病例 " + (i + 1),
           label: "病例 " + (i + 1),
         });
       }
+
+      // 初始选中病例 1
       for (let i in list) {
         if (i === "0") {
           list[i].flag = true;
@@ -375,13 +432,22 @@ const handleSelect = (selectedCase) => {
   caseData.caseList[index].flag = true;
   selectedCase.value = selectedCase;
 };
+
+const router = useRouter();
+
+// 跳转到所有视频
+const navigateToAll = () => {
+  router.push({
+    path: diseaseName.value + "/allVideos",
+  });
+};
 </script>
 
 <style lang="scss" scoped>
 .casedetail-wrapper {
   overflow-y: auto;
   height: calc(100vh - 50px);
-  font-size: 15px;
+  font-size: 16px;
   .top-wrapper {
     height: 58px;
     .top-container {
@@ -438,14 +504,15 @@ const handleSelect = (selectedCase) => {
         font-size: 23px;
       }
       .case-content {
-        margin: 16px 3px;
+        margin-bottom: 20px;
         .wrapper {
-          width: 99%;
-          margin: 0 auto;
+          width: 96%;
+          margin: 20px auto;
           border-radius: 5px;
           padding: 15px 18px;
         }
         .name-wrapper {
+          margin-top: 5px;
           background-color: rgb(255, 230, 235);
           border: 1px solid rgb(223, 196, 200);
         }
@@ -458,11 +525,11 @@ const handleSelect = (selectedCase) => {
           border: 1px solid rgb(188, 219, 170);
         }
         .diagnoseRes-wrapper {
-          background-color: rgb(253, 219, 225);
-          border: 1px solid rgb(223, 196, 200);
+          background-color: rgb(255, 235, 208);
+          border: 1px solid rgb(225, 202, 176);
         }
         .treatment-wrapper {
-          background-color: rgb(230, 214, 233);
+          background-color: rgb(233, 221, 235);
           border: 1px solid rgb(207, 191, 210);
         }
         .sub-title {
@@ -478,7 +545,7 @@ const handleSelect = (selectedCase) => {
           }
           span {
             font-weight: 600;
-            font-size: 19px;
+            font-size: 20px;
             color: #444;
             text-decoration: underline;
           }
@@ -492,6 +559,7 @@ const handleSelect = (selectedCase) => {
             background-color: rgb(166, 243, 88);
           }
           .orange {
+            background-color: rgb(255, 177, 81);
           }
           .purple {
             background-color: rgb(211, 140, 227);
@@ -510,9 +578,9 @@ const handleSelect = (selectedCase) => {
           margin-bottom: 15px;
         }
         .image-container {
-          width: 1200px;
+          width: 1060px;
           margin: 25px auto 10px;
-          padding: 0 60px;
+          padding: 0;
           .VueCarousel-slide {
             color: #333;
             align-items: center;
@@ -520,16 +588,36 @@ const handleSelect = (selectedCase) => {
             text-align: center;
           }
           .slideBox {
-            margin: 0px 12px;
+            margin: 0px 10px;
             padding: 12px;
             border: 1px solid #ccc;
           }
+          img {
+            max-width: 220px;
+          }
         }
-        img {
-          max-width: 220px;
-        }
-        video {
-          width: 800px;
+        .video-wrapper {
+          position: relative;
+          .allvideo {
+            position: absolute;
+            right: 25px;
+            top: 30px;
+          }
+          .allvideo:hover {
+            cursor: pointer;
+            color: orangered;
+          }
+          .video-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 15px 0 20px;
+            video {
+              width: 680px;
+              margin-bottom: 10px;
+            }
+          }
         }
       }
     }
