@@ -75,7 +75,7 @@
               <div class="video-wrapper subwrapper">
                 <div class="title">视频信息：</div>
                 <div class="allvideo" @click="navigateToAll()">
-                  全部视频&nbsp;&gt;&gt;
+                  全部视频&nbsp;&nbsp;&gt;&gt;
                 </div>
                 <div class="video-container">
                   <video width="680" height="420" controls>
@@ -125,7 +125,7 @@
               <div class="video-wrapper subwrapper">
                 <div class="title">视频信息：</div>
                 <div class="allvideo" @click="navigateToAll()">
-                  全部视频&nbsp;&gt;&gt;
+                  全部视频&nbsp;&nbsp;&gt;&gt;
                 </div>
 
                 <div class="video-container">
@@ -176,7 +176,7 @@
               <div class="video-wrapper subwrapper">
                 <div class="title">视频信息：</div>
                 <div class="allvideo" @click="navigateToAll()">
-                  全部视频&nbsp;&gt;&gt;
+                  全部视频&nbsp;&nbsp;&gt;&gt;
                 </div>
 
                 <div class="video-container">
@@ -227,7 +227,7 @@
               <div class="video-wrapper subwrapper">
                 <div class="title">视频信息：</div>
                 <div class="allvideo" @click="navigateToAll()">
-                  全部视频&nbsp;&gt;&gt;
+                  全部视频&nbsp;&nbsp;&gt;&gt;
                 </div>
 
                 <div class="video-container">
@@ -278,7 +278,7 @@
               <div class="video-wrapper subwrapper">
                 <div class="title">视频信息：</div>
                 <div class="allvideo" @click="navigateToAll()">
-                  全部视频&nbsp;&gt;&gt;
+                  全部视频&nbsp;&nbsp;&gt;&gt;
                 </div>
 
                 <div class="video-container">
@@ -473,7 +473,7 @@ const navigateToAll = () => {
         justify-content: right;
         .m-2 {
           position: relative;
-          right: 15px;
+          right: 20px;
         }
       }
     }
@@ -548,6 +548,7 @@ const navigateToAll = () => {
             font-size: 20px;
             color: #444;
             text-decoration: underline;
+            letter-spacing: 0.5px;
           }
           .pink {
             background-color: rgb(255, 137, 157);

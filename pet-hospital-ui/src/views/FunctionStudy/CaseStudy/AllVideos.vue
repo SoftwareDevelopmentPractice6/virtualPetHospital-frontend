@@ -10,8 +10,129 @@
         </div>
       </div>
     </div>
-    <div class="video-wrapper">
-      <div class="video-container"></div>
+    <div class="content-wrapper">
+      <div class="video-wrapper">
+        <div class="video-container">
+          <div class="video-inner">
+            <video width="400" height="260" controls>
+              <source
+                src="../../../assets/images/video-demo.mp4"
+                type="video/mp4"
+              />
+              您的浏览器不支持 video 标签。
+            </video>
+            <div class="title"><span>视频 1</span></div>
+          </div>
+        </div>
+        <div class="video-container">
+          <div class="video-inner">
+            <video width="400" height="260" controls>
+              <source
+                src="../../../assets/images/video-demo.mp4"
+                type="video/mp4"
+              />
+              您的浏览器不支持 video 标签。
+            </video>
+            <div class="title"><span>视频 2</span></div>
+          </div>
+        </div>
+        <div class="video-container">
+          <div class="video-inner">
+            <video width="400" height="260" controls>
+              <source
+                src="../../../assets/images/video-demo.mp4"
+                type="video/mp4"
+              />
+              您的浏览器不支持 video 标签。
+            </video>
+            <div class="title"><span>视频 3</span></div>
+          </div>
+        </div>
+        <div class="video-container">
+          <div class="video-inner">
+            <video width="400" height="260" controls>
+              <source
+                src="../../../assets/images/video-demo.mp4"
+                type="video/mp4"
+              />
+              您的浏览器不支持 video 标签。
+            </video>
+            <div class="title"><span>视频 4</span></div>
+          </div>
+        </div>
+        <div class="video-container">
+          <div class="video-inner">
+            <video width="400" height="260" controls>
+              <source
+                src="../../../assets/images/video-demo.mp4"
+                type="video/mp4"
+              />
+              您的浏览器不支持 video 标签。
+            </video>
+            <div class="title"><span>视频 5</span></div>
+          </div>
+        </div>
+        <div class="video-container">
+          <div class="video-inner">
+            <video width="400" height="260" controls>
+              <source
+                src="../../../assets/images/video-demo.mp4"
+                type="video/mp4"
+              />
+              您的浏览器不支持 video 标签。
+            </video>
+            <div class="title"><span>视频 6</span></div>
+          </div>
+        </div>
+        <div class="video-container">
+          <div class="video-inner">
+            <video width="400" height="260" controls>
+              <source
+                src="../../../assets/images/video-demo.mp4"
+                type="video/mp4"
+              />
+              您的浏览器不支持 video 标签。
+            </video>
+            <div class="title"><span>视频 7</span></div>
+          </div>
+        </div>
+        <div class="video-container">
+          <div class="video-inner">
+            <video width="400" height="260" controls>
+              <source
+                src="../../../assets/images/video-demo.mp4"
+                type="video/mp4"
+              />
+              您的浏览器不支持 video 标签。
+            </video>
+            <div class="title"><span>视频 8</span></div>
+          </div>
+        </div>
+        <div class="video-container">
+          <div class="video-inner">
+            <video width="400" height="260" controls>
+              <source
+                src="../../../assets/images/video-demo.mp4"
+                type="video/mp4"
+              />
+              您的浏览器不支持 video 标签。
+            </video>
+            <div class="title"><span>视频 9</span></div>
+          </div>
+        </div>
+        <div class="video-container">
+          <div class="video-inner">
+            <video width="400" height="260" controls>
+              <source
+                src="../../../assets/images/video-demo.mp4"
+                type="video/mp4"
+              />
+              您的浏览器不支持 video 标签。
+            </video>
+            <div class="title"><span>视频 10</span></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -40,6 +161,8 @@ if (!diseaseId.value || !diseaseName.value || !diseaseCategory.value) {
 
 <style lang="scss" scoped>
 .allvideo-wrapper {
+  overflow-y: auto;
+  height: calc(100vh - 50px);
   .top-wrapper {
     height: 43px;
     .top-container {
@@ -58,6 +181,29 @@ if (!diseaseId.value || !diseaseName.value || !diseaseCategory.value) {
       }
       .disease-name:hover {
         color: rgb(255, 203, 107);
+      }
+    }
+  }
+  .content-wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 13px 0;
+    .video-wrapper {
+      width: 90%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .video-container {
+        width: 32%;
+        .video-inner {
+          display: flex;
+          flex-direction: column;
+          .title {
+            display: flex;
+            justify-content: center;
+            margin-top: 3px;
+          }
+        }
       }
     }
   }
