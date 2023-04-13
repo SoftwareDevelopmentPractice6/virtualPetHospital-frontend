@@ -51,7 +51,7 @@ const logout = async () => {
       Cookies.remove("isLogin");
       Cookies.remove("role");
       Cookies.remove("name");
-      location.href = "/login";
+      location.href = "/";
     })
     .catch(() => {});
 };
