@@ -28,6 +28,14 @@ npm run serve
 npm run serve:mock
 ```
 
+## Docker 打包
+
+根目录下：
+
+```bash
+docker build -t pet-hospital-ui .
+```
+
 ## 前端功能及所需字段
 | 序号 | 功能 | 负责人 |
 | ------ | ------ | ------ |
