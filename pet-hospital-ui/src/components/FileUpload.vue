@@ -2,15 +2,15 @@
  * @Author: pikapikapi pikapikapi_kaori@icloud.com
  * @Date: 2023-04-14 14:58:58
  * @LastEditors: pikapikapi pikapikapi_kaori@icloud.com
- * @LastEditTime: 2023-04-14 16:15:03
+ * @LastEditTime: 2023-04-14 17:00:56
  * @FilePath: /virtualPetHospital-frontend/pet-hospital-ui/src/components/FileUpload.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <div class="upload">
         <el-upload class="upload-demo" action="/" :http-request="selectFiles" :on-preview="handlePreview"
-            :on-remove="handleRemove" :before-upload="beforeAvatarUpload" :on-success="handleSuccess"
-            :on-error="handleError" :file-list="fileList" list-type="picture">
+            :on-remove="handleRemove" :before-upload="beforeAvatarUpload"
+            :file-list="fileList" list-type="picture">
             <el-button size="small" type="primary">选择文件</el-button>
         </el-upload>
         <el-button @click="onSubmit">上传</el-button>
@@ -64,25 +64,9 @@ export default {
                     fileList.splice(fileInListIndex)
                 }
             })
-            console.log(file, fileList);
         },
         handlePreview(file) {
             console.log(file);
-        },
-        handleSuccess(res) {
-            this.uploadResult = res
-
-            if (this.uploadResult.status === 200) {
-                this.$message({
-                    message: '上传文件成功',
-                    type: 'success'
-                });
-            } else if (this.uploadResult.code === 0) {
-                this.$message.error('上传文件失败')
-            }
-        },
-        handleError() {
-            this.$message.error('上传文件失败');
         },
         selectFiles(param) {
             const formData = new FormData()
