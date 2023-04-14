@@ -21,7 +21,7 @@
 				<el-button type="primary" @click="onSubmit">搜索</el-button>
 			</el-form-item>
 		</el-form>
-
+		<div class="table-container">
 		<el-table :data="examTableData" height="250" class="examTable">
 			<el-table-column prop="Num" label="序号" width="180"></el-table-column>
 			<el-table-column
@@ -63,6 +63,7 @@
 				</template>
 			</el-table-column>
 		</el-table>
+	</div>
 	</div>
 </template>
 <script setup>
@@ -171,5 +172,9 @@ const examTableData = [
 .examTable {
 	vertical-align: center;
 	padding: 30px 30px 300px 30px;
+}
+.table-container {
+  position: absolute;
+  width: 100%;
 }
 </style>
