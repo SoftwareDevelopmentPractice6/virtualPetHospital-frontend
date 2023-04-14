@@ -2,23 +2,26 @@
  * @Author: pikapikapi pikapikapi_kaori@icloud.com
  * @Date: 2023-04-14 14:58:58
  * @LastEditors: pikapikapi pikapikapi_kaori@icloud.com
- * @LastEditTime: 2023-04-14 17:00:56
+ * @LastEditTime: 2023-04-14 20:22:46
  * @FilePath: /virtualPetHospital-frontend/pet-hospital-ui/src/components/FileUpload.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
     <div class="upload">
         <el-upload class="upload-demo" action="/" :http-request="selectFiles" :on-preview="handlePreview"
-            :on-remove="handleRemove" :before-upload="beforeAvatarUpload"
-            :file-list="fileList" list-type="picture">
-            <el-button size="small" type="primary">选择文件</el-button>
+            multiple drag 
+            :on-remove="handleRemove" :before-upload="beforeAvatarUpload" :file-list="fileList" list-type="picture">
+            <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+            <div class="el-upload__text">
+                拖拽文件或 <em>点击这里上传</em>
+            </div>
         </el-upload>
         <el-button @click="onSubmit">上传</el-button>
     </div>
 </template>
 
 <script>
-import {uploadFile} from "@/api/file";
+import { uploadFile } from "@/api/file";
 export default {
     name: "FileUpload",
     data() {
@@ -29,19 +32,19 @@ export default {
             uploadResult: ''
         };
     },
-    props:{
-		filePath:{
-			type: String,
-			default: ''
-		}
-	},
+    props: {
+        filePath: {
+            type: String,
+            default: ''
+        }
+    },
     methods: {
-        getFileSuffix (name) {
+        getFileSuffix(name) {
             const index = name.lastIndexOf(".");
             const len = name.length;
             return name.substring(index + 1, len) || "-";
         },
-        validType (fileName) {
+        validType(fileName) {
             var fileSuffix = this.getFileSuffix(fileName).toLowerCase();
             return this.supportedPictureTypes.includes(fileSuffix) || this.supportedVideoTypes.includes(fileSuffix);
         },
@@ -58,10 +61,10 @@ export default {
 
             return isSupportedType && isLt2M;
         },
-        handleRemove(file, fileList) {
-            fileList.forEach((fileInList, fileInListIndex) => {
-                if (file.name === fileInList.get('file')) {
-                    fileList.splice(fileInListIndex)
+        handleRemove(file) {
+            this.fileList.forEach((fileInList, fileInListIndex) => {
+                if (file.name === fileInList.get('file').name) {
+                    this.fileList.splice(fileInListIndex)
                 }
             })
         },

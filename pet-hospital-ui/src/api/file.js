@@ -73,3 +73,20 @@ export function convertVideoToMp4(filePath) {
     data: data,
   });
 }
+
+// 下载路径下全文件
+export async function downloadAllFiles(directoryPath) {
+  const allFiles = []
+  await this.getFileLists(directoryPath).then(res => {
+    if (res.code === 200) {
+      let filePathList = res.data.filePathList
+      filePathList.forEach(async filePath => {
+        await this.downloadFile(filePath).then(downloadRes => {
+          allFiles.append(downloadRes)
+        })
+      })
+    }
+  })
+
+  return allFiles
+}
