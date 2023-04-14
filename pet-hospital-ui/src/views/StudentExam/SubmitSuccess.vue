@@ -5,7 +5,7 @@
 			<h1 class="title">提交成功</h1>
 		</div>
 		<div>
-			<router-link to="/ExamSelection">
+			<router-link to="/StudentExam/ExamSelection">
 				<el-button type="success" round class="finish">完成</el-button></router-link
 			>
 		</div>

@@ -30,11 +30,17 @@
 			/>
 		</div>
 		<div class="button">
-			<router-link to="/StudentExam/SubmitSuccess">
-				<el-button class="submitButton" type="primary"
-					>提交</el-button
-				></router-link
+			<el-button class="submitButton" type="primary" @click="open"
+				>提交</el-button
 			>
+			<div v-if="show">
+				<div class="mask"></div>
+				<div class="confirm">
+					<p>你确定要跳转到详情页吗？</p>
+					<button @click="confirm">确定</button>
+					<button @click="cancel">取消</button>
+				</div>
+			</div>
 			<router-link to="/StudentExam/ExamSelection">
 				<el-button class="cancelButton">取消</el-button></router-link
 			>
@@ -44,8 +50,87 @@
 
 <script setup>
 import { ref } from "vue";
+import { ElMessageBox } from "element-plus";
+import { useRoute } from "vue-router";
+// import router from "@/router";
+
+// data 重新定义（用 ref 或 reactive）
+// methods 重新定义
+// this 全部删掉，this.$router, this.$route, this.$emit 去查一下 vue3 的语法
+// Mounted, BeforeDestroy 去查一下 vue3 的语法
+import { useRouter } from "vue-router";
+
+
+const router = useRouter();
+let show = ref(false);
+// const showConfirm = () => {
+// 	show = true;
+// };
+const confirm = () => {
+	show = false;
+	router.push({name: '/StudentExam/ExamSelection'});
+	// this.$router.push({ name: "detail" });
+};
+const cancel = () => {
+	show = false;
+};
+
+// export default {
+//   data() {
+//     return {
+//       show: false,
+// 	  obj: {
+// 		a: 'a',
+// 		b: 'b'
+// 	  }
+//     };
+//   },
+//   methods: {
+//     showConfirm() {
+//       this.show = true;
+//     },
+//     confirm() {
+//       this.show = false;
+//       this.$router.push({ name: "detail" });
+//     },
+//     cancel() {
+//       this.show = false;
+//     },
+//   },
+// }
 const radio = ref(3);
 const textarea = ref("");
+// data = () => {
+// 	return {
+// 		show: false,
+// 	};
+// },
+// open = () => {
+// 	this.show = true;
+// };
+// confirm = () => {
+// 	this.show = false;
+// 	this.$router.push("/StudentExam/ExamSelection");
+// };
+// cancel = () => {
+// 	this.show = false;
+// };
+
+// const open = () => {
+// 	// ElMessageBox.alert("提交成功", "Success", {
+// 	// 	// if you want to disable its autofocus
+// 	// 	autofocus: false,
+// 	// 	confirmButtonText: "OK",
+// 	// });
+// 	ElMessageBox.confirm("提交成功", "Success", {
+// 		confirmButtonText: "OK",
+// 		showCancelButton: false,
+// 		type: "success"
+// 	}).then(() => {
+// 		// 用户点击了确认按钮，执行页面跳转的操作
+// 		this.$router.replace('/StudentExam/ExamSelection');
+// 	});
+// };
 </script>
 
 <style lang="scss" scoped>
