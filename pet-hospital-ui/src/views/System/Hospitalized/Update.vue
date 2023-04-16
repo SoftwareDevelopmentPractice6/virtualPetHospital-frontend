@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header class="header" height="20px">
-      <router-link to="/medicine/list">
+      <router-link to="/hospitalized/list">
         <el-button type="plain" @click="back">Back</el-button>
       </router-link>
     </el-header>
@@ -13,18 +13,15 @@
         :model="formLabelAlign"
         style="max-width: 460px"
       >
-        <el-form-item label="药品ID">
-          <el-input v-model="medicine.id" />
+        <el-form-item label="病房编号">
+          <el-input v-model="hospitalized.id" />
         </el-form-item>
-        <el-form-item label="药品名称">
-          <el-input v-model="medicine.name" />
+        <el-form-item label="病房标准">
+          <el-input v-model="hospitalized.name" />
         </el-form-item>
-        <el-form-item label="药品类别">
-          <el-input v-model="medicine.classification" />
-        </el-form-item>
-        <!-- <el-form-item label="疾病类别">
+        <el-form-item label="护理级别">
           <el-select
-            v-model="medicine.classification"
+            v-model="hospitalized.classification"
             placeholder="请选择药品类别"
           >
             <el-option label="传染病" value="传染病" />
@@ -34,28 +31,21 @@
             <el-option label="常用手术" value="常用手术" />
             <el-option label="免疫" value="免疫" />
           </el-select>
-        </el-form-item> -->
-        <el-form-item label="生产厂家">
-          <el-input v-model="medicine.manufacturer" />
         </el-form-item>
-
-        <el-form-item label="药品价格">
-          <el-input v-model="medicine.price" />
+        <el-form-item label="收费价格">
+          <el-input v-model="hospitalized.price" />
         </el-form-item>
-        <el-form-item label="药品规格">
-          <el-input v-model="medicine.specifications" />
+        <el-form-item label="病房位置">
+          <el-input v-model="hospitalized.position" />
         </el-form-item>
-        <el-form-item label="是否是疫苗">
-          <el-radio-group v-model="medicine.vaccine">
-            <el-radio label="是" />
-            <el-radio label="否" />
-          </el-radio-group>
+        <el-form-item label="备注">
+          <el-input v-model="hospitalized.text" />
         </el-form-item>
         <el-form-item>
           <el-button class="SubmitButton" type="primary" @click="onSubmit"
             >保存</el-button
           >
-          <router-link to="/medicine/list">
+          <router-link to="/hospitalized/list">
             <el-button class="CancelButton">取消</el-button>
           </router-link>
         </el-form-item>
@@ -67,17 +57,17 @@
 <script setup>
 import { reactive } from "vue";
 import { ElMessage } from "element-plus";
-import { insertMedicine } from "../../../api/system";
+import { insertAdmission } from "../../../api/system";
 
 const onSubmit = () => {
-  console.log(medicine);
+  console.log(admission);
   var data = {
-    medicineName: medicine.name,
-    medicinePrice: medicine.price,
-    manufacturer: medicine.manufacturer,
-    medicineCategory: medicine.classification,
-    specification: medicine.specifications,
-    isVaccine: medicine.vaccine,
+    admissionId: admission.id,
+    roomStandard: admission.roomclassification,
+    careLevel: admission.classification,
+    carePrice: admission.price,
+    admissionRoom: admission.position,
+    remark: admission.text,
   };
   console.log("data", data);
   insert(data).then(() => {
@@ -88,20 +78,19 @@ const onSubmit = () => {
   });
 };
 const insert = async (val) => {
-  let value = await insertMedicine(val).then((res) => {
+  let value = await insertAdmission(val).then((res) => {
     res.data;
   });
   console.log("val", value);
 };
-const medicine = reactive({
+
+const admission = reactive({
   id: "",
-  name: "",
+  roomclassification: "",
   classification: "",
   price: "",
-  manufacturer: "",
-  specifications: "",
-  date: "",
-  vaccine: "",
+  position: "",
+  text: "",
 });
 </script>
 

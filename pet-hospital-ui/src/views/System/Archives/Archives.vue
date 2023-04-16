@@ -73,11 +73,13 @@
                 />
                 <el-table-column label="操作" width="200">
                   <template #default="scope">
-                    <el-button
-                      size="small"
-                      @click="handleEdit(scope.$index, scope.row)"
-                      >编辑</el-button
-                    >
+                    <router-link to="/archives/update">
+                      <el-button
+                        size="small"
+                        @click="handleEdit(scope.$index, scope.row)"
+                        >编辑</el-button
+                      >
+                    </router-link>
                     <el-button
                       size="small"
                       type="danger"
@@ -99,7 +101,7 @@
 import { onMounted, reactive } from "vue";
 import { getArchive, deleteArchiveById } from "@/api/system";
 
-const tableData = reactive([]);
+let tableData = reactive([]);
 
 onMounted(() => {
   getAll();

@@ -61,11 +61,14 @@
                 <el-table-column prop="position" label="项目地点" width="150" />
                 <el-table-column label="操作" width="200">
                   <template #default="scope">
-                    <el-button
-                      size="small"
-                      @click="handleEdit(scope.$index, scope.row)"
-                      >编辑</el-button
-                    >
+                    <router-link to="/laboratory/update">
+                      <el-button
+                        size="small"
+                        @click="handleEdit(scope.$index, scope.row)"
+                        >编辑</el-button
+                      >
+                    </router-link>
+
                     <el-button
                       size="small"
                       type="danger"
@@ -93,7 +96,7 @@ const examine = reactive({
   price: "",
   position: "",
 });
-const tableData = reactive([]);
+let tableData = reactive([]);
 
 onMounted(() => {
   getAll();
