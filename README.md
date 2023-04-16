@@ -14,14 +14,15 @@
 - Pinia v2
 
 ## 项目运行
-1. 安装主系统依赖
-```
-cd pet-hospital-ui
-npm i
-```
-2. 安装全景部分依赖
+1. 安装全景部分依赖 + 跑该部分代码
 ```
 cd panorama-ui
+npm i
+npm run dev
+```
+2. 安装主系统依赖
+```
+cd pet-hospital-ui
 npm i
 ```
 3. 跑项目
