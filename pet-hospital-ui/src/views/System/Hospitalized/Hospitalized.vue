@@ -70,11 +70,13 @@
                 <el-table-column prop="text" label="备注" width="120" />
                 <el-table-column label="操作" width="200">
                   <template #default="scope">
-                    <el-button
-                      size="small"
-                      @click="handleEdit(scope.$index, scope.row)"
-                      >编辑</el-button
-                    >
+                    <router-link to="/hospitalized/update">
+                      <el-button
+                        size="small"
+                        @click="handleEdit(scope.$index, scope.row)"
+                        >编辑</el-button
+                      >
+                    </router-link>
                     <el-button
                       size="small"
                       type="danger"
@@ -96,7 +98,7 @@
 import { onMounted, reactive } from "vue";
 import { getAdmission, deleteAdmissionById } from "@/api/system";
 
-const tableData = reactive([]);
+let tableData = reactive([]);
 
 onMounted(() => {
   getAll();
@@ -113,7 +115,7 @@ const getAll = async () => {
       roomclassification: item.roomStandard,
       classification: item.careLevel,
       price: item.carePrice,
-      position: item.admissionRoom,
+      position: item.admissionRoom.roomName,
       text: item.remark,
     };
     tableData.push(value);

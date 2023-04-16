@@ -11,6 +11,14 @@ export function getMedicine() {
 		method: "get",
 	});
 }
+// //更新药品信息
+// export function updateMedicine(data = {}) {
+// 	return request({
+// 		url: base + "medicine",
+// 		method: "put",
+// 		data,
+// 	});
+// }
 //根据疾病类别获取药品信息
 export function getMedicineByCategory(medicineCategory) {
 	return request({
@@ -21,15 +29,21 @@ export function getMedicineByCategory(medicineCategory) {
 		},
 	});
 }
-
-//根据药品名称获取药品信息
-export function getMedicineByName(medicineName) {
+//根据疾病ID获取药品信息
+export function getMedicineByID(medicineId) {
 	return request({
 		url: base + "medicine",
 		method: "get",
 		params: {
-			medicineName,
+			medicineId,
 		},
+	});
+}
+//根据药品名称获取药品信息
+export function getMedicineByName(medicineName) {
+	return request({
+		url: base + `medicine/${medicineName}`,
+		method: "get",
 	});
 }
 // 新增

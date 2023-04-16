@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container v-loading="loading">
     <el-header class="header" height="20px">
       <router-link to="/medicine/list">
         <el-button type="plain" @click="back">Back</el-button>
@@ -14,17 +14,17 @@
         style="max-width: 460px"
       >
         <el-form-item label="药品ID">
-          <el-input v-model="medicine.id" />
+          <el-input v-model="medicine.medicineId" />
         </el-form-item>
         <el-form-item label="药品名称">
-          <el-input v-model="medicine.name" />
+          <el-input v-model="medicine.medicineName" />
         </el-form-item>
         <el-form-item label="药品类别">
-          <el-input v-model="medicine.classification" />
+          <el-input v-model="medicine.medicineCategory" />
         </el-form-item>
         <!-- <el-form-item label="疾病类别">
           <el-select
-            v-model="medicine.classification"
+            v-model="medicine.medicineCategory"
             placeholder="请选择药品类别"
           >
             <el-option label="传染病" value="传染病" />
@@ -40,23 +40,23 @@
         </el-form-item>
 
         <el-form-item label="药品价格">
-          <el-input v-model="medicine.price" />
+          <el-input v-model="medicine.medicinePrice" />
         </el-form-item>
         <el-form-item label="药品规格">
-          <el-input v-model="medicine.specifications" />
+          <el-input v-model="medicine.specification" />
         </el-form-item>
         <el-form-item label="是否是疫苗">
-          <el-radio-group v-model="medicine.vaccine">
-            <el-radio label="是" />
-            <el-radio label="否" />
+          <el-radio-group v-model="medicine.isVaccine">
+            <el-radio :label="1">是</el-radio>
+            <el-radio :label="0">否</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item>
-          <el-button class="SubmitButton" type="primary" @click="onSubmit"
-            >保存</el-button
-          >
+          <el-button class="SubmitButton" type="primary" @click="onSubmit">
+            保存
+          </el-button>
           <router-link to="/medicine/list">
-            <el-button class="CancelButton">取消</el-button>
+            <el-button class="CancelButton"> 取消 </el-button>
           </router-link>
         </el-form-item>
       </el-form>
@@ -65,44 +65,43 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { computed, unref, onMounted, ref } from "vue";
 import { ElMessage } from "element-plus";
-import { insertMedicine } from "../../../api/system";
+import { updateMedicine, getMedicineByName } from "@/api/system";
 
-const onSubmit = () => {
-  console.log(medicine);
-  var data = {
-    medicineName: medicine.name,
-    medicinePrice: medicine.price,
-    manufacturer: medicine.manufacturer,
-    medicineCategory: medicine.classification,
-    specification: medicine.specifications,
-    isVaccine: medicine.vaccine,
-  };
-  console.log("data", data);
-  insert(data).then(() => {
-    // console.log(res);
-    // if(res.code !== 200) return  ElMessage.error('提交失败！')
-    // medicine = {}
-    ElMessage("提交成功！");
-  });
-};
-const insert = async (val) => {
-  let value = await insertMedicine(val).then((res) => {
-    res.data;
-  });
-  console.log("val", value);
-};
-const medicine = reactive({
-  id: "",
-  name: "",
-  classification: "",
-  price: "",
-  manufacturer: "",
-  specifications: "",
-  date: "",
-  vaccine: "",
+import { useRoute, useRouter } from "vue-router";
+const route = useRoute();
+
+const router = useRouter();
+const medicineName = computed(() => {
+  return route.query.medicineName;
 });
+
+const loading = ref(false);
+
+const medicine = ref({});
+
+const getMediineInfo = async () => {
+  if (!unref(medicineName)) return;
+  loading.value = true;
+  const {
+    medicineList: [info],
+  } = await getMedicineByName(unref(medicineName)).then((res) => res.data);
+  medicine.value = info;
+  loading.value = false;
+};
+
+onMounted(() => {
+  getMediineInfo();
+});
+
+const onSubmit = async () => {
+  loading.value = true;
+  await updateMedicine(unref(medicine));
+  ElMessage.success("提交成功！");
+  loading.value = false;
+  router.back();
+};
 </script>
 
 <style lang="scss" scoped>
