@@ -14,16 +14,22 @@
 - Pinia v2
 
 ## 项目运行
-1. 安装依赖
+1. 安装主系统依赖
 ```
+cd pet-hospital-ui
 npm i
 ```
-2. 跑项目
+2. 安装全景部分依赖
+```
+cd panorama-ui
+npm i
+```
+3. 跑项目
 - 连接本地后端接口
 ```
 npm run serve
 ```
-- 连接云端mock接口（需要申请Apifox团队权限）
+- 连接云端 mock 接口（需要申请 Apifox 团队权限）
 ```
 npm run serve:mock
 ```

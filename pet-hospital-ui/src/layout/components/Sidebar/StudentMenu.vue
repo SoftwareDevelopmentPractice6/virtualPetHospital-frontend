@@ -36,12 +36,12 @@
       <template #title>
         <el-icon><tickets /></el-icon> <span>学习测试</span></template
       >
-      <el-menu-item index="3-1"
+      <el-menu-item index="/StudentExam/ExamSelection"
         ><template #title>
           <el-icon><timer /></el-icon> <span>我的考试</span></template
         ></el-menu-item
       >
-      <el-menu-item index="3-2"
+      <el-menu-item index="/StudentExam/ScoreQuery"
         ><template #title>
           <el-icon><trophy /></el-icon> <span>我的成绩</span></template
         ></el-menu-item
