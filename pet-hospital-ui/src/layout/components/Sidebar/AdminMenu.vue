@@ -75,7 +75,8 @@
       <el-menu-item index="/laboratory/list"
         ><template #title>
           <el-icon><setUp /></el-icon> <span>化验项目管理</span></template
-        ></el-menu-item>
-      </el-sub-menu>
+        ></el-menu-item
+      >
+    </el-sub-menu>
   </div>
 </template>
