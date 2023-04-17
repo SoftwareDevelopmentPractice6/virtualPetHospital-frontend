@@ -18,7 +18,7 @@
 ```
 cd panorama-ui
 npm i
-npm run dev
+npm run serve
 ```
 2. 安装主系统依赖
 ```
