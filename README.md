@@ -34,6 +34,10 @@ npm run serve
 ```
 npm run serve:mock
 ```
+- 在 docker 环境运行
+```
+npm run serve:docker
+```
 
 ## Docker 打包
 
