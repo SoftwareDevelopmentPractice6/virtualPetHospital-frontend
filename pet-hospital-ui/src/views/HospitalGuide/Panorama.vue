@@ -16,7 +16,7 @@
 import { onMounted, ref } from "vue";
 
 let Iframe = ref();
-let vue2PageUrl = ref("http://localhost:9527");
+let vue2PageUrl = ref(process.env.PANORAMA_APP_URL);
 let loading = ref(false);
 
 const iframeLoad = () => {
