@@ -10,28 +10,21 @@
   </div>
 </template>
 
-<script>
-import { default as mapApp } from '@/map/init'
+<script setup>
+import { default as mapApp } from "@/map/init";
 // loading 页面
-import LoadingTriangle from '@/components/LoadingTriangle.vue'
-import { ref, onMounted } from 'vue'
-export default {
-  name: 'mapView',
-  components: { LoadingTriangle },
-  setup() {
-    let clickShadeSign = ref(true)
+import LoadingTriangle from "@/components/LoadingTriangle.vue";
+import { ref, onMounted } from "vue";
 
-    onMounted(() => {
-      // 初始化地图
-      mapApp.initMap()
-      window.mapApp = mapApp // 测试环境中开发此对象方便调试，生产环境可以注释
+let clickShadeSign = ref(true);
 
-      mapApp.clickShadeSign = clickShadeSign
-    })
+onMounted(() => {
+  // 初始化地图
+  mapApp.initMap();
+  window.mapApp = mapApp; // 测试环境中开发此对象方便调试，生产环境可以注释
 
-    return { clickShadeSign }
-  }
-}
+  mapApp.clickShadeSign = clickShadeSign;
+});
 </script>
 
 <style lang="scss" scoped>
