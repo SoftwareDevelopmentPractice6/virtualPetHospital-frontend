@@ -16,7 +16,7 @@
 import { onMounted, ref } from "vue";
 
 let Iframe = ref();
-let vue2PageUrl = ref(process.env.PANORAMA_APP_URL);
+let vue2PageUrl = ref(process.env.VUE_APP_PANORAMA_URL);
 let loading = ref(false);
 
 const iframeLoad = () => {
