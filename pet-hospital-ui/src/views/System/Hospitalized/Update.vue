@@ -14,14 +14,15 @@
         style="max-width: 460px"
       >
         <el-form-item label="病房编号">
-          <el-input v-model="hospitalized.id" />
+          <el-input v-model="hospitalized.admissionId" />
         </el-form-item>
         <el-form-item label="病房标准">
-          <el-input v-model="hospitalized.name" />
+          <el-input v-model="hospitalized.roomStandard" />
         </el-form-item>
         <el-form-item label="护理级别">
-          <el-select
-            v-model="hospitalized.classification"
+          <el-input v-model="hospitalized.careLevel" />
+          <!-- <el-select
+            v-model="hospitalized.careLevel"
             placeholder="请选择药品类别"
           >
             <el-option label="传染病" value="传染病" />
@@ -30,16 +31,16 @@
             <el-option label="外产科" value="外产科" />
             <el-option label="常用手术" value="常用手术" />
             <el-option label="免疫" value="免疫" />
-          </el-select>
+          </el-select> -->
         </el-form-item>
         <el-form-item label="收费价格">
-          <el-input v-model="hospitalized.price" />
+          <el-input v-model="hospitalized.carePrice" />
         </el-form-item>
-        <el-form-item label="病房位置">
-          <el-input v-model="hospitalized.position" />
+        <el-form-item label="病房名称">
+          <el-input v-model="hospitalized.roomName" />
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="hospitalized.text" />
+          <el-input v-model="hospitalized.remark" />
         </el-form-item>
         <el-form-item>
           <el-button class="SubmitButton" type="primary" @click="onSubmit"
@@ -55,43 +56,42 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { computed, unref, onMounted, ref } from "vue";
 import { ElMessage } from "element-plus";
-import { insertAdmission } from "../../../api/system";
+import { updateAdmission, getAdmissionByCareLevel } from "@/api/system";
+import { useRoute, useRouter } from "vue-router";
+const route = useRoute();
 
-const onSubmit = () => {
-  console.log(admission);
-  var data = {
-    admissionId: admission.id,
-    roomStandard: admission.roomclassification,
-    careLevel: admission.classification,
-    carePrice: admission.price,
-    admissionRoom: admission.position,
-    remark: admission.text,
-  };
-  console.log("data", data);
-  insert(data).then(() => {
-    // console.log(res);
-    // if(res.code !== 200) return  ElMessage.error('提交失败！')
-    // medicine = {}
-    ElMessage("提交成功！");
-  });
-};
-const insert = async (val) => {
-  let value = await insertAdmission(val).then((res) => {
-    res.data;
-  });
-  console.log("val", value);
-};
-
-const admission = reactive({
-  id: "",
-  roomclassification: "",
-  classification: "",
-  price: "",
-  position: "",
-  text: "",
+const router = useRouter();
+const careLevel = computed(() => {
+  return route.query.careLevel;
 });
+
+const loading = ref(false);
+
+const admission = ref({});
+
+const getAdmissionInfo = async () => {
+  if (!unref(careLevel)) return;
+  loading.value = true;
+  const {
+    admissionList: [info],
+  } = await getAdmissionByCareLevel(unref(careLevel)).then((res) => res.data);
+  admission.value = info;
+  loading.value = false;
+};
+
+onMounted(() => {
+  getAdmissionInfo();
+});
+
+const onSubmit = async () => {
+  loading.value = true;
+  await updateAdmission(unref(admission));
+  ElMessage.success("提交成功！");
+  loading.value = false;
+  router.back();
+};
 </script>
 
 <style lang="scss" scoped>

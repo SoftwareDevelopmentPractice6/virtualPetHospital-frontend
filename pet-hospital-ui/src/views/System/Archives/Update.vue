@@ -1,8 +1,8 @@
 <template>
   <div class="common-layout">
-    <el-container>
+    <el-container v-loadin="loading">
       <el-header class="header" height="20px">
-        <router-link to="/archives/list">
+        <router-link to="/archive/list">
           <el-button type="plain" @click="back">Back</el-button>
         </router-link>
       </el-header>
@@ -15,19 +15,19 @@
           style="max-width: 460px"
         >
           <el-form-item label="档案编号">
-            <el-input v-model="archives.id" />
+            <el-input v-model="archive.archiveId" />
           </el-form-item>
           <el-form-item label="宠物名称">
-            <el-input v-model="archives.name" />
+            <el-input v-model="archive.petName" />
           </el-form-item>
           <el-form-item label="宠物性别">
-            <el-input v-model="archives.gender" />
+            <el-input v-model="archive.petSex" />
           </el-form-item>
           <el-form-item label="保存时间">
             <el-col :span="11">
               <div class="block">
                 <el-date-picker
-                  v-model="archives.date"
+                  v-model="archive.storeTime"
                   type="date"
                   placeholder="选择一个日期"
                   :size="size"
@@ -36,10 +36,7 @@
             </el-col>
           </el-form-item>
           <el-form-item label="宠物类别">
-            <el-select
-              v-model="archives.petclassification"
-              placeholder="请选择宠物类别"
-            >
+            <el-select v-model="archive.petType" placeholder="请选择宠物类别">
               <el-option label="哺乳类动物" value="哺乳类动物" />
               <el-option label="爬行类宠物" value="爬行类宠物" />
               <el-option label="鸟类宠物" value="鸟类宠物" />
@@ -48,17 +45,17 @@
             </el-select>
           </el-form-item>
           <el-form-item label="疾病名称">
-            <el-input v-model="archives.classification" />
+            <el-input v-model="archive.diseaseType" />
           </el-form-item>
 
           <el-form-item label="主人联系方式">
-            <el-input v-model="archives.phone" />
+            <el-input v-model="archive.ownerTel" />
           </el-form-item>
           <el-form-item>
-            <el-button class="SubmitButton" type="primary" @click="onSubmit"
-              >保存</el-button
-            >
-            <router-link to="/archives/list">
+            <el-button class="SubmitButton" type="primary" @click="onSubmit">
+              保存
+            </el-button>
+            <router-link to="/archive/list">
               <el-button class="CancelButton">取消</el-button>
             </router-link>
           </el-form-item>
@@ -69,45 +66,44 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { computed, unref, onMounted, ref } from "vue";
 import { ElMessage } from "element-plus";
-import { insertArchive } from "../../../api/system";
+import { updateArchive, getArchiveByPetName } from "@/api/system";
 
-const onSubmit = () => {
-  console.log(archive);
-  var data = {
-    archiveId: archive.id,
-    storeTime: archive.date,
-    petName: archive.name,
-    diseaseType: archive.classification,
-    petType: archive.petclassification,
-    petSex: archive.gender,
-    ownerTel: archive.phone,
-  };
-  console.log("data", data);
-  insert(data).then(() => {
-    // console.log(res);
-    // if(res.code !== 200) return  ElMessage.error('提交失败！')
-    // medicine = {}
-    ElMessage("提交成功！");
-  });
-};
-const insert = async (val) => {
-  let value = await insertArchive(val).then((res) => {
-    res.data;
-  });
-  console.log("val", value);
-};
+import { useRoute, useRouter } from "vue-router";
+const route = useRoute();
 
-const archive = reactive({
-  id: "",
-  date: "",
-  name: "",
-  classification: "",
-  petclassification: "",
-  gender: "",
-  phone: "",
+const router = useRouter();
+
+const petName = computed(() => {
+  return route.query.petName;
 });
+
+const loading = ref(false);
+
+const archive = ref({});
+
+const getArchiveInfo = async () => {
+  if (!unref(petName)) return;
+  loading.value = true;
+  const {
+    archiveList: [info],
+  } = await getArchiveByPetName(unref(petName)).then((res) => res.data);
+  archive.value = info;
+  loading.value = false;
+};
+
+onMounted(() => {
+  getArchiveInfo();
+});
+
+const onSubmit = async () => {
+  loading.value = true;
+  await updateArchive(unref(archive));
+  ElMessage.success("提交成功！");
+  loading.value = false;
+  router.back();
+};
 </script>
 
 <style lang="scss" scoped>

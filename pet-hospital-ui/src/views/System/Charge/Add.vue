@@ -19,7 +19,7 @@
         <el-form-item label="收费项目名称">
           <el-input v-model="charge.name" />
         </el-form-item>
-        <el-form-item label="收费时间">
+        <!-- <el-form-item label="收费时间">
           <el-col :span="11">
             <div class="block">
               <el-date-picker
@@ -29,13 +29,13 @@
               />
             </div>
           </el-col>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="收费价格">
           <el-input v-model="charge.price" />
         </el-form-item>
-        <el-form-item label="收费方式">
+        <!-- <el-form-item label="收费方式">
           <el-input v-model="charge.method" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item>
           <el-button class="SubmitButton" type="primary" @click="onSubmit"
             >保存</el-button

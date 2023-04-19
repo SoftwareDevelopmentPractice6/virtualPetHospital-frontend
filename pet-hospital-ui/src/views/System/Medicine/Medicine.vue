@@ -79,7 +79,6 @@
                     <!-- <router-link to="/medicine/update"> -->
                     <el-button size="small" @click="handleEdit(scope.row)">
                       编辑
-                      <!-- 获取详情接口时什么？设想是刚刚那个按照名称获取的，想一起用，可以吗 -->
                     </el-button>
                     <!-- </router-link> -->
 
@@ -107,7 +106,6 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const loading = ref();
-// 按照你的思路   在什么时候调用  就是输入药品名称然后下面渲染的数据可以进行筛选 ， 不需要点击查询时吗 需要 ， 那就是点击查询？是的，前面疾病类型别管了，那个忘记删了ok
 
 const medicine = reactive({
   id: "",
@@ -165,9 +163,6 @@ const handleDelete = (val) => {
 const deleteMedicine = async (id) => {
   await deleteById(id).then((res) => console.log("res", res));
 };
-//编辑接口
-
-//根据id获取数据
 
 const onSubmit = async () => {
   if (medicine.name === "") return;
@@ -193,15 +188,12 @@ const onSubmit = async () => {
   });
   loading.value = false;
 
-  console.log("tabledata22222", tableData);
+  console.log("tabledata", tableData);
 };
 
 const handleEdit = (row) => {
   const name = row.name;
   router.push(`/medicine/update?medicineName=${name}`);
-
-  // 在哪里编辑？
-  //点击编辑之后跳转到那个界面，需要那个界面可以先有编辑的数据然后在那个界面编辑，刚刚你是点击谁出来的额
 };
 </script>
 

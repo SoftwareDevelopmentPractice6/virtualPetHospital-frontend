@@ -14,12 +14,12 @@
         style="max-width: 460px"
       >
         <el-form-item label="收费编号">
-          <el-input v-model="charge.id" />
+          <el-input v-model="charge.chargeId" />
         </el-form-item>
         <el-form-item label="收费项目名称">
-          <el-input v-model="charge.name" />
+          <el-input v-model="charge.itemName" />
         </el-form-item>
-        <el-form-item label="收费时间">
+        <!-- <el-form-item label="收费时间">
           <el-col :span="11">
             <div class="block">
               <el-date-picker
@@ -29,13 +29,13 @@
               />
             </div>
           </el-col>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="收费价格">
-          <el-input v-model="charge.price" />
+          <el-input v-model="charge.chargePrice" />
         </el-form-item>
-        <el-form-item label="收费方式">
+        <!-- <el-form-item label="收费方式">
           <el-input v-model="charge.method" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item>
           <el-button class="SubmitButton" type="primary" @click="onSubmit"
             >保存</el-button
@@ -50,39 +50,42 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { computed, unref, onMounted, ref } from "vue";
 import { ElMessage } from "element-plus";
-import { insertCharge } from "../../../api/system";
+import { updateCharge, getChargeByName } from "../../../api/system";
+import { useRoute, useRouter } from "vue-router";
+const route = useRoute();
 
-const onSubmit = () => {
-  console.log(charge);
-  var data = {
-    chargeId: charge.id,
-    itemName: charge.name,
-    chargePrice: charge.price,
-  };
-  console.log("data", data);
-  insert(data).then(() => {
-    // console.log(res);
-    // if(res.code !== 200) return  ElMessage.error('提交失败！')
-    // medicine = {}
-    ElMessage("提交成功！");
-  });
-};
-const insert = async (val) => {
-  let value = await insertCharge(val).then((res) => {
-    res.data;
-  });
-  console.log("val", value);
-};
-
-const charge = reactive({
-  id: "",
-  name: "",
-  price: "",
-  time: "",
-  method: "",
+const router = useRouter();
+const itemName = computed(() => {
+  return route.query.itemName;
 });
+
+const loading = ref(false);
+
+const charge = ref({});
+
+const getChargeInfo = async () => {
+  if (!unref(itemName)) return;
+  loading.value = true;
+  const {
+    chargeList: [info],
+  } = await getChargeByName(unref(itemName)).then((res) => res.data);
+  charge.value = info;
+  loading.value = false;
+};
+
+onMounted(() => {
+  getChargeInfo();
+});
+
+const onSubmit = async () => {
+  loading.value = true;
+  await updateCharge(unref(charge));
+  ElMessage.success("提交成功！");
+  loading.value = false;
+  router.back();
+};
 </script>
 
 <style lang="scss" scoped>
