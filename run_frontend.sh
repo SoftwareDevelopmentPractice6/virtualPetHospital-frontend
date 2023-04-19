@@ -32,7 +32,7 @@ startProd(){
         echo "-----------------------------------"
         echo "Running address of each module:"
         printf -- "- main:     ${BLUE}http://127.0.0.1:8080${ENDCOLOR}\n"
-        printf -- "- panorama: ${BLUE}http://127.0.0.1:9527${ENDCOLOR}\n"
+        printf -- "- panorama: ${BLUE}http://127.0.0.1:9630${ENDCOLOR}\n"
         echo " "
     ) &
     wait

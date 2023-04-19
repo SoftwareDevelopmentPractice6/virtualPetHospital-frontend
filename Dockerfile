@@ -11,6 +11,6 @@ RUN npm install
 WORKDIR /docker/virtualPetHospital/frontend
 
 RUN chmod 755 run_frontend.sh
-EXPOSE 8080 9527
+EXPOSE 8080 9630
 
 ENTRYPOINT ["./run_frontend.sh"]
