@@ -28,11 +28,11 @@
           <el-container>
             <el-header>
               <el-form-item class="button">
-                <router-link to="/archives/add">
+                <router-link to="/archive/add">
                   <el-button class="AddButton" type="primary">新增</el-button>
                 </router-link>
 
-                <router-link to="/archives/add">
+                <router-link to="/archive/add">
                   <el-button class="ChangeButton" type="primary"
                     >修改</el-button
                   >
@@ -45,6 +45,7 @@
             </el-header>
             <el-main class="inmain">
               <el-table
+                v-loading="loading"
                 ref="multipleTableRef"
                 :data="tableData"
                 style="width: 100%"
@@ -73,13 +74,11 @@
                 />
                 <el-table-column label="操作" width="200">
                   <template #default="scope">
-                    <router-link to="/archives/update">
-                      <el-button
-                        size="small"
-                        @click="handleEdit(scope.$index, scope.row)"
-                        >编辑</el-button
-                      >
-                    </router-link>
+                    <!--   <router-link to="/archive/update"> -->
+                    <el-button size="small" @click="handleEdit(scope.row)"
+                      >编辑</el-button
+                    >
+                    <!-- </router-link> -->
                     <el-button
                       size="small"
                       type="danger"
@@ -98,10 +97,28 @@
 </template>
 
 <script setup>
-import { onMounted, reactive } from "vue";
-import { getArchive, deleteArchiveById } from "@/api/system";
+import { onMounted, reactive, ref } from "vue";
+import {
+  getArchive,
+  deleteArchiveById,
+  getArchiveByPetName,
+} from "@/api/system";
+import { useRouter } from "vue-router";
 
-let tableData = reactive([]);
+const router = useRouter();
+
+const loading = ref();
+const archive = reactive({
+  id: "",
+  date: "",
+  name: "",
+  classification: "",
+  petclassification: "",
+  gender: "",
+  phone: "",
+});
+
+const tableData = ref([]);
 
 onMounted(() => {
   getAll();
@@ -111,6 +128,8 @@ const handleSelectionChange = (val) => {
 };
 // 获取全部信息
 const getAll = async () => {
+  tableData.value = [];
+  loading.value = true;
   let data = await getArchive().then((res) => res.data);
   data.archiveList.forEach((item) => {
     var value = {
@@ -122,23 +141,16 @@ const getAll = async () => {
       gender: item.petSex,
       phone: item.ownerTel,
     };
-    tableData.push(value);
+    tableData.value.push(value);
   });
+  loading.value = false;
   console.log("tabledata", tableData);
 };
-const archive = reactive({
-  id: "",
-  date: "",
-  name: "",
-  classification: "",
-  petclassification: "",
-  gender: "",
-  phone: "",
-});
+
 const handleDelete = (val) => {
   console.log("val", val);
   deleteArchive(val.id).then(() => {
-    tableData = reactive([]);
+    tableData.value = [];
     getAll();
   });
 };
@@ -146,8 +158,32 @@ const handleDelete = (val) => {
 const deleteArchive = async (id) => {
   await deleteArchiveById(id).then((res) => console.log("res", res));
 };
-const onSubmit = () => {
-  console.log("submit!");
+
+const onSubmit = async () => {
+  if (archive.name === "") return;
+  tableData.value = [];
+  loading.value = true;
+  const data = await getArchiveByPetName(archive.name).then((res) => res.data);
+  data.archiveList.forEach((item) => {
+    var value = {
+      id: item.archiveId,
+      date: item.storeTime,
+      name: item.petName,
+      classification: item.diseaseType,
+      petclassification: item.petType,
+      gender: item.petSex,
+      phone: item.ownerTel,
+    };
+
+    tableData.value.push(value);
+  });
+  loading.value = false;
+
+  console.log("tabledata", tableData);
+};
+const handleEdit = (row) => {
+  const name = row.name;
+  router.push(`/archive/update?PetName=${name}`);
 };
 </script>
 

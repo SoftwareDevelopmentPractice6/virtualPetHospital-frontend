@@ -3,13 +3,13 @@ module.exports = {
   productionSourceMap: false,
   //changeOrigin:true,
   devServer: {
-    host: "localhost",
+    host: "0.0.0.0",
     port: 9630,
     open: true,
     proxy: {
       //配置跨域
       "/api": {
-        target: "http://localhost:9630",
+        target: "http://0.0.0.0:9630",
         changOrigin: true,
         pathRewrite: {
           "^/api": "/",

@@ -68,8 +68,8 @@
 import { computed, unref, onMounted, ref } from "vue";
 import { ElMessage } from "element-plus";
 import { updateMedicine, getMedicineByName } from "@/api/system";
-
 import { useRoute, useRouter } from "vue-router";
+
 const route = useRoute();
 
 const router = useRouter();
@@ -81,7 +81,7 @@ const loading = ref(false);
 
 const medicine = ref({});
 
-const getMediineInfo = async () => {
+const getMedicineInfo = async () => {
   if (!unref(medicineName)) return;
   loading.value = true;
   const {
@@ -92,7 +92,7 @@ const getMediineInfo = async () => {
 };
 
 onMounted(() => {
-  getMediineInfo();
+  getMedicineInfo();
 });
 
 const onSubmit = async () => {
