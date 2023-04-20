@@ -79,9 +79,9 @@ const routes = [
 	},
 	// 档案管理
 	{
-		path: "/archives",
+		path: "/archive",
 		component: Layout,
-		redirect: "/archives/list",
+		redirect: "/archive/list",
 		children: [
 			{
 				path: "list",

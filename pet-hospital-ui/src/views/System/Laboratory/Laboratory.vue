@@ -50,24 +50,22 @@
                 @selection-change="handleSelectionChange"
               >
                 <el-table-column type="selection" width="55" />
-                <el-table-column prop="id" label="项目编号" width="150" />
-                <el-table-column prop="name" label="项目名称" width="150" />
-                <el-table-column
+                <el-table-column prop="id" label="项目编号" width="200" />
+                <el-table-column prop="name" label="项目名称" width="200" />
+                <!-- <el-table-column
                   prop="classification"
                   label="疾病类型"
                   width="150"
-                />
-                <el-table-column prop="price" label="项目价格" width="150" />
-                <el-table-column prop="position" label="项目地点" width="150" />
+                /> -->
+                <el-table-column prop="price" label="项目价格" width="200" />
+                <el-table-column prop="position" label="项目地点" width="200" />
                 <el-table-column label="操作" width="200">
                   <template #default="scope">
-                    <router-link to="/laboratory/update">
-                      <el-button
-                        size="small"
-                        @click="handleEdit(scope.$index, scope.row)"
-                        >编辑</el-button
-                      >
-                    </router-link>
+                    <!-- <router-link to="/laboratory/update"> -->
+                    <el-button size="small" @click="handleEdit(scope.row)"
+                      >编辑</el-button
+                    >
+                    <!--  </router-link> -->
 
                     <el-button
                       size="small"
@@ -87,8 +85,13 @@
 </template>
 
 <script setup>
-import { onMounted, reactive } from "vue";
-import { getExamine, deleteExamineById } from "@/api/system";
+import { onMounted, reactive, ref } from "vue";
+import { getExamine, deleteExamineById, getExamineByName } from "@/api/system";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const loading = ref();
+
 const examine = reactive({
   id: "",
   classification: "",
@@ -96,7 +99,7 @@ const examine = reactive({
   price: "",
   position: "",
 });
-let tableData = reactive([]);
+const tableData = ref([]);
 
 onMounted(() => {
   getAll();
@@ -112,16 +115,17 @@ const getAll = async () => {
       id: item.examineId,
       name: item.examineName,
       price: item.examinePrice,
-      position: item.examineRoom,
+      position: item.examineRoom.roomName,
     };
-    tableData.push(value);
+    tableData.value.push(value);
   });
+  loading.value = false;
   console.log("tabledata", tableData);
 };
 const handleDelete = (val) => {
   console.log("val", val);
   deleteExamine(val.id).then(() => {
-    tableData = reactive([]);
+    tableData.value = [];
     getAll();
   });
 };
@@ -129,8 +133,28 @@ const handleDelete = (val) => {
 const deleteExamine = async (id) => {
   await deleteExamineById(id).then((res) => console.log("res", res));
 };
-const onSubmit = () => {
-  console.log("submit!");
+const onSubmit = async () => {
+  if (examine.name === "") return;
+  tableData.value = [];
+  loading.value = true;
+  const data = await getExamineByName(examine.name).then((res) => res.data);
+  data.examineList.forEach((item) => {
+    var value = {
+      id: item.examineId,
+      name: item.examineName,
+      price: item.examinePrice,
+      position: item.examineRoom.roomName,
+    };
+
+    tableData.value.push(value);
+  });
+  loading.value = false;
+  console.log("tabledata", tableData);
+};
+
+const handleEdit = (row) => {
+  const name = row.name;
+  router.push(`/laboratory/update?examineName=${name}`);
 };
 </script>
 

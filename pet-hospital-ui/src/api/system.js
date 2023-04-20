@@ -11,15 +11,7 @@ export function getMedicine() {
 		method: "get",
 	});
 }
-// //更新药品信息
-// export function updateMedicine(data = {}) {
-// 	return request({
-// 		url: base + "medicine",
-// 		method: "put",
-// 		data,
-// 	});
-// }
-//根据疾病类别获取药品信息
+
 export function getMedicineByCategory(medicineCategory) {
 	return request({
 		url: base + "medicine",
@@ -69,6 +61,58 @@ export function deleteById(id) {
 		method: "delete",
 	});
 }
+
+//获取档案信息列表接口
+export function getArchive() {
+	return request({
+		url: base + "archive",
+		method: "get",
+	});
+}
+//根据宠物名称获取化档案信息
+export function getArchiveByPetName(petName) {
+	return request({
+		url: base + "archive",
+		method: "get",
+		params: {
+			petName,
+		},
+	});
+}
+export function getArchiveByPetType(petType) {
+	return request({
+		url: base + "archive",
+		method: "get",
+		params: {
+			petType,
+		},
+	});
+}
+// 新增档案信息
+export function insertArchive(val) {
+	return request({
+		url: base + "archive",
+		method: "post",
+		data: val,
+	});
+}
+//更改档案信息
+export function updateArchive(val) {
+	return request({
+		url: base + "archive",
+		method: "put",
+		data: val,
+	});
+}
+
+//删除档案项目信息
+export function deleteArchiveById(id) {
+	return request({
+		url: base + `archive/${id}`,
+		method: "delete",
+	});
+}
+
 //获取化验信息列表接口
 export function getExamine() {
 	return request({
@@ -79,11 +123,8 @@ export function getExamine() {
 //根据化验项目名称获取化验项目信息
 export function getExamineByName(examineName) {
 	return request({
-		url: base + "examine",
+		url: base + `examine/${examineName}`,
 		method: "get",
-		params: {
-			examineName,
-		},
 	});
 }
 // 新增化验项目
@@ -119,11 +160,8 @@ export function getCharge() {
 //根据收费项目名称获取收费项目信息
 export function getChargeByName(itemName) {
 	return request({
-		url: base + "charge",
+		url: base + `charge/${itemName}`,
 		method: "get",
-		params: {
-			itemName,
-		},
 	});
 }
 // 新增收费项目
@@ -149,55 +187,7 @@ export function deleteChargeById(id) {
 		method: "delete",
 	});
 }
-//获取档案信息列表接口
-export function getArchive() {
-	return request({
-		url: base + "archive",
-		method: "get",
-	});
-}
-//根据宠物名称获取化档案信息
-export function getArchiveByPetName(petName) {
-	return request({
-		url: base + "archive",
-		method: "get",
-		params: {
-			petName,
-		},
-	});
-}
-export function getArchiveByPetType(petType) {
-	return request({
-		url: base + "archive",
-		method: "get",
-		params: {
-			petType,
-		},
-	});
-}
-// 新增档案信息
-export function insertArchive(val) {
-	return request({
-		url: base + "archive",
-		method: "post",
-		data: val,
-	});
-}
-//更改化验信息
-export function updateArchive(val) {
-	return request({
-		url: base + "archive",
-		method: "put",
-		data: val,
-	});
-}
-//删除化验项目信息
-export function deleteArchiveById(id) {
-	return request({
-		url: base + `archive/${id}`,
-		method: "delete",
-	});
-}
+
 //获取住院信息列表接口
 export function getAdmission() {
 	return request({
@@ -208,11 +198,8 @@ export function getAdmission() {
 //根据护理级别获取化住院信息
 export function getAdmissionByCareLevel(careLevel) {
 	return request({
-		url: base + "admission",
+		url: base + `admission/${careLevel}`,
 		method: "get",
-		params: {
-			careLevel,
-		},
 	});
 }
 //根据病房标准获取住院信息

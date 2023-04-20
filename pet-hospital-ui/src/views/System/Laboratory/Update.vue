@@ -15,12 +15,12 @@
           style="max-width: 460px"
         >
           <el-form-item label="项目编号">
-            <el-input v-model="laboratory.id" />
+            <el-input v-model="examine.examineId" />
           </el-form-item>
           <el-form-item label="项目名称">
-            <el-input v-model="laboratory.name" />
+            <el-input v-model="examine.examineName" />
           </el-form-item>
-          <el-form-item label="疾病类别">
+          <!-- <el-form-item label="疾病类别">
             <el-select
               v-model="laboratory.classification"
               placeholder="请选择药品类别"
@@ -32,12 +32,12 @@
               <el-option label="常用手术" value="常用手术" />
               <el-option label="免疫" value="免疫" />
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="项目价格">
-            <el-input v-model="laboratory.price" />
+            <el-input v-model="examine.examinePrice" />
           </el-form-item>
           <el-form-item label="项目地点">
-            <el-input v-model="laboratory.position" />
+            <el-input v-model="examine.examineRoom" />
           </el-form-item>
           <el-form-item>
             <el-button class="SubmitButton" type="primary" @click="onSubmit"
@@ -54,40 +54,42 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { computed, unref, onMounted, ref } from "vue";
 import { ElMessage } from "element-plus";
-import { insertExamine } from "../../../api/system";
+import { updateExamine, getExamineByName } from "../../../api/system";
+import { useRoute, useRouter } from "vue-router";
+const route = useRoute();
 
-const onSubmit = () => {
-  console.log(examine);
-  var data = {
-    examineId: examine.id,
-    examineName: examine.name,
-    examinePrice: examine.price,
-    examineRoom: examine.position,
-  };
-  console.log("data", data);
-  insert(data).then(() => {
-    // console.log(res);
-    // if(res.code !== 200) return  ElMessage.error('提交失败！')
-    // medicine = {}
-    ElMessage("提交成功！");
-  });
-};
-const insert = async (val) => {
-  let value = await insertExamine(val).then((res) => {
-    res.data;
-  });
-  console.log("val", value);
-};
-
-const examine = reactive({
-  id: "",
-  name: "",
-  classification: "",
-  price: "",
-  position: "",
+const router = useRouter();
+const examineName = computed(() => {
+  return route.query.examineName;
 });
+
+const loading = ref(false);
+
+const examine = ref({});
+
+const getExamineInfo = async () => {
+  if (!unref(examineName)) return;
+  loading.value = true;
+  const {
+    examineList: [info],
+  } = await getExamineByName(unref(examineName)).then((res) => res.data);
+  examine.value = info;
+  loading.value = false;
+};
+
+onMounted(() => {
+  getExamineInfo();
+});
+
+const onSubmit = async () => {
+  loading.value = true;
+  await updateExamine(unref(examine));
+  ElMessage.success("提交成功！");
+  loading.value = false;
+  router.back();
+};
 </script>
 
 <style lang="scss" scoped>

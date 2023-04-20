@@ -20,7 +20,7 @@
           <el-form-item label="项目名称">
             <el-input v-model="laboratory.name" />
           </el-form-item>
-          <el-form-item label="疾病类别">
+          <!-- <el-form-item label="疾病类别">
             <el-select
               v-model="laboratory.classification"
               placeholder="请选择药品类别"
@@ -32,7 +32,7 @@
               <el-option label="常用手术" value="常用手术" />
               <el-option label="免疫" value="免疫" />
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="项目价格">
             <el-input v-model="laboratory.price" />
           </el-form-item>

@@ -70,13 +70,11 @@
                 <el-table-column prop="text" label="备注" width="120" />
                 <el-table-column label="操作" width="200">
                   <template #default="scope">
-                    <router-link to="/hospitalized/update">
-                      <el-button
-                        size="small"
-                        @click="handleEdit(scope.$index, scope.row)"
-                        >编辑</el-button
-                      >
-                    </router-link>
+                    <!--  <router-link to="/hospitalized/update"> -->
+                    <el-button size="small" @click="handleEdit(scope.row)"
+                      >编辑</el-button
+                    >
+                    <!--  </router-link> -->
                     <el-button
                       size="small"
                       type="danger"
@@ -95,10 +93,27 @@
 </template>
 
 <script setup>
-import { onMounted, reactive } from "vue";
-import { getAdmission, deleteAdmissionById } from "@/api/system";
+import { onMounted, reactive, ref } from "vue";
+import {
+  getAdmission,
+  deleteAdmissionById,
+  getAdmissionByCareLevel,
+} from "@/api/system";
+import { useRouter } from "vue-router";
 
-let tableData = reactive([]);
+const router = useRouter();
+
+const loading = ref();
+
+const admission = reactive({
+  id: "",
+  roomclassification: "",
+  classification: "",
+  price: "",
+  position: "",
+  text: "",
+});
+const tableData = ref([]);
 
 onMounted(() => {
   getAll();
@@ -108,6 +123,8 @@ const handleSelectionChange = (val) => {
 };
 // 获取全部信息
 const getAll = async () => {
+  tableData.value = [];
+  loading.value = true;
   let data = await getAdmission().then((res) => res.data);
   data.admissionList.forEach((item) => {
     var value = {
@@ -118,14 +135,15 @@ const getAll = async () => {
       position: item.admissionRoom.roomName,
       text: item.remark,
     };
-    tableData.push(value);
+    tableData.value.push(value);
   });
+  loading.value = false;
   console.log("tabledata", tableData);
 };
 const handleDelete = (val) => {
   console.log("val", val);
   deleteAdmission(val.id).then(() => {
-    tableData = reactive([]);
+    tableData.value = [];
     getAll();
   });
 };
@@ -133,17 +151,33 @@ const handleDelete = (val) => {
 const deleteAdmission = async (id) => {
   await deleteAdmissionById(id).then((res) => console.log("res", res));
 };
-const admission = reactive({
-  id: "",
-  roomclassification: "",
-  classification: "",
-  price: "",
-  position: "",
-  text: "",
-});
+const onSubmit = async () => {
+  if (admission.classification === "") return;
+  tableData.value = [];
+  loading.value = true;
+  const data = await getAdmissionByCareLevel(admission.classification).then(
+    (res) => res.data
+  );
+  data.admissionList.forEach((item) => {
+    var value = {
+      id: item.admissionId,
+      roomclassification: item.roomStandard,
+      classification: item.careLevel,
+      price: item.carePrice,
+      position: item.admissionRoom.roomName,
+      text: item.remark,
+    };
 
-const onSubmit = () => {
-  console.log("submit!");
+    tableData.value.push(value);
+  });
+  loading.value = false;
+
+  console.log("tabledata", tableData);
+};
+
+const handleEdit = (row) => {
+  const name = row.name;
+  router.push(`/hospitalized/update?careLevel=${name}`);
 };
 </script>
 

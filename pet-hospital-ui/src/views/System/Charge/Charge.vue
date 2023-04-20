@@ -40,20 +40,16 @@
                 @selection-change="handleSelectionChange"
               >
                 <el-table-column type="selection" width="55" />
-                <el-table-column prop="id" label="收费编号" width="150" />
-                <el-table-column prop="name" label="收费项目名称" width="150" />
-                <el-table-column prop="price" label="收费价格" width="150" />
-                <el-table-column prop="date" label="收费时间" width="150" />
-                <el-table-column prop="method" label="收费方式" width="150" />
+                <el-table-column prop="id" label="收费编号" width="220" />
+                <el-table-column prop="name" label="收费项目名称" width="220" />
+                <el-table-column prop="price" label="收费价格" width="220" />
                 <el-table-column label="操作" width="200">
                   <template #default="scope">
-                    <router-link to="/charge/update">
-                      <el-button
-                        size="small"
-                        @click="handleEdit(scope.$index, scope.row)"
-                        >编辑</el-button
-                      >
-                    </router-link>
+                    <!-- <router-link to="/charge/update"> -->
+                    <el-button size="small" @click="handleEdit(scope.row)"
+                      >编辑</el-button
+                    >
+                    <!-- </router-link> -->
                     <el-button
                       size="small"
                       type="danger"
@@ -72,11 +68,18 @@
 </template>
 
 <script setup>
-import { onMounted, reactive } from "vue";
-import { getCharge, deleteChargeById } from "@/api/system";
+import { onMounted, reactive, ref } from "vue";
+import { getCharge, deleteChargeById, getChargeByName } from "@/api/system";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
-let tableData = reactive([]);
-
+const loading = ref();
+const tableData = ref([]);
+const charge = reactive({
+  id: "",
+  name: "",
+  price: "",
+});
 onMounted(() => {
   getAll();
 });
@@ -85,6 +88,8 @@ const handleSelectionChange = (val) => {
 };
 // 获取全部信息
 const getAll = async () => {
+  tableData.value = [];
+  loading.value = true;
   let data = await getCharge().then((res) => res.data);
   data.chargeList.forEach((item) => {
     var value = {
@@ -92,20 +97,17 @@ const getAll = async () => {
       name: item.itemName,
       price: item.chargePrice,
     };
-    tableData.push(value);
+    tableData.value.push(value);
   });
+  loading.value = false;
+
   console.log("tabledata", tableData);
 };
 
-const charge = reactive({
-  id: "",
-  name: "",
-  price: "",
-});
 const handleDelete = (val) => {
   console.log("val", val);
   deleteCharge(val.id).then(() => {
-    tableData = reactive([]);
+    tableData.value = [];
     getAll();
   });
 };
@@ -113,8 +115,28 @@ const handleDelete = (val) => {
 const deleteCharge = async (id) => {
   await deleteChargeById(id).then((res) => console.log("res", res));
 };
-const onSubmit = () => {
-  console.log("submit!");
+const onSubmit = async () => {
+  if (charge.name === "") return;
+  tableData.value = [];
+  loading.value = true;
+  const data = await getChargeByName(charge.name).then((res) => res.data);
+  data.chargeList.forEach((item) => {
+    var value = {
+      id: item.chargeId,
+      name: item.itemName,
+      price: item.chargePrice,
+    };
+
+    tableData.value.push(value);
+  });
+  loading.value = false;
+
+  console.log("tabledata", tableData);
+};
+
+const handleEdit = (row) => {
+  const name = row.name;
+  router.push(`/charge/update?itemName=${name}`);
 };
 </script>
 
