@@ -90,12 +90,12 @@ const routes = [
 			},
 			{
 				path: "add",
-				component: () => import("@/views/System/Archives/Add"),
+				component: () => import("@/views/System/Exams/ExamAdd"),
 				beforeEnter: myBeforeEnter,
 			},
 			{
 				path: "update",
-				component: () => import("@/views/System/Archives/Update"),
+				component: () => import("@/views/System/Exams/ExamUpdate"),
 				beforeEnter: myBeforeEnter,
 			},
 		],

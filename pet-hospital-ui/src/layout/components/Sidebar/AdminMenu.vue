@@ -67,7 +67,7 @@
 					<el-icon><money /></el-icon> <span>收费管理</span></template
 				></el-menu-item
 			>
-			<el-menu-item index="/archives/list"
+			<el-menu-item index="/archive/list"
 				><template #title>
 					<el-icon><tickets /></el-icon> <span>档案管理</span></template
 				></el-menu-item
