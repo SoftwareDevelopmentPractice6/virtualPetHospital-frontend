@@ -13,9 +13,9 @@
         :model="formLabelAlign"
         style="max-width: 460px"
       >
-        <el-form-item label="收费编号">
+        <!-- <el-form-item label="收费编号">
           <el-input v-model="charge.id" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="收费项目名称">
           <el-input v-model="charge.name" />
         </el-form-item>

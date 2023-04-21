@@ -13,34 +13,23 @@
         :model="formLabelAlign"
         style="max-width: 460px"
       >
-        <el-form-item label="病房编号">
+        <!-- <el-form-item label="病房编号">
           <el-input v-model="hospitalized.admissionId" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="病房标准">
-          <el-input v-model="hospitalized.roomStandard" />
+          <el-input v-model="admission.roomStandard" />
         </el-form-item>
         <el-form-item label="护理级别">
-          <el-input v-model="hospitalized.careLevel" />
-          <!-- <el-select
-            v-model="hospitalized.careLevel"
-            placeholder="请选择药品类别"
-          >
-            <el-option label="传染病" value="传染病" />
-            <el-option label="寄生虫病" value="寄生虫病" />
-            <el-option label="内科" value="内科" />
-            <el-option label="外产科" value="外产科" />
-            <el-option label="常用手术" value="常用手术" />
-            <el-option label="免疫" value="免疫" />
-          </el-select> -->
+          <el-input v-model="admission.careLevel" />
         </el-form-item>
         <el-form-item label="收费价格">
-          <el-input v-model="hospitalized.carePrice" />
+          <el-input v-model="admission.carePrice" />
         </el-form-item>
-        <el-form-item label="病房名称">
-          <el-input v-model="hospitalized.roomName" />
+        <el-form-item label="病房名字">
+          <el-input v-model="admission.admissionRoom" />
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="hospitalized.remark" />
+          <el-input v-model="admission.remark" />
         </el-form-item>
         <el-form-item>
           <el-button class="SubmitButton" type="primary" @click="onSubmit"
@@ -58,25 +47,24 @@
 <script setup>
 import { computed, unref, onMounted, ref } from "vue";
 import { ElMessage } from "element-plus";
-import { updateAdmission, getAdmissionByCareLevel } from "@/api/system";
+import { updateAdmission, getAdmissionByRoomStandard } from "@/api/system";
 import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
-
 const router = useRouter();
-const careLevel = computed(() => {
-  return route.query.careLevel;
+const roomStandard = computed(() => {
+  return route.query.roomStandard;
 });
 
 const loading = ref(false);
-
 const admission = ref({});
-
 const getAdmissionInfo = async () => {
-  if (!unref(careLevel)) return;
+  if (!unref(roomStandard)) return;
   loading.value = true;
   const {
     admissionList: [info],
-  } = await getAdmissionByCareLevel(unref(careLevel)).then((res) => res.data);
+  } = await getAdmissionByRoomStandard(unref(roomStandard)).then(
+    (res) => res.data
+  );
   admission.value = info;
   loading.value = false;
 };

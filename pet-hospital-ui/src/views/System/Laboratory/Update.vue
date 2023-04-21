@@ -54,20 +54,28 @@
 </template>
 
 <script setup>
-import { computed, unref, onMounted, ref } from "vue";
+import { computed, unref, onMounted, ref} from "vue";
 import { ElMessage } from "element-plus";
 import { updateExamine, getExamineByName } from "../../../api/system";
 import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 
 const router = useRouter();
+const examine = ref([]);
+/* const examine = reactive({
+  id: "",
+  name: "",
+  price: "",
+  position: "",
+});
+ */
 const examineName = computed(() => {
   return route.query.examineName;
 });
 
 const loading = ref(false);
 
-const examine = ref({});
+/* const tableData = ref([]); */
 
 const getExamineInfo = async () => {
   if (!unref(examineName)) return;
@@ -78,7 +86,21 @@ const getExamineInfo = async () => {
   examine.value = info;
   loading.value = false;
 };
-
+/* const getExamineInfo = async () => {
+  let data = await getExamineByName(unref(examineName)).then((res) => res.data);
+  if (!unref(examineName)) return;
+  loading.value = true;
+  data.examineList.forEach((item) => {
+    var value = {
+      id: item.examineId,
+      name: item.examineName,
+      price: item.examinePrice,
+      position: item.examineRoom.roomName,
+    };
+    tableData.value.push(value);
+  });
+  loading.value = false;
+}; */
 onMounted(() => {
   getExamineInfo();
 });

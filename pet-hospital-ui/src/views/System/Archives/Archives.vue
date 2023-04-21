@@ -2,7 +2,7 @@
   <div class="app-container home">
     <el-container>
       <el-header>
-        <el-form :inline="true" :model="archives" class="search">
+        <el-form :inline="true" :model="archive" class="search">
           <el-form-item label="宠物类别">
             <el-select
               v-model="archive.petclassification"
@@ -53,7 +53,7 @@
                 @selection-change="handleSelectionChange"
               >
                 <el-table-column type="selection" width="55" />
-                <el-table-column prop="id" label="档案编号" width="120" />
+                <!-- <el-table-column prop="id" label="档案编号" width="120" /> -->
                 <el-table-column prop="date" label="保存时间" width="120" />
                 <el-table-column prop="name" label="宠物名称" width="120" />
                 <el-table-column
@@ -72,7 +72,7 @@
                   label="主人联系方式"
                   width="120"
                 />
-                <el-table-column label="操作" width="200">
+                <el-table-column label="操作" width="250">
                   <template #default="scope">
                     <!--   <router-link to="/archive/update"> -->
                     <el-button size="small" @click="handleEdit(scope.row)"
@@ -183,7 +183,7 @@ const onSubmit = async () => {
 };
 const handleEdit = (row) => {
   const name = row.name;
-  router.push(`/archive/update?PetName=${name}`);
+  router.push(`/archive/update?petName=${name}`);
 };
 </script>
 

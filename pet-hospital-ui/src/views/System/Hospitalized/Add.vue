@@ -13,15 +13,18 @@
         :model="formLabelAlign"
         style="max-width: 460px"
       >
-        <el-form-item label="病房编号">
-          <el-input v-model="hospitalized.id" />
-        </el-form-item>
+        <!--  <el-form-item label="病房编号">
+          <el-input v-model="admission.id" />
+        </el-form-item> -->
         <el-form-item label="病房标准">
-          <el-input v-model="hospitalized.name" />
+          <el-input v-model="admission.roomclassification" />
         </el-form-item>
         <el-form-item label="护理级别">
+          <el-input v-model="admission.classification" />
+        </el-form-item>
+        <!-- <el-form-item label="护理级别">
           <el-select
-            v-model="hospitalized.classification"
+            v-model="admission.classification"
             placeholder="请选择药品类别"
           >
             <el-option label="传染病" value="传染病" />
@@ -31,15 +34,15 @@
             <el-option label="常用手术" value="常用手术" />
             <el-option label="免疫" value="免疫" />
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="收费价格">
-          <el-input v-model="hospitalized.price" />
+          <el-input v-model="admission.price" />
         </el-form-item>
         <el-form-item label="病房位置">
-          <el-input v-model="hospitalized.position" />
+          <el-input v-model="admission.position" />
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="hospitalized.text" />
+          <el-input v-model="admission.text" />
         </el-form-item>
         <el-form-item>
           <el-button class="SubmitButton" type="primary" @click="onSubmit"
@@ -66,7 +69,7 @@ const onSubmit = () => {
     roomStandard: admission.roomclassification,
     careLevel: admission.classification,
     carePrice: admission.price,
-    admissionRoom: admission.position,
+    roomName: admission.position,
     remark: admission.text,
   };
   console.log("data", data);

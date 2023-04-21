@@ -4,16 +4,10 @@
       <el-header>
         <el-form :inline="true" :model="hospitalized" class="search">
           <el-form-item label="护理级别">
-            <el-select
+            <el-input
               v-model="admission.classification"
               placeholder="护理级别"
-            >
-              <el-option label="特别护理" value="特别护理" />
-              <el-option label="一级护理" value="一级护理" />
-              <el-option label="二级护理" value="二级护理" />
-              <el-option label="普通护理" value="普通护理" />
-              <el-option label="夜间监护" value="夜间监护" />
-            </el-select>
+            />
           </el-form-item>
           <el-form-item label="病房标准">
             <el-input
@@ -34,13 +28,11 @@
                 <router-link to="/hospitalized/add">
                   <el-button class="AddButton" type="primary">新增</el-button>
                 </router-link>
-
                 <router-link to="/hospitalized/add">
                   <el-button class="ChangeButton" type="primary"
                     >修改</el-button
                   >
                 </router-link>
-
                 <el-button class="DeleteButton" @click="open" type="primary"
                   >删除</el-button
                 >
@@ -54,21 +46,21 @@
                 @selection-change="handleSelectionChange"
               >
                 <el-table-column type="selection" width="55" />
-                <el-table-column prop="id" label="病房编号" width="120" />
+                <!-- <el-table-column prop="id" label="病房编号" width="120" /> -->
                 <el-table-column
                   prop="roomclassification"
                   label="病房标准"
-                  width="120"
+                  width="150"
                 />
                 <el-table-column
                   prop="classification"
                   label="护理级别"
-                  width="120"
+                  width="150"
                 />
-                <el-table-column prop="price" label="收费价格" width="120" />
-                <el-table-column prop="position" label="病房位置" width="120" />
-                <el-table-column prop="text" label="备注" width="120" />
-                <el-table-column label="操作" width="200">
+                <el-table-column prop="price" label="收费价格" width="150" />
+                <el-table-column prop="position" label="病房位置" width="150" />
+                <el-table-column prop="text" label="备注" width="150" />
+                <el-table-column label="操作" width="250">
                   <template #default="scope">
                     <!--  <router-link to="/hospitalized/update"> -->
                     <el-button size="small" @click="handleEdit(scope.row)"
@@ -97,14 +89,13 @@ import { onMounted, reactive, ref } from "vue";
 import {
   getAdmission,
   deleteAdmissionById,
-  getAdmissionByCareLevel,
+  getAdmissionByRoomStandard,
 } from "@/api/system";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-
 const loading = ref();
-
+const tableData = ref([]);
 const admission = reactive({
   id: "",
   roomclassification: "",
@@ -113,8 +104,6 @@ const admission = reactive({
   position: "",
   text: "",
 });
-const tableData = ref([]);
-
 onMounted(() => {
   getAll();
 });
@@ -140,6 +129,7 @@ const getAll = async () => {
   loading.value = false;
   console.log("tabledata", tableData);
 };
+//处理删除事件
 const handleDelete = (val) => {
   console.log("val", val);
   deleteAdmission(val.id).then(() => {
@@ -151,13 +141,14 @@ const handleDelete = (val) => {
 const deleteAdmission = async (id) => {
   await deleteAdmissionById(id).then((res) => console.log("res", res));
 };
+//提交事件
 const onSubmit = async () => {
-  if (admission.classification === "") return;
+  if (admission.roomclassification == "") return;
   tableData.value = [];
   loading.value = true;
-  const data = await getAdmissionByCareLevel(admission.classification).then(
-    (res) => res.data
-  );
+  const data = await getAdmissionByRoomStandard(
+    admission.roomclassification
+  ).then((res) => res.data);
   data.admissionList.forEach((item) => {
     var value = {
       id: item.admissionId,
@@ -167,17 +158,15 @@ const onSubmit = async () => {
       position: item.admissionRoom.roomName,
       text: item.remark,
     };
-
     tableData.value.push(value);
   });
   loading.value = false;
-
   console.log("tabledata", tableData);
 };
 
 const handleEdit = (row) => {
-  const name = row.name;
-  router.push(`/hospitalized/update?careLevel=${name}`);
+  const roomStandard = row.roomclassification;
+  router.push(`/hospitalized/update?roomStandard=${roomStandard}`);
 };
 </script>
 

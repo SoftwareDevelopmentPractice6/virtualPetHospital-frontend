@@ -13,9 +13,9 @@
         :model="formLabelAlign"
         style="max-width: 460px"
       >
-        <el-form-item label="药品ID">
+        <!-- <el-form-item label="药品ID">
           <el-input v-model="medicine.id" />
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="药品名称">
           <el-input v-model="medicine.name" />
         </el-form-item>
@@ -79,6 +79,11 @@ const onSubmit = () => {
     specification: medicine.specifications,
     isVaccine: medicine.vaccine,
   };
+  if (medicine.vaccine == "是") {
+    data.isVaccine = "1";
+  } else {
+    data.isVaccine = "0";
+  }
   console.log("data", data);
   insert(data).then(() => {
     // console.log(res);
@@ -100,7 +105,6 @@ const medicine = reactive({
   price: "",
   manufacturer: "",
   specifications: "",
-  date: "",
   vaccine: "",
 });
 </script>
