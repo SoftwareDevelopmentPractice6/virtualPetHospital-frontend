@@ -104,7 +104,8 @@ const handleClick = (disease) => {
     diseaseId = disease.diseaseNameId,
     diseaseCategory = disease.diseaseNameCategory;
   router.push({
-    path: "caseStudy/detail/" + diseaseName,
+    path: "caseStudy/detail",
+    query: { diseaseName: diseaseName },
   });
   myCaseStore.setName(diseaseName);
   myCaseStore.setId(diseaseId);
