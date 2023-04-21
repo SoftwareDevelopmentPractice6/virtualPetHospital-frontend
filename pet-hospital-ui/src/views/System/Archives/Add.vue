@@ -2,7 +2,7 @@
   <div class="common-layout">
     <el-container>
       <el-header class="header" height="20px">
-        <router-link to="/archives/list">
+        <router-link to="/archive/list">
           <el-button type="plain" @click="back">Back</el-button>
         </router-link>
       </el-header>
@@ -15,19 +15,19 @@
           style="max-width: 460px"
         >
           <el-form-item label="档案编号">
-            <el-input v-model="archives.id" />
+            <el-input v-model="archive.id" />
           </el-form-item>
           <el-form-item label="宠物名称">
-            <el-input v-model="archives.name" />
+            <el-input v-model="archive.name" />
           </el-form-item>
           <el-form-item label="宠物性别">
-            <el-input v-model="archives.gender" />
+            <el-input v-model="archive.gender" />
           </el-form-item>
           <el-form-item label="保存时间">
             <el-col :span="11">
               <div class="block">
                 <el-date-picker
-                  v-model="archives.date"
+                  v-model="archive.date"
                   type="date"
                   placeholder="选择一个日期"
                   :size="size"
@@ -37,7 +37,7 @@
           </el-form-item>
           <el-form-item label="宠物类别">
             <el-select
-              v-model="archives.petclassification"
+              v-model="archive.petclassification"
               placeholder="请选择宠物类别"
             >
               <el-option label="哺乳类动物" value="哺乳类动物" />
@@ -48,11 +48,11 @@
             </el-select>
           </el-form-item>
           <el-form-item label="疾病名称">
-            <el-input v-model="archives.classification" />
+            <el-input v-model="archive.classification" />
           </el-form-item>
 
           <el-form-item label="主人联系方式">
-            <el-input v-model="archives.phone" />
+            <el-input v-model="archive.phone" />
           </el-form-item>
           <el-form-item>
             <el-button class="SubmitButton" type="primary" @click="onSubmit"
