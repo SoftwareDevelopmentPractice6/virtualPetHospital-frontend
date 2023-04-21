@@ -1,13 +1,13 @@
 <!-- 角色扮演：详情页 -->
 
 <template>
-  <div>play detail</div>
+  <div class="playdetail-wrapper">play detail</div>
 </template>
 
 <script setup>
 import { useRoute } from "vue-router";
 
-const role = useRoute().params.role;
+const role = useRoute().query.role;
 
 if (role === "receptionist") {
   console.log("前台");
