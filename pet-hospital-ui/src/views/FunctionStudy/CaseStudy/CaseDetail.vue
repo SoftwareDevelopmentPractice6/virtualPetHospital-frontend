@@ -52,7 +52,10 @@
                   {{ item.medicalCaseDiseaseName.diseaseNameCategory }} &#41;
                 </div>
               </div>
-              <div class="image-wrapper subwrapper">
+              <div
+                class="image-wrapper subwrapper"
+                v-if="cards[index].diseaseName.length !== 0"
+              >
                 <div class="title">图片信息：</div>
                 <div class="image-container">
                   <Carousel
@@ -63,24 +66,30 @@
                     autoplay="false"
                     centerMode="true"
                   >
-                    <Slide v-for="(item1, index1) in cards" :key="index1">
+                    <Slide
+                      v-for="(item1, index1) in cards[index].diseaseName"
+                      :key="index1"
+                    >
                       <div class="slideBox">
-                        <img :src="item1.cardSrc" alt="病例图片" />
+                        <img :src="item1" alt="病例图片" />
                         <div>图片 {{ index1 + 1 }}</div>
                       </div>
                     </Slide>
                   </Carousel>
                 </div>
               </div>
-              <div class="video-wrapper subwrapper">
+              <div
+                class="video-wrapper subwrapper"
+                v-if="videos[index].diseaseName.length !== 0"
+              >
                 <div class="title">视频信息：</div>
-                <div class="allvideo" @click="navigateToAll()">
+                <div class="allvideo" @click="navigateToAll(index, 'name')">
                   全部视频&nbsp;&nbsp;&gt;&gt;
                 </div>
                 <div class="video-container">
                   <video width="680" height="420" controls>
                     <source
-                      src="../../../assets/images/video-demo.mp4"
+                      :src="videos[index].diseaseName[0]"
                       type="video/mp4"
                     />
                     您的浏览器不支持 video 标签。
@@ -102,7 +111,10 @@
                   {{ item.medicalCaseAdmission.admissionContent }}
                 </div>
               </div>
-              <div class="image-wrapper subwrapper">
+              <div
+                class="image-wrapper subwrapper"
+                v-if="cards[index].admission.length !== 0"
+              >
                 <div class="title">图片信息：</div>
                 <div class="image-container">
                   <carousel
@@ -113,25 +125,34 @@
                     :autoplay="false"
                     :centerMode="true"
                   >
-                    <slide v-for="(item1, index1) in cards" :key="index1">
+                    <slide
+                      v-for="(item1, index1) in cards[index].admission"
+                      :key="index1"
+                    >
                       <div class="slideBox">
-                        <img :src="item1.cardSrc" alt="病例图片" />
+                        <img :src="item1" alt="病例图片" />
                         <div>图片 {{ index1 + 1 }}</div>
                       </div>
                     </slide>
                   </carousel>
                 </div>
               </div>
-              <div class="video-wrapper subwrapper">
+              <div
+                class="video-wrapper subwrapper"
+                v-if="videos[index].admission.length !== 0"
+              >
                 <div class="title">视频信息：</div>
-                <div class="allvideo" @click="navigateToAll()">
+                <div
+                  class="allvideo"
+                  @click="navigateToAll(index, 'admission')"
+                >
                   全部视频&nbsp;&nbsp;&gt;&gt;
                 </div>
 
                 <div class="video-container">
                   <video width="680" height="420" controls>
                     <source
-                      src="../../../assets/images/video-demo.mp4"
+                      :src="videos[index].admission[0]"
                       type="video/mp4"
                     />
                     您的浏览器不支持 video 标签。
@@ -153,7 +174,10 @@
                   {{ item.medicalCaseCaseCheck.caseCheckContent }}
                 </div>
               </div>
-              <div class="image-wrapper subwrapper">
+              <div
+                class="image-wrapper subwrapper"
+                v-if="cards[index].caseCheck.length !== 0"
+              >
                 <div class="title">图片信息：</div>
                 <div class="image-container">
                   <carousel
@@ -164,25 +188,34 @@
                     :autoplay="false"
                     :centerMode="true"
                   >
-                    <slide v-for="(item1, index1) in cards" :key="index1">
+                    <slide
+                      v-for="(item1, index1) in cards[index].caseCheck"
+                      :key="index1"
+                    >
                       <div class="slideBox">
-                        <img :src="item1.cardSrc" alt="病例图片" />
+                        <img :src="item1" alt="病例图片" />
                         <div>图片 {{ index1 + 1 }}</div>
                       </div>
                     </slide>
                   </carousel>
                 </div>
               </div>
-              <div class="video-wrapper subwrapper">
+              <div
+                class="video-wrapper subwrapper"
+                v-if="videos[index].caseCheck.length !== 0"
+              >
                 <div class="title">视频信息：</div>
-                <div class="allvideo" @click="navigateToAll()">
+                <div
+                  class="allvideo"
+                  @click="navigateToAll(index, 'caseCheck')"
+                >
                   全部视频&nbsp;&nbsp;&gt;&gt;
                 </div>
 
                 <div class="video-container">
                   <video width="680" height="420" controls>
                     <source
-                      src="../../../assets/images/video-demo.mp4"
+                      :src="videos[index].caseCheck[0]"
                       type="video/mp4"
                     />
                     您的浏览器不支持 video 标签。
@@ -204,7 +237,10 @@
                   {{ item.medicalCaseDiagnosticResult.diagnosticResultContent }}
                 </div>
               </div>
-              <div class="image-wrapper subwrapper">
+              <div
+                class="image-wrapper subwrapper"
+                v-if="cards[index].diagnosticRes.length !== 0"
+              >
                 <div class="title">图片信息：</div>
                 <div class="image-container">
                   <carousel
@@ -215,25 +251,34 @@
                     :autoplay="false"
                     :centerMode="true"
                   >
-                    <slide v-for="(item1, index1) in cards" :key="index1">
+                    <slide
+                      v-for="(item1, index1) in cards[index].diagnosticRes"
+                      :key="index1"
+                    >
                       <div class="slideBox">
-                        <img :src="item1.cardSrc" alt="病例图片" />
+                        <img :src="item1" alt="病例图片" />
                         <div>图片 {{ index1 + 1 }}</div>
                       </div>
                     </slide>
                   </carousel>
                 </div>
               </div>
-              <div class="video-wrapper subwrapper">
+              <div
+                class="video-wrapper subwrapper"
+                v-if="videos[index].diagnosticRes.length !== 0"
+              >
                 <div class="title">视频信息：</div>
-                <div class="allvideo" @click="navigateToAll()">
+                <div
+                  class="allvideo"
+                  @click="navigateToAll(index, 'diagnosticRes')"
+                >
                   全部视频&nbsp;&nbsp;&gt;&gt;
                 </div>
 
                 <div class="video-container">
                   <video width="680" height="420" controls>
                     <source
-                      src="../../../assets/images/video-demo.mp4"
+                      :src="videos[index].diagnosticRes[0]"
                       type="video/mp4"
                     />
                     您的浏览器不支持 video 标签。
@@ -255,7 +300,10 @@
                   {{ item.medicalCaseTreatmentProgram.treatmentProgramContent }}
                 </div>
               </div>
-              <div class="image-wrapper subwrapper">
+              <div
+                class="image-wrapper subwrapper"
+                v-if="cards[index].treatmentProgram.length !== 0"
+              >
                 <div class="title">图片信息：</div>
                 <div class="image-container">
                   <carousel
@@ -266,25 +314,34 @@
                     :autoplay="false"
                     :centerMode="true"
                   >
-                    <slide v-for="(item1, index1) in cards" :key="index1">
+                    <slide
+                      v-for="(item1, index1) in cards[index].treatmentProgram"
+                      :key="index1"
+                    >
                       <div class="slideBox">
-                        <img :src="item1.cardSrc" alt="病例图片" />
+                        <img :src="item1" alt="病例图片" />
                         <div>图片 {{ index1 + 1 }}</div>
                       </div>
                     </slide>
                   </carousel>
                 </div>
               </div>
-              <div class="video-wrapper subwrapper">
+              <div
+                class="video-wrapper subwrapper"
+                v-if="videos[index].treatmentProgram.length !== 0"
+              >
                 <div class="title">视频信息：</div>
-                <div class="allvideo" @click="navigateToAll()">
+                <div
+                  class="allvideo"
+                  @click="navigateToAll(index, 'treatmentProgram')"
+                >
                   全部视频&nbsp;&nbsp;&gt;&gt;
                 </div>
 
                 <div class="video-container">
                   <video width="680" height="420" controls>
                     <source
-                      src="../../../assets/images/video-demo.mp4"
+                      :src="videos[index].treatmentProgram[0]"
                       type="video/mp4"
                     />
                     您的浏览器不支持 video 标签。
@@ -307,56 +364,27 @@ import { getCase } from "@/api/case";
 import { caseStore } from "@/store/case";
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
+import { getFileLists } from "@/api/file";
 
 // 图片列表
 let cards = reactive([
   {
-    cardSrc:
-      "https://images.pexels.com/photos/3265460/pexels-photo-3265460.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    admission: [],
+    caseCheck: [],
+    diagnosticRes: [],
+    diseaseName: [],
+    treatmentProgram: [],
   },
+]);
+
+// 视频列表
+let videos = reactive([
   {
-    cardSrc:
-      "https://images.pexels.com/photos/3265460/pexels-photo-3265460.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  },
-  {
-    cardSrc:
-      "https://images.pexels.com/photos/1755243/pexels-photo-1755243.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  },
-  {
-    cardSrc:
-      "https://images.pexels.com/photos/5103756/pexels-photo-5103756.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  },
-  {
-    cardSrc:
-      "https://images.pexels.com/photos/3876407/pexels-photo-3876407.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  },
-  {
-    cardSrc:
-      "https://images.pexels.com/photos/1785493/pexels-photo-1785493.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  },
-  {
-    cardSrc:
-      "https://images.pexels.com/photos/1785493/pexels-photo-1785493.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  },
-  {
-    cardSrc:
-      "https://images.pexels.com/photos/1785493/pexels-photo-1785493.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  },
-  {
-    cardSrc:
-      "https://images.pexels.com/photos/1785493/pexels-photo-1785493.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  },
-  {
-    cardSrc:
-      "https://images.pexels.com/photos/3265460/pexels-photo-3265460.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  },
-  {
-    cardSrc:
-      "https://images.pexels.com/photos/1755243/pexels-photo-1755243.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-  },
-  {
-    cardSrc:
-      "https://images.pexels.com/photos/5103756/pexels-photo-5103756.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    admission: [],
+    caseCheck: [],
+    diagnosticRes: [],
+    diseaseName: [],
+    treatmentProgram: [],
   },
 ]);
 
@@ -366,8 +394,8 @@ let caseData = reactive({
   options: [],
 });
 
-// 选中病例
-let selectedCase = ref("病例 1");
+let selectedCase = ref("病例 1"); // 选中病例
+let curIndex = ref(0); // 当前病例 index
 
 // 获取疾病 id, name, category
 const store = caseStore();
@@ -398,12 +426,15 @@ async function getCaseList() {
       let list = res.data.medicalCaseList.medicalCaseList;
       console.log("获取病例列表成功", list);
 
-      // 初始化 select 数据
-      for (let i = 0; i < list.length; ++i) {
+      for (let i in list) {
+        // 初始化 select 数据
         caseData.options.push({
-          value: "病例 " + (i + 1),
-          label: "病例 " + (i + 1),
+          value: "病例 " + (Number(i) + 1),
+          label: "病例 " + (Number(i) + 1),
         });
+
+        // 处理图片视频数据
+        handleData(list[i]);
       }
 
       // 初始选中病例 1
@@ -422,23 +453,148 @@ async function getCaseList() {
 }
 getCaseList();
 
+// 处理图片视频数据
+const handleData = (item) => {
+  const adItem = item.medicalCaseAdmission,
+    ccItem = item.medicalCaseCaseCheck,
+    drItem = item.medicalCaseDiagnosticResult,
+    dnItem = item.medicalCaseDiseaseName,
+    tpItem = item.medicalCaseTreatmentProgram;
+
+  const admissionImgPath = adItem.admissionPhoto,
+    caseCheckImgPath = ccItem.caseCheckPhoto,
+    diagnosticResImgPath = drItem.diagnosticResultPhoto,
+    diseaseNameImgPath = dnItem.diseaseNamePhoto,
+    treatmentProgImgPath = tpItem.treatmentProgramPhoto;
+
+  // 接诊图片
+  getFileLists(admissionImgPath).then((res) => {
+    for (let item of res.data.filePathList) {
+      cards[curIndex.value].admission.push(
+        process.env.VUE_APP_INTERFACE_URL +
+          "\\file\\files?filePath=" +
+          encodeURI(item)
+      );
+    }
+  });
+  // 病例检查图片
+  getFileLists(caseCheckImgPath).then((res) => {
+    for (let item of res.data.filePathList) {
+      cards[curIndex.value].caseCheck.push(
+        process.env.VUE_APP_INTERFACE_URL +
+          "\\file\\files?filePath=" +
+          encodeURI(item)
+      );
+    }
+  });
+  // 诊断结果图片
+  getFileLists(diagnosticResImgPath).then((res) => {
+    for (let item of res.data.filePathList) {
+      cards[curIndex.value].diagnosticRes.push(
+        process.env.VUE_APP_INTERFACE_URL +
+          "\\file\\files?filePath=" +
+          encodeURI(item)
+      );
+    }
+  });
+  // 病例名图片
+  getFileLists(diseaseNameImgPath).then((res) => {
+    for (let item of res.data.filePathList) {
+      cards[curIndex.value].diseaseName.push(
+        process.env.VUE_APP_INTERFACE_URL +
+          "\\file\\files?filePath=" +
+          encodeURI(item)
+      );
+    }
+  });
+  // 治疗方案图片
+  getFileLists(treatmentProgImgPath).then((res) => {
+    for (let item of res.data.filePathList) {
+      cards[curIndex.value].treatmentProgram.push(
+        process.env.VUE_APP_INTERFACE_URL +
+          "\\file\\files?filePath=" +
+          encodeURI(item)
+      );
+    }
+  });
+
+  const admissionVideoPath = adItem.admissionVideo,
+    caseCheckVideoPath = ccItem.caseCheckVideo,
+    diagnosticResVideoPath = drItem.diagnosticResultVideo,
+    diseaseNameVideoPath = dnItem.diseaseNameVideo,
+    treatmentProgVideoPath = tpItem.treatmentProgramVideo;
+
+  // 接诊视频
+  getFileLists(admissionVideoPath).then((res) => {
+    for (let item of res.data.filePathList) {
+      videos[curIndex.value].admission.push(
+        process.env.VUE_APP_INTERFACE_URL +
+          "\\file\\files?filePath=" +
+          encodeURI(item)
+      );
+    }
+  });
+  // 病例检查视频
+  getFileLists(caseCheckVideoPath).then((res) => {
+    for (let item of res.data.filePathList) {
+      videos[curIndex.value].caseCheck.push(
+        process.env.VUE_APP_INTERFACE_URL +
+          "\\file\\files?filePath=" +
+          encodeURI(item)
+      );
+    }
+  });
+  // 诊断结果视频
+  getFileLists(diagnosticResVideoPath).then((res) => {
+    for (let item of res.data.filePathList) {
+      videos[curIndex.value].diagnosticRes.push(
+        process.env.VUE_APP_INTERFACE_URL +
+          "\\file\\files?filePath=" +
+          encodeURI(item)
+      );
+    }
+  });
+  // 病例名视频
+  getFileLists(diseaseNameVideoPath).then((res) => {
+    for (let item of res.data.filePathList) {
+      videos[curIndex.value].diseaseName.push(
+        process.env.VUE_APP_INTERFACE_URL +
+          "\\file\\files?filePath=" +
+          encodeURI(item)
+      );
+    }
+  });
+  // 治疗方案视频
+  getFileLists(treatmentProgVideoPath).then((res) => {
+    for (let item of res.data.filePathList) {
+      videos[curIndex.value].treatmentProgram.push(
+        process.env.VUE_APP_INTERFACE_URL +
+          "\\file\\files?filePath=" +
+          encodeURI(item)
+      );
+    }
+  });
+};
+
 // 处理 select 选择
 const handleSelect = (selectedCase) => {
-  let index = selectedCase[selectedCase.length - 1] - 1;
+  curIndex = selectedCase[selectedCase.length - 1] - 1;
   let list = caseData.caseList;
   for (let i = 0; i < list.length; ++i) {
     caseData.caseList[i].flag = false;
   }
-  caseData.caseList[index].flag = true;
+  caseData.caseList[curIndex].flag = true;
   selectedCase.value = selectedCase;
 };
 
 const router = useRouter();
 
 // 跳转到所有视频
-const navigateToAll = () => {
+const navigateToAll = (index, itemName) => {
+  store.setVideos(videos[index][itemName]);
   router.push({
     path: diseaseName.value + "/allVideos",
+    query: { itemName: itemName },
   });
 };
 </script>
@@ -453,7 +609,7 @@ const navigateToAll = () => {
     .top-container {
       position: fixed;
       z-index: 10;
-      width: 88.5%;
+      width: 100%;
       height: 58px;
       padding: 3px 18px;
       background-color: rgb(87, 115, 148);
@@ -473,7 +629,7 @@ const navigateToAll = () => {
         justify-content: right;
         .m-2 {
           position: relative;
-          right: 20px;
+          right: 13%;
         }
       }
     }

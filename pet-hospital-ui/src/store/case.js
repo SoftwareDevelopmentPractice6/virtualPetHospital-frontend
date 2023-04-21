@@ -7,6 +7,7 @@ export const caseStore = defineStore("case", {
     diseaseName: "",
     diseaseId: "",
     diseaseCategory: "",
+    videos: [],
   }),
   actions: {
     setName(diseaseName) {
@@ -17,6 +18,9 @@ export const caseStore = defineStore("case", {
     },
     setCategory(diseaseCategory) {
       this.diseaseCategory = diseaseCategory;
+    },
+    setVideos(videos) {
+      this.videos = videos;
     },
   },
 });

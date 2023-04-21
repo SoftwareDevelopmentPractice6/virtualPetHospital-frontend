@@ -238,7 +238,7 @@ const routes = [
         beforeEnter: myBeforeEnter,
       },
       {
-        path: "caseStudy/detail/:disease/allVideos",
+        path: "caseStudy/:disease/allVideos",
         component: () => import("@/views/FunctionStudy/CaseStudy/AllVideos"),
         beforeEnter: myBeforeEnter,
       },
