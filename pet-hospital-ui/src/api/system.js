@@ -203,10 +203,11 @@ export function getAdmissionByCareLevel() {
 	});
 }
 //根据病房标准获取住院信息
-export function getAdmissionByRoomStandard() {
+export function getAdmissionByRoomStandard(params) {
 	return request({
 		url: base + "admission",
 		method: "get",
+		params,
 	});
 }
 // 新增住院项目

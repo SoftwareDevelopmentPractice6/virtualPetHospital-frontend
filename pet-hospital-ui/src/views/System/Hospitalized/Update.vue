@@ -13,9 +13,6 @@
         :model="formLabelAlign"
         style="max-width: 460px"
       >
-        <!-- <el-form-item label="病房编号">
-          <el-input v-model="hospitalized.admissionId" />
-        </el-form-item> -->
         <el-form-item label="病房标准">
           <el-input v-model="admission.roomStandard" />
         </el-form-item>
@@ -26,15 +23,15 @@
           <el-input v-model="admission.carePrice" />
         </el-form-item>
         <el-form-item label="病房名字">
-          <el-input v-model="admission.admissionRoom" />
+          <el-input v-model="admission.admissionRoom.roomName" />
         </el-form-item>
         <el-form-item label="备注">
           <el-input v-model="admission.remark" />
         </el-form-item>
         <el-form-item>
-          <el-button class="SubmitButton" type="primary" @click="onSubmit"
-            >保存</el-button
-          >
+          <el-button class="SubmitButton" type="primary" @click="onSubmit">
+            保存
+          </el-button>
           <router-link to="/hospitalized/list">
             <el-button class="CancelButton">取消</el-button>
           </router-link>
@@ -51,20 +48,22 @@ import { updateAdmission, getAdmissionByRoomStandard } from "@/api/system";
 import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const router = useRouter();
-const roomStandard = computed(() => {
-  return route.query.roomStandard;
+const admissionId = computed(() => {
+  return route.query.admissionId;
 });
 
 const loading = ref(false);
-const admission = ref({});
+const admission = ref({ admissionRoom: {} });
 const getAdmissionInfo = async () => {
-  if (!unref(roomStandard)) return;
+  console.log(11111);
+  if (!unref(admissionId)) return;
   loading.value = true;
   const {
     admissionList: [info],
-  } = await getAdmissionByRoomStandard(unref(roomStandard)).then(
-    (res) => res.data
-  );
+  } = await getAdmissionByRoomStandard({
+    admissionId: unref(admissionId),
+  }).then((res) => res.data);
+  console.log("info", info);
   admission.value = info;
   loading.value = false;
 };
@@ -75,7 +74,12 @@ onMounted(() => {
 
 const onSubmit = async () => {
   loading.value = true;
-  await updateAdmission(unref(admission));
+
+  const { admissionRoom, ...args } = unref(admission);
+  await updateAdmission({
+    ...args,
+    roomName: admissionRoom.roomName,
+  });
   ElMessage.success("提交成功！");
   loading.value = false;
   router.back();

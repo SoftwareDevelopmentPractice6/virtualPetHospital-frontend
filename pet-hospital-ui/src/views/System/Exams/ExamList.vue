@@ -19,6 +19,16 @@
 								<router-link to="/exams/add">
 									<el-button class="AddButton" type="primary">新增</el-button>
 								</router-link>
+
+								<router-link to="/exams/add">
+									<el-button class="ChangeButton" type="primary"
+										>修改</el-button
+									>
+								</router-link>
+
+								<el-button class="DeleteButton" @click="open" type="primary"
+									>删除</el-button
+								>
 							</el-form-item>
 						</el-header>
 						<el-main class="inmain">
@@ -60,7 +70,7 @@
 
 								<el-table-column label="操作" width="200">
 									<template #default="scope">
-										<router-link to="/exams/update">
+										<router-link to="/archives/update">
 											<el-button
 												size="small"
 												@click="handleEdit(scope.$index, scope.row)"
@@ -84,23 +94,10 @@
 	</div>
 </template>
 <script setup>
-import { onMounted, reactive, ref } from "vue";
-import { getExamList, deleteExaminationById, getExamByName } from "@/api/exam";
-import { useRouter } from "vue-router";
-const router = useRouter();
-const loading = ref();
+import { onMounted, reactive } from "vue";
+import { getExamList, deleteExaminationById } from "@/api/exam";
 
-// let tableData = reactive([]);
-const examlist = reactive({
-	examid: "",
-	examname: "",
-	examduration: "",
-	examtotalscore: "",
-	examstart: "",
-	examend: "",
-	papername: "",
-});
-const tableData = ref([]);
+let tableData = reactive([]);
 
 onMounted(() => {
 	getAll();
@@ -110,8 +107,6 @@ const handleSelectionChange = (val) => {
 };
 // 获取全部信息
 const getAll = async () => {
-	tableData.value = [];
-	loading.value = true;
 	let data = await getExamList().then((res) => res.data);
 	data.examSessionList.forEach((item) => {
 		var value = {
@@ -123,11 +118,19 @@ const getAll = async () => {
 			examend: item.examSessionEndTime,
 			papername: item.examSessionPaper.paperName,
 		};
-		tableData.value.push(value);
+		tableData.push(value);
 	});
 	console.log("tabledata", tableData);
 };
-
+const examlist = reactive({
+	examid: "",
+	examname: "",
+	examduration: "",
+	examtotalscore: "",
+	examstart: "",
+	examend: "",
+	papername: "",
+});
 const handleDelete = (val) => {
 	console.log("val", val);
 	deleteExamination(val.id).then(() => {
@@ -139,31 +142,8 @@ const handleDelete = (val) => {
 const deleteExamination = async (id) => {
 	await deleteExaminationById(id).then((res) => console.log("res", res));
 };
-const onSubmit = async () => {
-	// console.log("submit!");
-	if (examlist.examname === "") return;
-	tableData.value = [];
-	loading.value = true;
-	const data = await getExamByName(examlist.examname).then((res) => res.data);
-	data.examSessionList.forEach((item) => {
-		var value = {
-			examid: item.examSessionId,
-			examname: item.examSessionPaper.paperExam.examName,
-			examduration: item.examSessionPaper.paperDuration,
-			examtotalscore: item.examSessionPaper.paperTotalScore,
-			examstart: item.examSessionStartTime,
-			examend: item.examSessionEndTime,
-			papername: item.examSessionPaper.paperName,
-		};
-		tableData.value.push(value);
-	});
-	loading.value = false;
-
-	console.log("tabledata", tableData);
-};
-const handleEdit = (row) => {
-	const name = row.name;
-	router.push(`/exams/update?examName=${name}`);
+const onSubmit = () => {
+	console.log("submit!");
 };
 </script>
 <style lang="scss" scoped>

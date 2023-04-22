@@ -32,23 +32,7 @@ export function getCase(
 		},
 	});
 }
-/* 
-export function getMedicine() {
-	return request({
-		url: base + "medicine",
-		method: "get",
-	});
-}
- */
-/* export function getMedicineByCategory(medicineCategory) {
-	return request({
-		url: base + "medicine",
-		method: "get",
-		params: {
-			medicineCategory,
-		},
-	});
-} */
+
 //根据疾病ID获取药品信息
 /* export function getMedicineByID(medicineId) {
 	return request({
@@ -82,10 +66,28 @@ export function updateCase(val) {
 		data: val,
 	});
 }
-//删除病例信息
-export function deleteById(medicalCaseId) {
+//删除疾病信息
+export function deleteDiseaseById(diseaseNameId) {
 	return request({
-		url: base + `medical-case/${medicalCaseId}`,
+		url: base + `disease/${diseaseNameId}`,
 		method: "delete",
+	});
+}
+
+//获取病例信息
+export function getMedicalCase(params) {
+	return request({
+		url: base + `medical-case`,
+		method: "get",
+		params,
+	});
+}
+
+//保存病例信息------接口跨域
+export function putMedicalCase(data) {
+	return request({
+		url: base + `medical-case `,
+		method: "put",
+		data,
 	});
 }

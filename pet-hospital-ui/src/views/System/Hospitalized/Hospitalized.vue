@@ -165,8 +165,9 @@ const onSubmit = async () => {
 };
 
 const handleEdit = (row) => {
-  const roomStandard = row.roomclassification;
-  router.push(`/hospitalized/update?roomStandard=${roomStandard}`);
+  console.log(">>>", row);
+  const id = row.id;
+  router.push(`/hospitalized/update?admissionId=${id}`);
 };
 </script>
 

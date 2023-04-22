@@ -31,12 +31,12 @@
           <el-icon><collection /></el-icon> <span>题库管理</span></template
         ></el-menu-item
       >
-      <el-menu-item index="/exams/list">
+      <el-menu-item index="exams/list">
         <template #title>
           <el-icon><timer /></el-icon> <span>考试管理</span></template
         ></el-menu-item
       >
-      <el-menu-item index="/paper/list"
+      <el-menu-item index="2-3"
         ><template #title>
           <el-icon><document /></el-icon> <span>试卷管理</span></template
         ></el-menu-item
