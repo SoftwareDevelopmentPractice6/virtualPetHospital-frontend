@@ -80,6 +80,7 @@
 
 <script  setup>
 import { ref } from "vue";
+/* import { uploadFile } from "@/api/file"; */
 //import { ElMessage, ElMessageBox } from 'element-plus'
 /* import { UploadFilled } from '@element-plus/icons-vue'
 import  { UploadProps, UploadUserFile } from 'element-plus' */

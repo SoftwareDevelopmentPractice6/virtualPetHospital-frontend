@@ -51,7 +51,7 @@
                 @selection-change="handleSelectionChange"
               >
                 <el-table-column type="selection" width="55" />
-                <el-table-column prop="id" label="药品编号" width="100" />
+                <!-- <el-table-column prop="id" label="药品编号" width="100" /> -->
                 <el-table-column prop="name" label="药品名称" width="100" />
                 <el-table-column
                   prop="classification"
@@ -74,7 +74,7 @@
                   label="是否是疫苗"
                   width="100"
                 />
-                <el-table-column label="操作" width="200">
+                <el-table-column label="操作" width="250">
                   <template #default="scope">
                     <!-- <router-link to="/medicine/update"> -->
                     <el-button size="small" @click="handleEdit(scope.row)">

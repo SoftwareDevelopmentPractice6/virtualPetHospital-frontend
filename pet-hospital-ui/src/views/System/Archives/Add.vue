@@ -14,9 +14,9 @@
           :model="formLabelAlign"
           style="max-width: 460px"
         >
-          <el-form-item label="档案编号">
+          <!-- <el-form-item label="档案编号">
             <el-input v-model="archive.id" />
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="宠物名称">
             <el-input v-model="archive.name" />
           </el-form-item>
@@ -58,7 +58,7 @@
             <el-button class="SubmitButton" type="primary" @click="onSubmit"
               >保存</el-button
             >
-            <router-link to="/archives/list">
+            <router-link to="/archive/list">
               <el-button class="CancelButton">取消</el-button>
             </router-link>
           </el-form-item>

@@ -14,11 +14,11 @@
           :model="formLabelAlign"
           style="max-width: 460px"
         >
-          <el-form-item label="项目编号">
-            <el-input v-model="laboratory.id" />
-          </el-form-item>
+          <!-- <el-form-item label="项目编号">
+            <el-input v-model="examine.id" />
+          </el-form-item> -->
           <el-form-item label="项目名称">
-            <el-input v-model="laboratory.name" />
+            <el-input v-model="examine.name" />
           </el-form-item>
           <!-- <el-form-item label="疾病类别">
             <el-select
@@ -34,10 +34,10 @@
             </el-select>
           </el-form-item> -->
           <el-form-item label="项目价格">
-            <el-input v-model="laboratory.price" />
+            <el-input v-model="examine.price" />
           </el-form-item>
           <el-form-item label="项目地点">
-            <el-input v-model="laboratory.position" />
+            <el-input v-model="examine.position" />
           </el-form-item>
           <el-form-item>
             <el-button class="SubmitButton" type="primary" @click="onSubmit"
@@ -66,6 +66,8 @@ const onSubmit = () => {
     examinePrice: examine.price,
     examineRoom: examine.position,
   };
+  if (!examine.position) data.examineRoom.roomName = "检查室";
+  else data.examineRoom.roomName = "无需检查";
   console.log("data", data);
   insert(data).then(() => {
     // console.log(res);
@@ -84,7 +86,6 @@ const insert = async (val) => {
 const examine = reactive({
   id: "",
   name: "",
-  classification: "",
   price: "",
   position: "",
 });

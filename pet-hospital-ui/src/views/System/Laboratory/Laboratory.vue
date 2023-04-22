@@ -3,7 +3,7 @@
     <el-container>
       <el-header>
         <el-form :inline="true" :model="examine" class="search">
-          <el-form-item label="疾病类别">
+          <!-- <el-form-item label="疾病类别">
             <el-select v-model="examine.classification" placeholder="疾病类别">
               <el-option label="传染病" value="传染病" />
               <el-option label="寄生虫病" value="寄生虫病" />
@@ -12,7 +12,7 @@
               <el-option label="常用手术" value="常用手术" />
               <el-option label="免疫" value="免疫" />
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="化验项目名称">
             <el-input v-model="examine.name" placeholder="化验项目名称" />
           </el-form-item>
@@ -50,16 +50,16 @@
                 @selection-change="handleSelectionChange"
               >
                 <el-table-column type="selection" width="55" />
-                <el-table-column prop="id" label="项目编号" width="200" />
-                <el-table-column prop="name" label="项目名称" width="200" />
+                <!-- <el-table-column prop="id" label="项目编号" width="200" /> -->
+                <el-table-column prop="name" label="项目名称" width="250" />
                 <!-- <el-table-column
                   prop="classification"
                   label="疾病类型"
                   width="150"
                 /> -->
-                <el-table-column prop="price" label="项目价格" width="200" />
-                <el-table-column prop="position" label="项目地点" width="200" />
-                <el-table-column label="操作" width="200">
+                <el-table-column prop="price" label="项目价格" width="250" />
+                <el-table-column prop="position" label="项目地点" width="250" />
+                <el-table-column label="操作" width="250">
                   <template #default="scope">
                     <!-- <router-link to="/laboratory/update"> -->
                     <el-button size="small" @click="handleEdit(scope.row)"
@@ -94,7 +94,6 @@ const loading = ref();
 
 const examine = reactive({
   id: "",
-  classification: "",
   name: "",
   price: "",
   position: "",

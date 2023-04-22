@@ -196,20 +196,17 @@ export function getAdmission() {
 	});
 }
 //根据护理级别获取化住院信息
-export function getAdmissionByCareLevel(careLevel) {
+export function getAdmissionByCareLevel() {
 	return request({
-		url: base + `admission/${careLevel}`,
+		url: base + "admission",
 		method: "get",
 	});
 }
 //根据病房标准获取住院信息
-export function getAdmissionByRoomStandard(roomStandard) {
+export function getAdmissionByRoomStandard() {
 	return request({
 		url: base + "admission",
 		method: "get",
-		params: {
-			roomStandard,
-		},
 	});
 }
 // 新增住院项目
@@ -229,9 +226,9 @@ export function updateAdmission(val) {
 	});
 }
 //删除住院项目信息
-export function deleteAdmissionById(id) {
+export function deleteAdmissionById(admissionId) {
 	return request({
-		url: base + `admission/${id}`,
+		url: base + `admission/${admissionId}`,
 		method: "delete",
 	});
 }

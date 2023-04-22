@@ -40,10 +40,10 @@
                 @selection-change="handleSelectionChange"
               >
                 <el-table-column type="selection" width="55" />
-                <el-table-column prop="id" label="收费编号" width="220" />
-                <el-table-column prop="name" label="收费项目名称" width="220" />
-                <el-table-column prop="price" label="收费价格" width="220" />
-                <el-table-column label="操作" width="200">
+                <!-- <el-table-column prop="id" label="收费编号" width="220" /> -->
+                <el-table-column prop="name" label="收费项目名称" width="250" />
+                <el-table-column prop="price" label="收费价格" width="250" />
+                <el-table-column label="操作" width="250">
                   <template #default="scope">
                     <!-- <router-link to="/charge/update"> -->
                     <el-button size="small" @click="handleEdit(scope.row)"
