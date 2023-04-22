@@ -421,7 +421,7 @@ sessionStorage.setItem("diseaseCategory", diseaseCategory.value);
 
 // 获取病例列表
 async function getCaseList() {
-  await getCase(null, null, null, diseaseId.value)
+  await getCase(null, null, null, null, diseaseId.value)
     .then((res) => {
       let list = res.data.medicalCaseList.medicalCaseList;
       console.log("获取病例列表成功", list);
