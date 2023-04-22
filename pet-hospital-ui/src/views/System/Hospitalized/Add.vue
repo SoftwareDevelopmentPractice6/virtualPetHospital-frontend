@@ -60,7 +60,7 @@
 <script setup>
 import { reactive } from "vue";
 import { ElMessage } from "element-plus";
-import { insertAdmission } from "../../../api/system";
+import { insertAdmission } from "@/api/system";
 
 const onSubmit = () => {
   console.log(admission);
