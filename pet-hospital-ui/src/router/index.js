@@ -4,11 +4,11 @@ import Layout from "@/layout";
 
 // 路由守卫: 未登录则回到 login 页
 const myBeforeEnter = (to, from, next) => {
-  if (Cookies.get("isLogin")) {
-    next();
-  } else {
-    router.push("login");
-  }
+	if (Cookies.get("isLogin")) {
+		next();
+	} else {
+		router.push("login");
+	}
 };
 
 const routes = [
@@ -77,29 +77,6 @@ const routes = [
 			},
 		],
 	},
-	// 考试管理
-	{
-		path: "/exams",
-		component: Layout,
-		redirect: "/exams/list",
-		children: [
-			{
-				path: "list",
-				component: () => import("@/views/System/Exams/ExamList"),
-				beforeEnter: myBeforeEnter,
-			},
-			{
-				path: "add",
-				component: () => import("@/views/System/Exams/ExamAdd"),
-				beforeEnter: myBeforeEnter,
-			},
-			{
-				path: "update",
-				component: () => import("@/views/System/Exams/ExamUpdate"),
-				beforeEnter: myBeforeEnter,
-			},
-		],
-	},
 	// 档案管理
 	{
 		path: "/archive",
@@ -157,8 +134,8 @@ const routes = [
 				beforeEnter: myBeforeEnter,
 			},
 			{
-				path: "data",
-				component: () => import("@/views/Cases/Data"),
+				path: "detail",
+				component: () => import("@/views/Cases/Detail"),
 				beforeEnter: myBeforeEnter,
 			},
 			{
@@ -234,44 +211,44 @@ const routes = [
 			},
 		],
 	},
-  // 职能学习
-  {
-    path: "/functionStudy",
-    component: Layout,
-    redirect: "/functionStudy/rolePlay",
-    children: [
-      {
-        path: "rolePlay",
-        component: () => import("@/views/FunctionStudy/RolePlay"),
-        beforeEnter: myBeforeEnter,
-      },
-      {
-        path: "rolePlay/detail",
-        component: () => import("@/views/FunctionStudy/RolePlay/PlayDetail"),
-        beforeEnter: myBeforeEnter,
-      },
-      {
-        path: "caseStudy",
-        component: () => import("@/views/FunctionStudy/CaseStudy"),
-        beforeEnter: myBeforeEnter,
-      },
-      {
-        path: "caseStudy/detail",
-        component: () => import("@/views/FunctionStudy/CaseStudy/CaseDetail"),
-        beforeEnter: myBeforeEnter,
-      },
-      {
-        path: "caseStudy/:disease/allVideos",
-        component: () => import("@/views/FunctionStudy/CaseStudy/AllVideos"),
-        beforeEnter: myBeforeEnter,
-      },
-    ],
-  },
+	// 职能学习
+	{
+		path: "/functionStudy",
+		component: Layout,
+		redirect: "/functionStudy/rolePlay",
+		children: [
+			{
+				path: "rolePlay",
+				component: () => import("@/views/FunctionStudy/RolePlay"),
+				beforeEnter: myBeforeEnter,
+			},
+			{
+				path: "rolePlay/detail",
+				component: () => import("@/views/FunctionStudy/RolePlay/PlayDetail"),
+				beforeEnter: myBeforeEnter,
+			},
+			{
+				path: "caseStudy",
+				component: () => import("@/views/FunctionStudy/CaseStudy"),
+				beforeEnter: myBeforeEnter,
+			},
+			{
+				path: "caseStudy/detail",
+				component: () => import("@/views/FunctionStudy/CaseStudy/CaseDetail"),
+				beforeEnter: myBeforeEnter,
+			},
+			{
+				path: "caseStudy/:disease/allVideos",
+				component: () => import("@/views/FunctionStudy/CaseStudy/AllVideos"),
+				beforeEnter: myBeforeEnter,
+			},
+		],
+	},
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(process.env.BASE_URL),
-  routes,
+	history: createWebHashHistory(process.env.BASE_URL),
+	routes,
 });
 
 export default router;
