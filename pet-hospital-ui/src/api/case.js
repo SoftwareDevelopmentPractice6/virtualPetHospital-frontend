@@ -33,16 +33,13 @@ export function getCase(
 	});
 }
 
-//根据疾病ID获取药品信息
-/* export function getMedicineByID(medicineId) {
+//根据疾病名称关键词搜索
+export function getMedicineByKeyword(diseaseNameKeyword) {
 	return request({
-		url: base + "medicine",
+		url: base + `disease/${diseaseNameKeyword}`,
 		method: "get",
-		params: {
-			medicineId,
-		},
 	});
-} */
+}
 //根据药品名称获取药品信息
 /* export function getCaseByName(medicineName) {
 	return request({
@@ -52,6 +49,13 @@ export function getCase(
 } */
 // 新增
 export function insertCase(val) {
+	return request({
+		url: base + "medical-case",
+		method: "post",
+		data: val,
+	});
+}
+export function insertDisease(val) {
 	return request({
 		url: base + "medical-case",
 		method: "post",

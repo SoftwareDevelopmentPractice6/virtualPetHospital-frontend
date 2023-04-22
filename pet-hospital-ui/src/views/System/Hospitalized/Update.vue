@@ -14,10 +14,24 @@
         style="max-width: 460px"
       >
         <el-form-item label="病房标准">
-          <el-input v-model="admission.roomStandard" />
+          <el-select v-model="admission.roomStandard">
+            <el-option
+              v-for="item in roomStandardList"
+              :key="item.label"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="护理级别">
-          <el-input v-model="admission.careLevel" />
+          <el-select v-model="admission.careLevel">
+            <el-option
+              v-for="item in careLevelList"
+              :key="item.label"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="收费价格">
           <el-input v-model="admission.carePrice" />
@@ -44,7 +58,11 @@
 <script setup>
 import { computed, unref, onMounted, ref } from "vue";
 import { ElMessage } from "element-plus";
-import { updateAdmission, getAdmissionByRoomStandard } from "@/api/system";
+import {
+  updateAdmission,
+  getAdmissionByRoomStandard,
+  insertAdmission,
+} from "@/api/system";
 import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 const router = useRouter();
@@ -53,33 +71,63 @@ const admissionId = computed(() => {
 });
 
 const loading = ref(false);
+
+const allList = ref([]);
 const admission = ref({ admissionRoom: {} });
+
+const roomStandardList = computed(() => {
+  const list = unref(allList).map((item) => item.roomStandard);
+  return [...new Set(list)].map((item) => ({
+    label: item,
+    value: item,
+  }));
+});
+
+const careLevelList = computed(() => {
+  const list = unref(allList).map((item) => item.careLevel);
+  return [...new Set(list)].map((item) => ({
+    label: item,
+    value: item,
+  }));
+});
 const getAdmissionInfo = async () => {
-  console.log(11111);
   if (!unref(admissionId)) return;
   loading.value = true;
-  const {
-    admissionList: [info],
-  } = await getAdmissionByRoomStandard({
-    admissionId: unref(admissionId),
-  }).then((res) => res.data);
-  console.log("info", info);
-  admission.value = info;
+  const { admissionList } = await getAdmissionByRoomStandard().then(
+    (res) => res.data
+  );
+  allList.value = JSON.parse(JSON.stringify(admissionList));
   loading.value = false;
 };
 
-onMounted(() => {
-  getAdmissionInfo();
+const getEditInfo = () => {
+  if (!unref(admissionId)) return;
+  const list = JSON.parse(JSON.stringify(unref(allList)));
+  const emitItem =
+    list.find((item) => item.admissionId.toString() === unref(admissionId)) ||
+    {};
+  admission.value = emitItem;
+};
+
+onMounted(async () => {
+  await getAdmissionInfo();
+  getEditInfo();
 });
 
 const onSubmit = async () => {
   loading.value = true;
 
   const { admissionRoom, ...args } = unref(admission);
-  await updateAdmission({
+  const params = {
     ...args,
     roomName: admissionRoom.roomName,
-  });
+  };
+  if (unref(admissionId)) {
+    await updateAdmission(params);
+  } else {
+    await insertAdmission(params);
+    console.log("这里是新增");
+  }
   ElMessage.success("提交成功！");
   loading.value = false;
   router.back();

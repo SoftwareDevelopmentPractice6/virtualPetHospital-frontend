@@ -9,13 +9,11 @@
           <el-form-item label="疾病名称">
             <el-input
               v-model="submitInfo.medicalCaseDiseaseName.diseaseNameContent"
-              disabled
             />
           </el-form-item>
           <el-form-item label="疾病类型">
             <el-input
               v-model="submitInfo.medicalCaseDiseaseName.diseaseNameCategory"
-              disabled
             />
           </el-form-item>
         </el-header>
@@ -24,7 +22,6 @@
             <el-collapse v-model="activeNames">
               <el-collapse-item title="接诊" name="接诊">
                 <InputFile
-                  :filePath="`${diseaseNameId}_medicalCaseAdmission`"
                   v-model:value="
                     submitInfo.medicalCaseAdmission.admissionContent
                   "
@@ -32,7 +29,6 @@
               </el-collapse-item>
               <el-collapse-item title="病例检查" name="病例检查">
                 <InputFile
-                  :filePath="`${diseaseNameId}_medicalCaseCaseCheck`"
                   v-model:value="
                     submitInfo.medicalCaseCaseCheck.caseCheckContent
                   "
@@ -40,7 +36,6 @@
               </el-collapse-item>
               <el-collapse-item title="诊断结果" name="诊断结果">
                 <InputFile
-                  :filePath="`${diseaseNameId}_medicalCaseDiagnosticResult`"
                   v-model:value="
                     submitInfo.medicalCaseDiagnosticResult
                       .diagnosticResultContent
@@ -49,7 +44,6 @@
               </el-collapse-item>
               <el-collapse-item title="治疗方案" name="治疗方案">
                 <InputFile
-                  :filePath="`${diseaseNameId}_medicalCaseTreatmentProgram`"
                   v-model:value="
                     submitInfo.medicalCaseTreatmentProgram
                       .treatmentProgramContent

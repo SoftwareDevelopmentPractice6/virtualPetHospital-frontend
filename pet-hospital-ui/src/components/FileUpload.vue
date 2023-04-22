@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import { uploadFile, getFileLists, downloadFile } from "@/api/file";
+import { uploadFile, getFileLists, deleteFile } from "@/api/file";
 export default {
   name: "FileUpload",
   data() {
@@ -55,12 +55,30 @@ export default {
       type: String,
       default: "",
     },
-    // defaultShowList: {
-    //   type: Array,
-    //   dfault: () => [],
-    // },
+  },
+  created() {
+    this.getHistoryPic();
   },
   methods: {
+    async getHistoryPic() {
+      if (!this.filePath) return;
+      const res = await getFileLists(this.filePath).then((res) => res.data);
+      if (res.filePathList.length === 0) return;
+      this.fileList = res.filePathList.map((item, inx) => {
+        const typeInx = item.lastIndexOf(".") + 1;
+        const type = this.supportedPictureTypes.includes(item.slice(typeInx))
+          ? "图片"
+          : "视频";
+        return {
+          url:
+            process.env.VUE_APP_INTERFACE_URL +
+            "\\file\\files?filePath=" +
+            encodeURI(item),
+          name: type + (inx + 1),
+          filePath: item,
+        };
+      });
+    },
     getFileSuffix(name) {
       const index = name.lastIndexOf(".");
       const len = name.length;
@@ -86,62 +104,35 @@ export default {
 
       return isSupportedType && isLt2M;
     },
-    handleRemove(file) {
+    async handleRemove(file) {
+      console.log("file", file);
       this.fileList.forEach((fileInList, fileInListIndex) => {
+        if (file.filePath) return;
         if (file.name === fileInList.get("file").name) {
           this.fileList.splice(fileInListIndex);
         }
       });
+      if (file.filePath) {
+        console.log("file.filePath", file.filePath);
+        await deleteFile(file.filePath);
+      }
+      this.getHistoryPic();
     },
     handlePreview(file) {
       console.log(file);
     },
     selectFiles(param) {
-      console.log(2222, param);
       const formData = new FormData();
       formData.append("file", param.file);
       formData.append("filePath", this.filePath);
       this.fileList.push(formData);
     },
     async onSubmit() {
-      this.fileList.forEach((file) => {
-        console.log("1111", file);
-        uploadFile(file.get("file"), file.get("filePath"));
+      this.fileList.forEach(async (file) => {
+        if (typeof file.url === "string") return;
+        await uploadFile(file.get("file"), file.get("filePath"));
+        this.getHistoryPic();
       });
-
-      // const res = await getFileLists("case");
-
-      // Promise.all(res.data.filePathList.map((item) => downloadFile(item))).then(
-      //   (res) => {
-      //     // const blob = new Blob([res]);
-      //     // url = window.URL.createObjectURL(blob)
-      //     console.log(res);
-      //   }
-      // );
-
-      const res2 = await downloadFile(
-        "case\\28d11053-aeb7-4e63-9de3-977a57e4eaf2\\BC01CDA1B3FF929359473D1FDE29524E.png"
-      );
-      const blob = new Blob([res2]);
-      const url = window.URL.createObjectURL(blob);
-      console.log(url);
-
-      // const list = res.data.filePathList.map((item) => {
-      //   // const downloadFile
-      //   // return (
-      //   //   process.env.VUE_APP_INTERFACE_URL +
-      //   //   "\\file\\files?filePath=" +
-      //   //   encodeURI(item)
-      //   // );
-      // });
-      /**
-       * 
-       *  process.env.VUE_APP_INTERFACE_URL +
-          "\\file\\files?filePath=" +
-          encodeURI(item)
-      );
-       */
-      console.log("1111", res, list);
     },
   },
 };
