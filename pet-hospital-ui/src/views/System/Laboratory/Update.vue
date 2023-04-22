@@ -37,7 +37,7 @@
             <el-input v-model="examine.examinePrice" />
           </el-form-item>
           <el-form-item label="项目地点">
-            <el-input v-model="examine.examineRoom" />
+            <el-input v-model="examine.examineRoom.roomName" />
           </el-form-item>
           <el-form-item>
             <el-button class="SubmitButton" type="primary" @click="onSubmit"
@@ -54,28 +54,20 @@
 </template>
 
 <script setup>
-import { computed, unref, onMounted, ref} from "vue";
+import { computed, unref, onMounted, ref } from "vue";
 import { ElMessage } from "element-plus";
 import { updateExamine, getExamineByName } from "../../../api/system";
 import { useRoute, useRouter } from "vue-router";
 const route = useRoute();
 
 const router = useRouter();
-const examine = ref([]);
-/* const examine = reactive({
-  id: "",
-  name: "",
-  price: "",
-  position: "",
-});
- */
+
 const examineName = computed(() => {
   return route.query.examineName;
 });
 
 const loading = ref(false);
-
-/* const tableData = ref([]); */
+const examine = ref({ examineRoom: {} });
 
 const getExamineInfo = async () => {
   if (!unref(examineName)) return;
@@ -107,7 +99,11 @@ onMounted(() => {
 
 const onSubmit = async () => {
   loading.value = true;
-  await updateExamine(unref(examine));
+  const { examineRoom, ...args } = unref(examine);
+  await updateExamine({
+    ...args,
+    roomName: examineRoom.roomName,
+  });
   ElMessage.success("提交成功！");
   loading.value = false;
   router.back();
