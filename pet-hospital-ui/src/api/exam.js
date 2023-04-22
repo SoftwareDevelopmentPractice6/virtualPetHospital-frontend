@@ -28,9 +28,20 @@ export function insertExam(val) {
 	});
 }
 //根据考试名称获取考试信息
-export function getExamByName(examName) {
+export function getExamByName(examNameKeyword) {
 	return request({
-		url: base + `examinations/${examName}`,
+		url: base + "examinations",
 		method: "get",
+		params: {
+			examNameKeyword,
+		},
+	});
+}
+//更改考试信息
+export function updateExam(val) {
+	return request({
+		url: base + "examinations",
+		method: "put",
+		data: val,
 	});
 }

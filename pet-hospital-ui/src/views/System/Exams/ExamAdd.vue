@@ -28,10 +28,22 @@
 				</el-form-item>
 
 				<el-form-item label="考试开始时间">
-					<el-input v-model="examlist.examstart" />
+					<div class="block">
+						<el-date-picker
+							v-model="examlist.examstart"
+							type="datetime"
+							placeholder="选择考试考试时间"
+						/>
+					</div>
 				</el-form-item>
 				<el-form-item label="考试结束时间">
-					<el-input v-model="examlist.examend" />
+					<div class="block">
+						<el-date-picker
+							v-model="examlist.examend"
+							type="datetime"
+							placeholder="选择考试结束时间"
+						/>
+					</div>
 				</el-form-item>
 				<el-form-item label="考试试卷名称">
 					<el-input v-model="examlist.papername" />
