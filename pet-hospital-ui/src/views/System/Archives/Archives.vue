@@ -28,9 +28,9 @@
           <el-container>
             <el-header>
               <el-form-item class="button">
-                <router-link to="/archive/add">
-                  <el-button class="AddButton" type="primary">新增</el-button>
-                </router-link>
+                <!--   <router-link to="/archive/add"> -->
+                <el-button class="AddButton" type="primary">新增</el-button>
+                <!--   </router-link> -->
 
                 <router-link to="/archive/add">
                   <el-button class="ChangeButton" type="primary"

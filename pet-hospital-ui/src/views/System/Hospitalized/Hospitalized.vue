@@ -25,16 +25,16 @@
           <el-container>
             <el-header>
               <el-form-item class="button">
-                <router-link to="/hospitalized/add">
+                <router-link to="/hospitalized/update">
                   <el-button class="AddButton" type="primary">新增</el-button>
                 </router-link>
                 <router-link to="/hospitalized/add">
-                  <el-button class="ChangeButton" type="primary"
-                    >修改</el-button
-                  >
+                  <el-button class="ChangeButton" type="primary">
+                    修改
+                  </el-button>
                 </router-link>
-                <el-button class="DeleteButton" @click="open" type="primary"
-                  >删除</el-button
+                <el-button class="DeleteButton" @click="open" type="primary">
+                  删除</el-button
                 >
               </el-form-item>
             </el-header>
@@ -62,11 +62,9 @@
                 <el-table-column prop="text" label="备注" width="150" />
                 <el-table-column label="操作" width="250">
                   <template #default="scope">
-                    <!--  <router-link to="/hospitalized/update"> -->
-                    <el-button size="small" @click="handleEdit(scope.row)"
-                      >编辑</el-button
-                    >
-                    <!--  </router-link> -->
+                    <el-button size="small" @click="handleEdit(scope.row)">
+                      编辑
+                    </el-button>
                     <el-button
                       size="small"
                       type="danger"

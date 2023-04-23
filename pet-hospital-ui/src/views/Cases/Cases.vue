@@ -16,7 +16,7 @@
           <el-container>
             <el-header>
               <el-form-item class="button">
-                <router-link to="/cases/data">
+                <router-link to="/cases/add">
                   <el-button class="AddButton" type="primary">新增</el-button>
                 </router-link>
 
@@ -70,7 +70,11 @@
 
 <script setup>
 import { onMounted, reactive, ref } from "vue";
-import { getDisease, deleteDiseaseById } from "@/api/case";
+import {
+  getDisease,
+  deleteDiseaseById,
+  getMedicineByKeyword,
+} from "@/api/case";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const loading = ref();
@@ -118,6 +122,26 @@ const deleteDisease = async (id) => {
 const handleEdit = (row) => {
   const diseaseNameId = row.id;
   router.push(`/cases/detail?diseaseNameId=${diseaseNameId}`);
+};
+
+//搜索事件
+const onSubmit = async () => {
+  if (cases.classification === "") return;
+  tableData.value = [];
+  loading.value = true;
+  const data = await getMedicineByKeyword(cases.classification).then(
+    (res) => res.data
+  );
+  data.diseaseNameList.forEach((item) => {
+    var value = {
+      id: item.diseaseNameId,
+      name: item.diseaseNameContent,
+      classification: item.diseaseNameCategory,
+    };
+    tableData.value.push(value);
+  });
+  loading.value = false;
+  console.log("tabledata", tableData);
 };
 </script>
 

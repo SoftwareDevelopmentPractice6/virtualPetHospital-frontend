@@ -185,8 +185,8 @@ const routes = [
 				beforeEnter: myBeforeEnter,
 			},
 			{
-				path: "upload",
-				component: () => import("@/views/Cases/Upload"),
+				path: "add",
+				component: () => import("@/views/Cases/Add"),
 				beforeEnter: myBeforeEnter,
 			},
 		],

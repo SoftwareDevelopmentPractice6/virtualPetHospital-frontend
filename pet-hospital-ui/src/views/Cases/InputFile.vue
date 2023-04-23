@@ -10,7 +10,7 @@
         placeholder="Please input"
       />
       <span>上传图片或教学视频</span>
-      <file-upload file-path="case"> </file-upload>
+      <file-upload :file-path="filePath"> </file-upload>
     </div>
   </div>
 </template>
