@@ -26,7 +26,7 @@
 			<template #title>
 				<el-icon><notebook /></el-icon> <span>测试管理</span></template
 			>
-			<el-menu-item index="2-1">
+			<el-menu-item index="/question/list">
 				<template #title>
 					<el-icon><collection /></el-icon> <span>题库管理</span></template
 				></el-menu-item
