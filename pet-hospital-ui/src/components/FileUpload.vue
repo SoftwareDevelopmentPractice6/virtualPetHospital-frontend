@@ -56,8 +56,8 @@ export default {
       default: "",
     },
   },
-  created() {
-    this.getHistoryPic();
+  watch: {
+    filePath: 'getHistoryPic'
   },
   methods: {
     async getHistoryPic() {

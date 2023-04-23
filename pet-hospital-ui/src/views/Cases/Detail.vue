@@ -7,54 +7,34 @@
       <el-main>
         <el-header>
           <el-form-item label="疾病名称">
-            <el-input
-              v-model="submitInfo.medicalCaseDiseaseName.diseaseNameContent"
-              disabled
-            />
+            <el-input v-model="submitInfo.medicalCaseDiseaseName.diseaseNameContent" disabled />
           </el-form-item>
           <el-form-item label="疾病类型">
-            <el-input
-              v-model="submitInfo.medicalCaseDiseaseName.diseaseNameCategory"
-              disabled
-            />
+            <el-input v-model="submitInfo.medicalCaseDiseaseName.diseaseNameCategory" disabled />
           </el-form-item>
         </el-header>
         <el-main>
           <div class="demo-collapse">
             <el-collapse v-model="activeNames">
               <el-collapse-item title="接诊" name="接诊">
-                <InputFile
-                  :filePath="`${diseaseNameId}_medicalCaseAdmission`"
-                  v-model:value="
-                    submitInfo.medicalCaseAdmission.admissionContent
-                  "
-                />
+                <InputFile :filePath="submitInfo.medicalCaseAdmission.admissionPhoto" v-model:value="submitInfo.medicalCaseAdmission.admissionContent
+                  " />
               </el-collapse-item>
               <el-collapse-item title="病例检查" name="病例检查">
-                <InputFile
-                  :filePath="`${diseaseNameId}_medicalCaseCaseCheck`"
-                  v-model:value="
-                    submitInfo.medicalCaseCaseCheck.caseCheckContent
-                  "
-                />
+                <InputFile :filePath="submitInfo.medicalCaseCaseCheck.caseCheckPhoto" v-model:value="submitInfo.medicalCaseCaseCheck.caseCheckContent
+                  " />
               </el-collapse-item>
               <el-collapse-item title="诊断结果" name="诊断结果">
-                <InputFile
-                  :filePath="`${diseaseNameId}_medicalCaseDiagnosticResult`"
-                  v-model:value="
-                    submitInfo.medicalCaseDiagnosticResult
-                      .diagnosticResultContent
-                  "
-                />
+                <InputFile :filePath="submitInfo.medicalCaseDiagnosticResult
+                    .diagnosticResultPhoto" v-model:value="submitInfo.medicalCaseDiagnosticResult
+        .diagnosticResultContent
+      " />
               </el-collapse-item>
               <el-collapse-item title="治疗方案" name="治疗方案">
-                <InputFile
-                  :filePath="`${diseaseNameId}_medicalCaseTreatmentProgram`"
-                  v-model:value="
-                    submitInfo.medicalCaseTreatmentProgram
-                      .treatmentProgramContent
-                  "
-                />
+                <InputFile :filePath="submitInfo.medicalCaseTreatmentProgram
+                    .treatmentProgramPhoto" v-model:value="submitInfo.medicalCaseTreatmentProgram
+        .treatmentProgramContent
+      " />
               </el-collapse-item>
             </el-collapse>
           </div>
@@ -121,8 +101,8 @@ const onSubmit = async () => {
   cancel();
 };
 
-onMounted(() => {
-  getMedicalCaseApi();
+onMounted(async () => {
+  await getMedicalCaseApi();
 });
 </script>
 <style lang="scss" scoped>
@@ -130,6 +110,7 @@ onMounted(() => {
   height: calc(100vh - 50px);
   overflow: auto;
 }
+
 /* .upload {
   margin-left: 30px;
   margin-right: 30px;
@@ -141,28 +122,33 @@ onMounted(() => {
   align-items: flex-start;
   padding: 10px 900px 0px 15px;
 }
+
 .name {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   padding: 10px 900px 0px 0px;
 }
+
 .header {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   padding: 10px 10px 0px 10px;
 }
+
 .CancelButton {
   width: 80px;
   height: 40px;
   margin: 0px 30px 0px 60px;
 }
+
 .SubmitButton {
   width: 80px;
   height: 40px;
   margin: 0px 60px 0px 30px;
 }
+
 .footer-btn {
   &.el-form-item {
     :deep(.el-form-item__content) {
