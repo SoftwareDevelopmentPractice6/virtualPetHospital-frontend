@@ -123,6 +123,29 @@ const routes = [
 			},
 		],
 	},
+	// 题库管理
+	{
+		path: "/question",
+		component: Layout,
+		redirect: "/question/list",
+		children: [
+			{
+				path: "list",
+				component: () => import("@/views/System/QuestionBank/QuestionList"),
+				beforeEnter: myBeforeEnter,
+			},
+			{
+				path: "add",
+				component: () => import("@/views/System/QuestionBank/QuestionAdd"),
+				beforeEnter: myBeforeEnter,
+			},
+			{
+				path: "update",
+				component: () => import("@/views/System/Paper/PaperUpdate"),
+				beforeEnter: myBeforeEnter,
+			},
+		],
+	},
 	// 档案管理
 	{
 		path: "/archive",

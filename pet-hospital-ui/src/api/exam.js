@@ -90,7 +90,7 @@ export function getPaperByName(paperNameKeyword) {
 	});
 }
 //删除试卷列表信息
-export function deletePapernById(paperId) {
+export function deletePaperById(paperId) {
 	return request({
 		url: base + `examinations/${paperId}`,
 		method: "delete",
@@ -100,6 +100,48 @@ export function deletePapernById(paperId) {
 export function insertPaper(val) {
 	return request({
 		url: base + "examinations",
+		method: "post",
+		data: val,
+	});
+}
+//获取问题列表接口
+export function getQuestionList() {
+	return request({
+		url: base + "question",
+		method: "get",
+	});
+}
+//根据问题类别获取问题列表
+export function getQuestionByType(questionType) {
+	return request({
+		url: base + "question",
+		method: "get",
+		params: {
+			questionType,
+		},
+	});
+}
+//根据问题内容获取问题列表
+export function getQuestionByContent(questionContentKeyword) {
+	return request({
+		url: base + "question",
+		method: "get",
+		params: {
+			questionContentKeyword,
+		},
+	});
+}
+//删除问题列表信息
+export function deleteQuestion(questionId) {
+	return request({
+		url: base + `question/${questionId}`,
+		method: "delete",
+	});
+}
+// 新增问题信息
+export function insertQuestion(val) {
+	return request({
+		url: base + "question",
 		method: "post",
 		data: val,
 	});

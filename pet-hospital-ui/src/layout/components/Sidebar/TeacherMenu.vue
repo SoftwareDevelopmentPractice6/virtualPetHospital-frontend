@@ -6,7 +6,7 @@
 			<template #title>
 				<el-icon><notebook /></el-icon> <span>考试题库管理</span></template
 			>
-			<el-menu-item index="1-1">
+			<el-menu-item index="/question/list">
 				<template #title>
 					<el-icon><collection /></el-icon> <span>题库管理</span></template
 				></el-menu-item
