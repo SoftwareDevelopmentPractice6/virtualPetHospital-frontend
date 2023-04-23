@@ -50,8 +50,9 @@
 </template>
 
 <script setup>
+import { getFeature } from "@/api/system";
 import { ElMessage } from "element-plus";
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 
 // 角色数组
@@ -123,151 +124,7 @@ const dialogTableVisible = ref(false);
 const currentRow = ref();
 const singleTableRef = ref();
 
-const tableData = [
-  [
-    {
-      name: "接待挂号",
-      room: "前台",
-      discription: "为携带宠物前来就诊的客户提供挂号服务。",
-    },
-    {
-      name: "导医咨询",
-      room: "前台",
-      discription: "为携带宠物前来就诊的客户提供疾病咨询、就诊指引等服务。",
-    },
-    {
-      name: "收费",
-      room: "前台",
-      discription: "为携带宠物就诊后的客户进行结算和收费。",
-    },
-    {
-      name: "病例档案管理",
-      room: "档案室",
-      discription: "对收集的病例档案进行合理保存与数据统计。",
-    },
-  ],
-  [
-    {
-      name: "静脉注射",
-      room: "注射室",
-      discription: "将药物或液体放入注射器通过静脉输入到体内。",
-    },
-    {
-      name: "皮下注射",
-      room: "注射室",
-      discription: "将药物或液体通过一根细针注入皮下组织。",
-    },
-    {
-      name: "肌肉注射",
-      room: "注射室",
-      discription: "将药物或液体通过注射器注入到肌肉组织中。",
-    },
-    {
-      name: "局部封闭注射",
-      room: "注射室",
-      discription: "一种局麻技术，用于手术或某些治疗过程中的疼痛管理。",
-    },
-    {
-      name: "麻前给药",
-      room: "手术准备室",
-      discription:
-        "在麻醉之前给予患者药物以减轻术前焦虑、预防术中出现不良反应。",
-    },
-    {
-      name: "注射麻醉",
-      room: "手术准备室",
-
-      discription:
-        "将药物直接注射到患者体内，使患者短时间内失去意识和对外界刺激的感知。",
-    },
-    {
-      name: "吸入麻醉",
-      room: "手术准备室",
-
-      discription: "将药物通过呼吸系统吸入患者体内，使患者逐渐进入麻醉状态。",
-    },
-    {
-      name: "保定、剃毛、消毒",
-      room: "手术准备室",
-      discription: "手术准备中的重要步骤，可有效降低手术感染风险。",
-    },
-  ],
-  [
-    {
-      name: "临床检查",
-      room: "诊室",
-      discription:
-        "通过观察、询问、检查等手段获取患者病史和症状信息，以了解患者病情。",
-    },
-    {
-      name: "疾病诊断",
-      room: "诊室",
-      discription:
-        "根据患者的病史、临床检查结果等，对患者的疾病类型、程度等进行判断。",
-    },
-    {
-      name: "X 射线",
-      room: "影像室",
-      discription:
-        "使高能量的X射线穿过身体，并用接收器捕捉图像，以产生内部身体结构的影像。",
-    },
-    {
-      name: "B 超",
-      room: "影像室",
-      discription:
-        "利用超声波探头向身体部位发射高频声波，通过不同组织器官的反射产生回声信号，再经计算机处理后形成图像。",
-    },
-    {
-      name: "CT",
-      room: "影像室",
-      discription:
-        "使用X射线通过人体进行扫描，生成具有高分辨率和准确性的三维图像。",
-    },
-    {
-      name: "常规手术",
-      room: "手术室",
-      discription:
-        "在普通手术室内进行，通常由一个外科医生主导手术过程，护士负责患者的监护和设备操作。",
-    },
-    {
-      name: "特殊手术",
-      room: "手术室",
-      discription:
-        "需要更高端的设备和更专业的技能，如：神经外科手术、心脏手术、器官移植手术、激光手术等。",
-    },
-    {
-      name: "眼科疾病检查",
-      room: "专科检查室",
-      discription: "针对眼科疾病进行专业的检查和诊断。",
-    },
-    {
-      name: "骨科疾病检查",
-      room: "专科检查室",
-      discription: "针对骨科疾病进行专业的检查和诊断。",
-    },
-    {
-      name: "神经科疾病检查",
-      room: "专科检查室",
-      discription: "针对神经科疾病进行专业的检查和诊断。",
-    },
-    {
-      name: "心脏科疾病检查",
-      room: "专科检查室",
-      discription: "针对心脏科疾病进行专业的检查和诊断。",
-    },
-    {
-      name: "接种疫苗",
-      room: "免疫室",
-      discription:
-        "通过注射微生物、毒素或其他成分的疫苗来激活免疫系统产生免疫反应，以提高身体对疾病的抵抗力。",
-    },
-    {
-      name: "预处理送检样本",
-      room: "化验室",
-      discription: "包括：标本采集、保存和储存、样本处理、质量控制和样本送检",
-    },
-  ],
-];
+const tableData = reactive([]);
 
 let spanArr = reactive([]);
 let pos = ref();
@@ -339,6 +196,61 @@ const handleNavigate = () => {
     }
   }
 };
+
+// 排序函数（按照房间名）
+const compareRoomName = (a, b) => {
+  let roomNameA = a.room,
+    roomNameB = b.room;
+  if (roomNameA < roomNameB) {
+    return -1;
+  }
+  if (roomNameA > roomNameB) {
+    return 1;
+  }
+  return 0;
+};
+
+// 获取功能列表数据
+const getTableData = () => {
+  getFeature()
+    .then((res) => {
+      const featureList = res.data.featureList;
+      console.log("获取功能列表成功", featureList);
+      // 三个角色数组
+      let receptionArr = [],
+        assistantArr = [],
+        doctorArr = [];
+      for (let item of featureList) {
+        const role = item.funcRole;
+        let curItem = {
+          name: item.funcName,
+          room: item.featureRoom.roomName,
+          discription: item.funcDescription,
+        };
+        if (role === "前台") {
+          receptionArr.push(curItem);
+        } else if (role === "医助") {
+          assistantArr.push(curItem);
+        } else {
+          doctorArr.push(curItem);
+        }
+      }
+      // 三个角色数组按照房间名排序
+      receptionArr.sort(compareRoomName);
+      assistantArr.sort(compareRoomName);
+      doctorArr.sort(compareRoomName);
+      tableData.push(receptionArr);
+      tableData.push(assistantArr);
+      tableData.push(doctorArr);
+    })
+    .catch((err) => {
+      console.log("获取功能列表发生错误", err);
+    });
+};
+
+onMounted(() => {
+  getTableData();
+});
 </script>
 
 <style lang="scss" scoped>
