@@ -1,7 +1,7 @@
 <template>
 	<el-container>
 		<el-header class="header" height="20px">
-			<router-link to="/exams/list">
+			<router-link to="/paper/list">
 				<el-button type="plain" @click="back">Back</el-button>
 			</router-link>
 		</el-header>
@@ -13,26 +13,17 @@
 				:model="formLabelAlign"
 				style="max-width: 460px"
 			>
-				<el-form-item label="考试名称">
-					<el-input v-model="examlist.examname" />
+				<el-form-item label="试卷名称">
+					<el-input v-model="paperlist.papername" />
 				</el-form-item>
-				<el-form-item label="考试时长">
-					<el-input v-model="examlist.examduration" />
-				</el-form-item>
-
-				<el-form-item label="考试总分">
-					<el-input v-model="examlist.examtotalscore" />
+				<el-form-item label="试卷时长">
+					<el-input v-model="paperlist.paperduration" />
 				</el-form-item>
 
-				<el-form-item label="考试开始时间">
-					<el-input v-model="examlist.examstart" />
+				<el-form-item label="试卷总分">
+					<el-input v-model="paperlist.papertotalscore" />
 				</el-form-item>
-				<el-form-item label="考试结束时间">
-					<el-input v-model="examlist.examend" />
-				</el-form-item>
-				<el-form-item label="考试试卷名称">
-					<el-input v-model="examlist.papername" />
-				</el-form-item>
+
 				<el-form-item>
 					<el-button class="SubmitButton" type="primary" @click="onSubmit"
 						>保存</el-button
@@ -49,26 +40,20 @@
 <script setup>
 import { reactive } from "vue";
 import { ElMessage } from "element-plus";
-import { insertExamination } from "../../../api/exam";
-const examlist = reactive({
-	examid: "",
-	examname: "",
-	examduration: "",
-	examtotalscore: "",
-	examstart: "",
-	examend: "",
+import { insertPaper } from "../../../api/exam";
+const paperlist = reactive({
+	paperid: "",
 	papername: "",
+	paperduration: "",
+	papertotalscore: "",
 });
 const onSubmit = () => {
-	console.log(examlist);
+	console.log(paperlist);
 	var data = {
-		examSessionId: examlist.examid,
-		examName: examlist.examname,
-		paperDuration: examlist.examduration,
-		paperTotalScore: examlist.examtotalscore,
-		examSessionStartTime: examlist.examstart,
-		examSessionEndTime: examlist.examend,
-		paperName: examlist.papername,
+		paperId: paperlist.paperid,
+		paperName: paperlist.papername,
+		paperDuration: paperlist.paperduration,
+		paperTotalScore: paperlist.papertotalscore,
 	};
 	console.log("data", data);
 	insert(data).then(() => {
@@ -79,7 +64,7 @@ const onSubmit = () => {
 	});
 };
 const insert = async (val) => {
-	let value = await insertExamination(val).then((res) => {
+	let value = await insertPaper(val).then((res) => {
 		res.data;
 	});
 	console.log("val", value);

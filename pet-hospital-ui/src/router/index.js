@@ -77,6 +77,52 @@ const routes = [
 			},
 		],
 	},
+	// 考试管理
+	{
+		path: "/exams",
+		component: Layout,
+		redirect: "/exams/list",
+		children: [
+			{
+				path: "list",
+				component: () => import("@/views/System/Exams/ExamList"),
+				beforeEnter: myBeforeEnter,
+			},
+			{
+				path: "add",
+				component: () => import("@/views/System/Exams/ExamAdd"),
+				beforeEnter: myBeforeEnter,
+			},
+			{
+				path: "update",
+				component: () => import("@/views/System/Exams/ExamUpdate"),
+				beforeEnter: myBeforeEnter,
+			},
+		],
+	},
+	// 试卷管理
+	{
+		path: "/paper",
+		component: Layout,
+		redirect: "/paper/list",
+		children: [
+			{
+				path: "list",
+				component: () => import("@/views/System/Paper/PaperList"),
+				beforeEnter: myBeforeEnter,
+			},
+			{
+				path: "add",
+				component: () => import("@/views/System/Paper/PaperAdd"),
+				beforeEnter: myBeforeEnter,
+			},
+			{
+				path: "update",
+				component: () => import("@/views/System/Paper/PaperUpdate"),
+				beforeEnter: myBeforeEnter,
+			},
+		],
+	},
 	// 档案管理
 	{
 		path: "/archive",

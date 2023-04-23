@@ -2,9 +2,9 @@
 	<div class="app-container home">
 		<el-container>
 			<el-header>
-				<el-form :inline="true" :model="examlist" class="search">
-					<el-form-item label="考试名称">
-						<el-input v-model="examlist.examname" placeholder="考试名称" />
+				<el-form :inline="true" :model="paperlist" class="search">
+					<el-form-item label="试卷名称">
+						<el-input v-model="paperlist.papername" placeholder="试卷名称" />
 					</el-form-item>
 					<el-form-item>
 						<el-button type="primary" @click="onSubmit">搜索</el-button>
@@ -16,7 +16,7 @@
 					<el-container>
 						<el-header>
 							<el-form-item class="button">
-								<router-link to="/exams/add">
+								<router-link to="/paper/add">
 									<el-button class="AddButton" type="primary">新增</el-button>
 								</router-link>
 							</el-form-item>
@@ -30,36 +30,25 @@
 								@selection-change="handleSelectionChange"
 							>
 								<el-table-column type="selection" width="55" />
-								<el-table-column prop="examname" label="考试名称" width="120" />
-								<el-table-column
-									prop="examduration"
-									label="考试时长"
-									width="110"
-								/>
-								<el-table-column
-									prop="examtotalscore"
-									label="考试总分"
-									width="110"
-								/>
-								<el-table-column
-									prop="examstart"
-									label="考试开始时间"
-									width="170"
-								/>
-								<el-table-column
-									prop="examend"
-									label="考试结束时间"
-									width="170"
-								/>
 								<el-table-column
 									prop="papername"
-									label="考试试卷名称"
-									width="120"
+									label="试卷名称"
+									width="200"
+								/>
+								<el-table-column
+									prop="paperduration"
+									label="试卷时长"
+									width="130"
+								/>
+								<el-table-column
+									prop="papertotalscore"
+									label="试卷总分"
+									width="130"
 								/>
 
 								<el-table-column label="操作" width="200">
 									<template #default="scope">
-										<router-link to="/exams/update">
+										<router-link to="/paper/update">
 											<el-button
 												size="small"
 												@click="handleEdit(scope.$index, scope.row)"
@@ -74,6 +63,18 @@
 										>
 									</template>
 								</el-table-column>
+
+								<el-table-column label="查看试卷内容" width="200">
+									<template #default="scope">
+										<router-link to="/exams/update">
+											<el-button
+												size="small"
+												@click="handleView(scope.$index, scope.row)"
+												>查看</el-button
+											>
+										</router-link>
+									</template>
+								</el-table-column>
 							</el-table>
 						</el-main>
 					</el-container>
@@ -84,21 +85,23 @@
 </template>
 <script setup>
 import { onMounted, reactive, ref } from "vue";
-import { getExamList, deleteExaminationById, getExamByName } from "@/api/exam";
+import {
+	getPaperList,
+	deleteExaminationById,
+	getPaperByName,
+} from "@/api/exam";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const loading = ref();
 
 // let tableData = reactive([]);
-const examlist = reactive({
-	id: "",
-	examname: "",
+const paperlist = reactive({
 	examrealid: "",
-	examduration: "",
-	examtotalscore: "",
-	examstart: "",
-	examend: "",
+
+	paperid: "",
 	papername: "",
+	paperduration: "",
+	papertotalscore: "",
 });
 const tableData = ref([]);
 
@@ -112,17 +115,14 @@ const handleSelectionChange = (val) => {
 const getAll = async () => {
 	tableData.value = [];
 	loading.value = true;
-	let data = await getExamList().then((res) => res.data);
+	let data = await getPaperList().then((res) => res.data);
 	data.examSessionList.forEach((item) => {
 		var value = {
-			id: item.examSessionId,
-			examname: item.examSessionPaper.paperExam.examName,
 			examrealid: item.examSessionPaper.paperExam.examId,
-			examduration: item.examSessionPaper.paperDuration,
-			examtotalscore: item.examSessionPaper.paperTotalScore,
-			examstart: item.examSessionStartTime,
-			examend: item.examSessionEndTime,
+			paperid: item.examSessionPaper.paperId,
 			papername: item.examSessionPaper.paperName,
+			paperduration: item.examSessionPaper.paperDuration,
+			papertotalscore: item.examSessionPaper.paperTotalScore,
 		};
 		tableData.value.push(value);
 	});
@@ -131,43 +131,37 @@ const getAll = async () => {
 
 const handleDelete = (val) => {
 	console.log("val", val);
-	deleteExam(val.examrealid).then(() => {
-		tableData.value = [];
+	deletePaper(val.examrealid).then(() => {
+		tableData = reactive([]);
 		getAll();
 	});
 };
 // 删除接口
-const deleteExam = async (examrealid) => {
+const deletePaper = async (examrealid) => {
 	await deleteExaminationById(examrealid).then((res) =>
 		console.log("res", res)
 	);
 };
 const onSubmit = async () => {
 	// console.log("submit!");
-	if (examlist.examname === "") return;
+	if (paperlist.papername === "") return;
 	tableData.value = [];
 	loading.value = true;
-	const data = await getExamByName(examlist.examname).then((res) => res.data);
+	const data = await getPaperByName(paperlist.papername).then(
+		(res) => res.data
+	);
 	data.examSessionList.forEach((item) => {
 		var value = {
-			examname: item.examSessionPaper.paperExam.examName,
-			examrealid: item.examSessionPaper.paperExam.examId,
-			examduration: item.examSessionPaper.paperDuration,
-			examtotalscore: item.examSessionPaper.paperTotalScore,
-			examstart: item.examSessionStartTime,
-			examend: item.examSessionEndTime,
+			paperid: item.examSessionPaper.paperId,
 			papername: item.examSessionPaper.paperName,
+			paperduration: item.examSessionPaper.paperDuration,
+			papertotalscore: item.examSessionPaper.paperTotalScore,
 		};
 		tableData.value.push(value);
 	});
 	loading.value = false;
 
 	console.log("tabledata", tableData);
-};
-const handleEdit = (examSessionList) => {
-	const id = examSessionList.id;
-	router.push(`/exams/update?examSessionId=${id}`);
-	//router.push({ path: "/exams/update", query: { id: id } });
 };
 </script>
 <style lang="scss" scoped>
