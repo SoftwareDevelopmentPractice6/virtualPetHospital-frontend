@@ -22,16 +22,20 @@
       </div>
       <!-- 病名表格 -->
       <div class="table-container">
+        <!-- key1 和 item1 分别为病种及其对应的病例列表 -->
         <div
           :id="item1[0]"
           class="table"
           v-for="(item1, key1) in diseaseDatas.diseaseMap"
           :key="key1"
         >
+          <!-- 病种名 -->
           <div class="title">
+            <!-- item1[0] 为 diseaseNameCategory，即病种名 -->
             <span>{{ item1[0] }}</span>
           </div>
           <div class="item-container">
+            <!-- item1[1] 为 diseaseNameContent，即病例名 -->
             <div
               class="item"
               v-for="(item2, key2) in item1[1]"
@@ -39,6 +43,7 @@
               @click="handleClick(item2)"
             >
               <div class="item-center">
+                <!-- 病例名 -->
                 {{ item2.diseaseNameContent }}
               </div>
             </div>
@@ -57,8 +62,9 @@ import { useRouter } from "vue-router";
 
 let selectValue = ref("");
 let diseaseData = null; // 疾病列表
+
 let diseaseDatas = reactive({
-  diseaseMap: new Map(), // 病种->病例数组
+  diseaseMap: new Map(), // 为 “从病种映射到病例” 的 map 数组
   diseaseSet: new Set(), // 病种集合
   options: [], // select options
 });
@@ -71,19 +77,23 @@ getDisease()
     // 处理数据
     for (let item of diseaseData) {
       const curCate = item.diseaseNameCategory;
-      let value = [];
+      let value = []; // 为当前病种下所有病例组成的数组
+      // 如果当前病种未遍历过
       if (!diseaseDatas.diseaseSet.has(curCate)) {
+        // 设置该病种对应的 selector 选择器数据
         diseaseDatas.options.push({
           value: curCate,
           label: curCate,
         });
         diseaseDatas.diseaseSet.add(curCate);
-        value = new Array(item);
-      } else {
-        value = diseaseDatas.diseaseMap.get(curCate);
-        value.push(item);
+        value = new Array(item); // 新建数组
       }
-      diseaseDatas.diseaseMap.set(curCate, value);
+      // 如果当前病种遍历过
+      else {
+        value = diseaseDatas.diseaseMap.get(curCate); // 该病种对应的病例数组
+        value.push(item); // 无需新建数组，在该病种对应的数组中加入当前病例即可
+      }
+      diseaseDatas.diseaseMap.set(curCate, value); // 设置当前病种映射的病例数组
     }
   })
   .catch((error) => {
