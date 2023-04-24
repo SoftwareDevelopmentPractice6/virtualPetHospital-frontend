@@ -50,6 +50,7 @@
 </template>
 
 <script setup>
+import { featureStore } from "@/store/feature";
 import { getFeature } from "@/api/system";
 import { ElMessage } from "element-plus";
 import { onMounted, reactive, ref } from "vue";
@@ -88,7 +89,7 @@ const cardArr = reactive([
   },
   {
     title: "Doctor",
-    role: "医生",
+    role: "医师",
     content: [
       {
         place: "诊室",
@@ -125,10 +126,12 @@ const currentRow = ref();
 const singleTableRef = ref();
 
 const tableData = reactive([]);
+let featureListData = reactive([]);
 
 let spanArr = reactive([]);
 let pos = ref();
 
+const store = featureStore();
 const router = useRouter();
 
 const routerPush = (role) => {
@@ -139,7 +142,6 @@ const routerPush = (role) => {
 };
 
 const getSpanArr = (data) => {
-  console.log("data", data);
   for (var i = 0; i < data.length; i++) {
     if (i === 0) {
       spanArr.push(1);
@@ -187,6 +189,15 @@ const handleNavigate = () => {
     ElMessage.warning("请选择一个操作！");
   } else {
     dialogTableVisible.value = false;
+    // 共享当前点击的功能信息对象
+    const funcId = currentRow.value.id;
+    for (let item of featureListData) {
+      if (item.funcId === funcId) {
+        store.setCurFeature(item);
+        break;
+      }
+    }
+    // 跳转至详情页
     if (curIndex.value === 0) {
       routerPush("receptionist");
     } else if (curIndex.value === 1) {
@@ -216,8 +227,11 @@ const getTableData = () => {
     .then((res) => {
       const featureList = res.data.featureList;
       console.log("获取功能列表成功", featureList);
+      featureListData = featureList;
+      // 共享功能信息列表
+      // store.setFeatureList(featureList);
       // 三个角色数组
-      let receptionArr = [],
+      let receptionistArr = [],
         assistantArr = [],
         doctorArr = [];
       for (let item of featureList) {
@@ -226,9 +240,10 @@ const getTableData = () => {
           name: item.funcName,
           room: item.featureRoom.roomName,
           discription: item.funcDescription,
+          id: item.funcId,
         };
         if (role === "前台") {
-          receptionArr.push(curItem);
+          receptionistArr.push(curItem);
         } else if (role === "医助") {
           assistantArr.push(curItem);
         } else {
@@ -236,12 +251,14 @@ const getTableData = () => {
         }
       }
       // 三个角色数组按照房间名排序
-      receptionArr.sort(compareRoomName);
+      receptionistArr.sort(compareRoomName);
       assistantArr.sort(compareRoomName);
       doctorArr.sort(compareRoomName);
-      tableData.push(receptionArr);
+      tableData.push(receptionistArr);
       tableData.push(assistantArr);
       tableData.push(doctorArr);
+      // 共享分组后的功能列表
+      store.setTableData(tableData);
     })
     .catch((err) => {
       console.log("获取功能列表发生错误", err);
