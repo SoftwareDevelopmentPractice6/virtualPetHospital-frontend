@@ -17,9 +17,9 @@
           >
             <el-option
               v-for="item in caseData.options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              :key="item"
+              :label="item"
+              :value="item"
             />
           </el-select>
         </div>
@@ -428,10 +428,7 @@ async function getCaseList() {
 
       for (let i in list) {
         // 初始化 select 数据
-        caseData.options.push({
-          value: "病例 " + (Number(i) + 1),
-          label: "病例 " + (Number(i) + 1),
-        });
+        caseData.options.push("病例 " + (Number(i) + 1));
 
         // 处理图片视频数据
         handleData(list[i]);
@@ -577,14 +574,14 @@ const handleData = (item) => {
 };
 
 // 处理 select 选择
-const handleSelect = (selectedCase) => {
-  curIndex = selectedCase[selectedCase.length - 1] - 1;
+const handleSelect = (selected) => {
+  curIndex = selected[selected.length - 1] - 1;
   let list = caseData.caseList;
   for (let i = 0; i < list.length; ++i) {
     caseData.caseList[i].flag = false;
   }
   caseData.caseList[curIndex].flag = true;
-  selectedCase.value = selectedCase;
+  selectedCase.value = selected;
 };
 
 const router = useRouter();
