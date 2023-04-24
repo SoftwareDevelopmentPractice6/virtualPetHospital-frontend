@@ -54,7 +54,7 @@
               </div>
               <div
                 class="image-wrapper subwrapper"
-                v-if="cards[index].diseaseName.length !== 0"
+                v-if="cards[index] && cards[index].diseaseName.length !== 0"
               >
                 <div class="title">图片信息：</div>
                 <div class="image-container">
@@ -80,7 +80,7 @@
               </div>
               <div
                 class="video-wrapper subwrapper"
-                v-if="videos[index].diseaseName.length !== 0"
+                v-if="videos[index] && videos[index].diseaseName.length !== 0"
               >
                 <div class="title">视频信息：</div>
                 <div class="allvideo" @click="navigateToAll(index, 'name')">
@@ -113,7 +113,7 @@
               </div>
               <div
                 class="image-wrapper subwrapper"
-                v-if="cards[index].admission.length !== 0"
+                v-if="cards[index] && cards[index].admission.length !== 0"
               >
                 <div class="title">图片信息：</div>
                 <div class="image-container">
@@ -139,7 +139,7 @@
               </div>
               <div
                 class="video-wrapper subwrapper"
-                v-if="videos[index].admission.length !== 0"
+                v-if="videos[index] && videos[index].admission.length !== 0"
               >
                 <div class="title">视频信息：</div>
                 <div
@@ -176,7 +176,7 @@
               </div>
               <div
                 class="image-wrapper subwrapper"
-                v-if="cards[index].caseCheck.length !== 0"
+                v-if="cards[index] && cards[index].caseCheck.length !== 0"
               >
                 <div class="title">图片信息：</div>
                 <div class="image-container">
@@ -202,7 +202,7 @@
               </div>
               <div
                 class="video-wrapper subwrapper"
-                v-if="videos[index].caseCheck.length !== 0"
+                v-if="videos[index] && videos[index].caseCheck.length !== 0"
               >
                 <div class="title">视频信息：</div>
                 <div
@@ -239,7 +239,7 @@
               </div>
               <div
                 class="image-wrapper subwrapper"
-                v-if="cards[index].diagnosticRes.length !== 0"
+                v-if="cards[index] && cards[index].diagnosticRes.length !== 0"
               >
                 <div class="title">图片信息：</div>
                 <div class="image-container">
@@ -265,7 +265,7 @@
               </div>
               <div
                 class="video-wrapper subwrapper"
-                v-if="videos[index].diagnosticRes.length !== 0"
+                v-if="videos[index] && videos[index].diagnosticRes.length !== 0"
               >
                 <div class="title">视频信息：</div>
                 <div
@@ -302,7 +302,9 @@
               </div>
               <div
                 class="image-wrapper subwrapper"
-                v-if="cards[index].treatmentProgram.length !== 0"
+                v-if="
+                  cards[index] && cards[index].treatmentProgram.length !== 0
+                "
               >
                 <div class="title">图片信息：</div>
                 <div class="image-container">
@@ -328,7 +330,9 @@
               </div>
               <div
                 class="video-wrapper subwrapper"
-                v-if="videos[index].treatmentProgram.length !== 0"
+                v-if="
+                  videos[index] && videos[index].treatmentProgram.length !== 0
+                "
               >
                 <div class="title">视频信息：</div>
                 <div
@@ -367,26 +371,9 @@ import { useRouter } from "vue-router";
 import { getFileLists } from "@/api/file";
 
 // 图片列表
-let cards = reactive([
-  {
-    admission: [],
-    caseCheck: [],
-    diagnosticRes: [],
-    diseaseName: [],
-    treatmentProgram: [],
-  },
-]);
-
+let cards = reactive([]);
 // 视频列表
-let videos = reactive([
-  {
-    admission: [],
-    caseCheck: [],
-    diagnosticRes: [],
-    diseaseName: [],
-    treatmentProgram: [],
-  },
-]);
+let videos = reactive([]);
 
 // 病例数据
 let caseData = reactive({
