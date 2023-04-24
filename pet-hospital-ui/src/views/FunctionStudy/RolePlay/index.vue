@@ -164,9 +164,10 @@ const handleCurrentChange = (val) => {
   currentRow.value = val;
 };
 
-const objectSpanMethod = ({ row, column, rowIndex, columnIndex }) => {
-  if (columnIndex === 0) {
-    const _row = spanArr[rowIndex];
+// 将 selector 选择器中的功能按科室进行分组
+const objectSpanMethod = (obj) => {
+  if (obj.columnIndex === 0) {
+    const _row = spanArr[obj.rowIndex];
     const _col = _row > 0 ? 1 : 0;
     return {
       rowspan: _row,
@@ -199,11 +200,11 @@ const handleNavigate = () => {
     }
     // 跳转至详情页
     if (curIndex.value === 0) {
-      routerPush("receptionist");
+      routerPush("前台");
     } else if (curIndex.value === 1) {
-      routerPush("assistant");
+      routerPush("医助");
     } else {
-      routerPush("doctor");
+      routerPush("医生");
     }
   }
 };
@@ -229,7 +230,7 @@ const getTableData = () => {
       console.log("获取功能列表成功", featureList);
       featureListData = featureList;
       // 共享功能信息列表
-      // store.setFeatureList(featureList);
+      store.setFeatureList(featureList);
       // 三个角色数组
       let receptionistArr = [],
         assistantArr = [],
