@@ -4,14 +4,14 @@ import { defineStore } from "pinia";
 
 export const featureStore = defineStore("feature", {
   state: () => ({
-    // featureList: [],
+    featureList: [],
     curFeature: {},
     tableData: [],
   }),
   actions: {
-    // setFeatureList(featureList) {
-    //   this.featureList = featureList;
-    // },
+    setFeatureList(featureList) {
+      this.featureList = featureList;
+    },
     setCurFeature(curFeature) {
       this.curFeature = curFeature;
     },

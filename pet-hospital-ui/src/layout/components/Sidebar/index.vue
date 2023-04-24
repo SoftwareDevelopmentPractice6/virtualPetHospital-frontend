@@ -51,7 +51,7 @@ const sidebar = store.sidebar;
 let isCollapse = computed(() => !sidebar.opened); // 侧边栏是否展开
 
 let isUnique = ref(false); // 是否只能展开一个子目录
-let openeds = reactive(); // 默认展开的子目录 index
+let openeds = reactive([]); // 默认展开的子目录 index
 if (role === "student") {
   openeds = ["1", "2", "3"];
 } else if (role === "teacher") {
