@@ -1,101 +1,83 @@
 <template>
-  <div class="app-container home">
-    <el-container>
-      <el-header>
-        <el-form :inline="true" :model="medicine" class="search">
-          <!-- <el-form-item label="药品类别">
-            <el-select v-model="medicine.classification" placeholder="药品类别">
-              <el-option label="抗生素" value="传染病" />
-              <el-option label="口腔用药" value="寄生虫病" />
-              <el-option label="抗菌药物" value="内科" />
-              <el-option label="益生菌制剂" value="外产科" />
-              <el-option label="" value="常用手术" />
-              <el-option label="免疫" value="免疫" />
-            </el-select>
-          </el-form-item> -->
-          <el-form-item label="药品名称">
-            <el-input v-model="medicine.name" placeholder="药品名称" />
+  <div class="medicine-wrapper">
+    <div class="medicine-container">
+      <!-- 搜索框 -->
+      <div class="header-wrapper wrapper">
+        <el-form :inline="true" :model="cases" class="search-form">
+          <!--药名 -->
+          <el-form-item label="疾病名称:">
+            <el-input v-model="medicine.name" placeholder="请输入药品名称" />
           </el-form-item>
+          <!-- 搜索 -->
           <el-form-item>
             <el-button type="primary" @click="onSubmit">搜索</el-button>
+            <el-button type="info" @click="resetForm">重置</el-button>
           </el-form-item>
         </el-form>
-      </el-header>
-      <el-main class="main">
-        <div class="common-layout">
-          <el-container>
-            <el-header>
-              <el-form-item class="button">
-                <router-link to="/medicine/add">
-                  <el-button class="AddButton" type="primary">新增</el-button>
-                </router-link>
+      </div>
+      <!-- 操作按键 -->
+      <div class="btns-wrapper wrapper">
+        <div class="btn-container">
+          <router-link to="/medicine/add">
+            <el-button class="AddButton" type="success" plain>新增</el-button>
+          </router-link>
+        </div>
+        <div class="btn-container"></div>
+        <div class="btn-container">
+          <el-button
+            class="DeleteButton"
+            @click="handleMultiDelete"
+            type="danger"
+            plain
+            >删除</el-button
+          >
+        </div>
+      </div>
+      <!-- 药品表格 -->
+      <div class="table-wrapper wrapper">
+        <div class="table-container">
+          <el-table
+            ref="multipleTableRef"
+            :data="tableData"
+            v-loading="loading"
+            height="500px"
+            :header-cell-style="{ 'text-align': 'center' }"
+            :cell-style="{ 'text-align': 'center' }"
+          >
+            <el-table-column type="selection" width="55" />
+            <el-table-column prop="id" label="药品编号" width="100" />
+            <el-table-column prop="name" label="药品名称" width="100" />
+            <el-table-column
+              prop="classification"
+              label="药品类别"
+              width="100"
+            />
+            <el-table-column prop="price" label="药品价格" width="100" />
+            <el-table-column prop="manufacturer" label="生产厂家" width="100" />
+            <el-table-column
+              prop="specifications"
+              label="药品规格"
+              width="100"
+            />
+            <el-table-column prop="vaccine" label="是否是疫苗" width="100" />
+            <el-table-column label="操作" width="200">
+              <template #default="scope">
+                <el-button size="small" @click="handleEdit(scope.row)">
+                  编辑
+                </el-button>
 
-                <router-link to="/medicine/add">
-                  <el-button class="ChangeButton" type="primary"
-                    >修改</el-button
-                  >
-                </router-link>
-
-                <el-button class="DeleteButton" @click="open" type="primary"
+                <el-button
+                  size="small"
+                  type="danger"
+                  @click="handleDelete(scope.row)"
                   >删除</el-button
                 >
-              </el-form-item>
-            </el-header>
-            <el-main class="inmain">
-              <el-table
-                v-loading="loading"
-                ref="multipleTableRef"
-                :data="tableData"
-                style="width: 100%"
-                height="400px"
-                @selection-change="handleSelectionChange"
-              >
-                <el-table-column type="selection" width="55" />
-                <!-- <el-table-column prop="id" label="药品编号" width="100" /> -->
-                <el-table-column prop="name" label="药品名称" width="100" />
-                <el-table-column
-                  prop="classification"
-                  label="药品类别"
-                  width="100"
-                />
-                <el-table-column prop="price" label="药品价格" width="100" />
-                <el-table-column
-                  prop="manufacturer"
-                  label="生产厂家"
-                  width="100"
-                />
-                <el-table-column
-                  prop="specifications"
-                  label="药品规格"
-                  width="120"
-                />
-                <el-table-column
-                  prop="vaccine"
-                  label="是否是疫苗"
-                  width="100"
-                />
-                <el-table-column label="操作" width="250">
-                  <template #default="scope">
-                    <!-- <router-link to="/medicine/update"> -->
-                    <el-button size="small" @click="handleEdit(scope.row)">
-                      编辑
-                    </el-button>
-                    <!-- </router-link> -->
-
-                    <el-button
-                      size="small"
-                      type="danger"
-                      @click="handleDelete(scope.row)"
-                      >删除</el-button
-                    >
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-main>
-          </el-container>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
-      </el-main>
-    </el-container>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -104,7 +86,7 @@ import { onMounted, reactive, ref } from "vue";
 import { getMedicine, deleteById, getMedicineByName } from "@/api/system";
 import { useRouter } from "vue-router";
 const router = useRouter();
-
+const multipleTableRef = ref(); // 药品表格引用
 const loading = ref();
 
 const medicine = reactive({
@@ -122,10 +104,7 @@ onMounted(() => {
   getAll();
 });
 
-const handleSelectionChange = (val) => {
-  console.log(val);
-};
-// 获取全部信息
+// 获取全部药品信息
 const getAll = async () => {
   tableData.value = [];
   loading.value = true;
@@ -195,57 +174,63 @@ const handleEdit = (row) => {
   const name = row.name;
   router.push(`/medicine/update?medicineName=${name}`);
 };
+const handleMultiDelete = async () => {
+  let rows = multipleTableRef.value.getSelectionRows();
+  for (let item of rows) {
+    await deleteById(item.id)
+      .then((res) => console.log("删除病例成功", res))
+      .catch((err) => console.log("删除病例失败", err));
+  }
+  getAll();
+};
+const resetForm = () => {
+  medicine.id = "";
+  medicine.name = "";
+  medicine.classification = "";
+  medicine.price = "";
+  medicine.manufacturer = "";
+  medicine.specifications = "";
+  medicine.vaccine = "";
+};
 </script>
 
 <style lang="scss" scoped>
-.page {
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  padding: 30px 0px 0px 0px;
-}
-.search {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-.main {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 10px 10px 0px 10px;
-}
-.inmain {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 10px 0px 0px 0px;
-}
-.button {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-.AddButton {
-  width: 80px;
-  height: 40px;
-  margin: 0px 90px 30px 30px;
-}
-.DeleteButton {
-  width: 80px;
-  height: 40px;
-  margin: 0px 30px 30px 90px;
-}
-.ChangeButton {
-  width: 80px;
-  height: 40px;
-  margin: 0px 60px 30px 60px;
-}
-body {
-  margin: 0;
-}
-.example-showcase .el-loading-mask {
-  z-index: 9;
+.medicine-wrapper {
+  width: 100%;
+  height: calc(100vh - 50px);
+  padding: 30px;
+  .medicine-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    .wrapper {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .header-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 25px;
+      .search-form {
+        width: 480px;
+        height: 32px;
+      }
+    }
+    .btns-wrapper {
+      margin-left: 80px;
+      .btn-container {
+        display: inline-block;
+        margin-right: 8px;
+      }
+    }
+    .table-wrapper {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      .table-container {
+        width: 95%;
+      }
+    }
+  }
 }
 </style>

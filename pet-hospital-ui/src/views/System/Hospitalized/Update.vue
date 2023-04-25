@@ -36,7 +36,7 @@
         <el-form-item label="收费价格">
           <el-input v-model="admission.carePrice" />
         </el-form-item>
-        <el-form-item label="病房名字">
+        <el-form-item label="病房位置">
           <el-input v-model="admission.admissionRoom.roomName" />
         </el-form-item>
         <el-form-item label="备注">
@@ -126,7 +126,6 @@ const onSubmit = async () => {
     await updateAdmission(params);
   } else {
     await insertAdmission(params);
-    console.log("这里是新增");
   }
   ElMessage.success("提交成功！");
   loading.value = false;
