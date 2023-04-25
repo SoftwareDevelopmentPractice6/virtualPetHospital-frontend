@@ -1,86 +1,75 @@
 <template>
-  <div class="app-container home">
-    <el-container>
-      <el-header>
-        <el-form :inline="true" :model="examine" class="search">
-          <!-- <el-form-item label="疾病类别">
-            <el-select v-model="examine.classification" placeholder="疾病类别">
-              <el-option label="传染病" value="传染病" />
-              <el-option label="寄生虫病" value="寄生虫病" />
-              <el-option label="内科" value="内科" />
-              <el-option label="外产科" value="外产科" />
-              <el-option label="常用手术" value="常用手术" />
-              <el-option label="免疫" value="免疫" />
-            </el-select>
-          </el-form-item> -->
+  <div class="laboratory-wrapper">
+    <div class="laboratory-container">
+      <!-- 模糊搜索框 -->
+      <div class="header-wrapper wrapper">
+        <el-form :inline="true" :model="charge" class="search-form">
+          <!-- 化验项目名称-->
           <el-form-item label="化验项目名称">
             <el-input v-model="examine.name" placeholder="化验项目名称" />
           </el-form-item>
+          <!-- 搜索 -->
           <el-form-item>
             <el-button type="primary" @click="onSubmit">搜索</el-button>
+            <el-button type="info" @click="resetForm">重置</el-button>
           </el-form-item>
         </el-form>
-      </el-header>
-      <el-main class="main">
-        <div class="common-layout">
-          <el-container>
-            <el-header>
-              <el-form-item class="button">
-                <router-link to="/laboratory/add">
-                  <el-button class="AddButton" type="primary">新增</el-button>
-                </router-link>
+      </div>
+      <!-- 操作按键 -->
+      <div class="btns-wrapper wrapper">
+        <div class="btn-container">
+          <router-link to="/laboratory/add">
+            <el-button class="AddButton" type="success" plain>新增</el-button>
+          </router-link>
+        </div>
+        <div class="btn-container"></div>
+        <div class="btn-container">
+          <el-button
+            class="DeleteButton"
+            @click="handleMultiDelete"
+            type="danger"
+            plain
+            >删除</el-button
+          >
+        </div>
+      </div>
 
-                <router-link to="/laboratory/add">
-                  <el-button class="ChangeButton" type="primary"
-                    >修改</el-button
-                  >
-                </router-link>
+      <!-- 收费表格 -->
+      <div class="table-wrapper wrapper">
+        <div class="table-container">
+          <el-table
+            ref="multipleTableRef"
+            :data="tableData"
+            v-loading="loading"
+            height="500px"
+            :header-cell-style="{ 'text-align': 'center' }"
+            :cell-style="{ 'text-align': 'center' }"
+          >
+            <el-table-column type="selection" width="55" />
 
-                <el-button class="DeleteButton" @click="open" type="primary"
+            <el-table-column prop="id" label="项目编号" width="200" />
+            <el-table-column prop="name" label="项目名称" width="250" />
+
+            <el-table-column prop="price" label="项目价格" width="250" />
+            <el-table-column prop="position" label="项目地点" width="250" />
+            <el-table-column label="操作" width="250">
+              <template #default="scope">
+                <el-button size="small" @click="handleEdit(scope.row)"
+                  >编辑</el-button
+                >
+
+                <el-button
+                  size="small"
+                  type="danger"
+                  @click="handleDelete(scope.row)"
                   >删除</el-button
                 >
-              </el-form-item>
-            </el-header>
-            <el-main class="inmain">
-              <el-table
-                ref="multipleTableRef"
-                :data="tableData"
-                style="width: 100%"
-                height="400px"
-                @selection-change="handleSelectionChange"
-              >
-                <el-table-column type="selection" width="55" />
-                <!-- <el-table-column prop="id" label="项目编号" width="200" /> -->
-                <el-table-column prop="name" label="项目名称" width="250" />
-                <!-- <el-table-column
-                  prop="classification"
-                  label="疾病类型"
-                  width="150"
-                /> -->
-                <el-table-column prop="price" label="项目价格" width="250" />
-                <el-table-column prop="position" label="项目地点" width="250" />
-                <el-table-column label="操作" width="250">
-                  <template #default="scope">
-                    <!-- <router-link to="/laboratory/update"> -->
-                    <el-button size="small" @click="handleEdit(scope.row)"
-                      >编辑</el-button
-                    >
-                    <!--  </router-link> -->
-
-                    <el-button
-                      size="small"
-                      type="danger"
-                      @click="handleDelete(scope.row)"
-                      >删除</el-button
-                    >
-                  </template>
-                </el-table-column>
-              </el-table>
-            </el-main>
-          </el-container>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
-      </el-main>
-    </el-container>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -88,7 +77,7 @@
 import { onMounted, reactive, ref } from "vue";
 import { getExamine, deleteExamineById, getExamineByName } from "@/api/system";
 import { useRouter } from "vue-router";
-
+const multipleTableRef = ref(); // 病名表格引用
 const router = useRouter();
 const loading = ref();
 
@@ -103,9 +92,7 @@ const tableData = ref([]);
 onMounted(() => {
   getAll();
 });
-const handleSelectionChange = (val) => {
-  console.log(val);
-};
+
 // 获取全部信息
 const getAll = async () => {
   let data = await getExamine().then((res) => res.data);
@@ -155,51 +142,63 @@ const handleEdit = (row) => {
   const name = row.name;
   router.push(`/laboratory/update?examineName=${name}`);
 };
+// 批量删除
+const handleMultiDelete = async () => {
+  let rows = multipleTableRef.value.getSelectionRows();
+  for (let item of rows) {
+    await deleteExamineById(item.id)
+      .then((res) => console.log("删除化验项目成功", res))
+      .catch((err) => console.log("删除化验项目失败", err));
+  }
+  getAll();
+};
+
+// 重置
+const resetForm = () => {
+  examine.id = "";
+  examine.name = "";
+  examine.price = "";
+  examine.position = "";
+};
 </script>
 
 <style lang="scss" scoped>
-.page {
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  padding: 30px 0px 0px 0px;
-}
-.search {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-.main {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 10px 10px 0px 10px;
-}
-.inmain {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 10px 0px 0px 0px;
-}
-.button {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-.AddButton {
-  width: 80px;
-  height: 40px;
-  margin: 0px 90px 30px 30px;
-}
-.DeleteButton {
-  width: 80px;
-  height: 40px;
-  margin: 0px 30px 30px 90px;
-}
-.ChangeButton {
-  width: 80px;
-  height: 40px;
-  margin: 0px 60px 30px 60px;
+.laboratory-wrapper {
+  width: 100%;
+  height: calc(100vh - 50px);
+  padding: 30px;
+  .laboratory-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    .wrapper {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .header-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 25px;
+      .search-form {
+        width: 500px;
+        height: 32px;
+      }
+    }
+    .btns-wrapper {
+      margin-left: 80px;
+      .btn-container {
+        display: inline-block;
+        margin-right: 8px;
+      }
+    }
+    .table-wrapper {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      .table-container {
+        width: 95%;
+      }
+    }
+  }
 }
 </style>

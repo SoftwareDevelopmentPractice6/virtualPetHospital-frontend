@@ -22,9 +22,17 @@
         <el-main>
           <div class="demo-collapse">
             <el-collapse v-model="activeNames">
+              <el-collapse-item title="疾病" name="疾病信息">
+                <InputFile
+                  :filePath="submitInfo.medicalCaseDiseaseName.diseaseNamePhoto"
+                  v-model:value="
+                    submitInfo.medicalCaseDiseaseName.diseaseNameContent
+                  "
+                />
+              </el-collapse-item>
               <el-collapse-item title="接诊" name="接诊">
                 <InputFile
-                  :filePath="`${diseaseNameId}_medicalCaseAdmission`"
+                  :filePath="submitInfo.medicalCaseAdmission.admissionPhoto"
                   v-model:value="
                     submitInfo.medicalCaseAdmission.admissionContent
                   "
@@ -32,7 +40,7 @@
               </el-collapse-item>
               <el-collapse-item title="病例检查" name="病例检查">
                 <InputFile
-                  :filePath="`${diseaseNameId}_medicalCaseCaseCheck`"
+                  :filePath="submitInfo.medicalCaseCaseCheck.caseCheckPhoto"
                   v-model:value="
                     submitInfo.medicalCaseCaseCheck.caseCheckContent
                   "
@@ -40,7 +48,9 @@
               </el-collapse-item>
               <el-collapse-item title="诊断结果" name="诊断结果">
                 <InputFile
-                  :filePath="`${diseaseNameId}_medicalCaseDiagnosticResult`"
+                  :filePath="
+                    submitInfo.medicalCaseDiagnosticResult.diagnosticResultPhoto
+                  "
                   v-model:value="
                     submitInfo.medicalCaseDiagnosticResult
                       .diagnosticResultContent
@@ -49,7 +59,9 @@
               </el-collapse-item>
               <el-collapse-item title="治疗方案" name="治疗方案">
                 <InputFile
-                  :filePath="`${diseaseNameId}_medicalCaseTreatmentProgram`"
+                  :filePath="
+                    submitInfo.medicalCaseTreatmentProgram.treatmentProgramPhoto
+                  "
                   v-model:value="
                     submitInfo.medicalCaseTreatmentProgram
                       .treatmentProgramContent
@@ -66,6 +78,9 @@
       </el-main>
     </el-container>
   </div>
+  <!--   <pre>
+    {{ submitInfo.medicalCaseTreatmentProgram.treatmentProgramPhoto }}
+  </pre> -->
 </template>
 
 <script  setup>
@@ -100,6 +115,11 @@ const activeNames = ref(["接诊"]);
 const cancel = () => {
   router.back();
 };
+
+/* const val = submitInfo.medicalCaseTreatmentProgram.treatmentProgramPhoto;
+let vars = val.split('/')
+vars[2] = filepath.
+  let final = vars.join('/') */
 
 const onSubmit = async () => {
   const p = {
