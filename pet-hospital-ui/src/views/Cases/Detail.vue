@@ -12,16 +12,16 @@
       <div class="demo-collapse">
         <el-collapse v-model="activeNames">
           <el-collapse-item title="接诊" name="接诊">
-            <InputFile :filePath="filePaths.photos[0]" />
+            <InputFile :filePath="[filePaths.photos[0], filePaths.videos[0]]" />
           </el-collapse-item>
           <el-collapse-item title="病例检查" name="病例检查">
-            <InputFile :filePath="filePaths.photos[1]" />
+            <InputFile :filePath="[filePaths.photos[1], filePaths.videos[1]]" />
           </el-collapse-item>
           <el-collapse-item title="诊断结果" name="诊断结果">
-            <InputFile :filePath="filePaths.photos[2]" />
+            <InputFile :filePath="[filePaths.photos[2], filePaths.videos[2]]" />
           </el-collapse-item>
           <el-collapse-item title="治疗方案" name="治疗方案">
-            <InputFile :filePath="filePaths.photos[3]" />
+            <InputFile :filePath="[filePaths.photos[3], filePaths.videos[3]]" />
           </el-collapse-item>
         </el-collapse>
       </div>
