@@ -1,25 +1,15 @@
 <!--
  * @Author: pikapikapi pikapikapi_kaori@icloud.com
  * @Date: 2023-04-14 14:58:58
- * @LastEditors: pikapikapi pikapikapi_kaori@icloud.com
- * @LastEditTime: 2023-04-14 20:22:46
+ * @LastEditors: pikapikapikaori pikapikapi_kaori@icloud.com
+ * @LastEditTime: 2023-04-25 19:46:20
  * @FilePath: /virtualPetHospital-frontend/pet-hospital-ui/src/components/FileUpload.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div class="upload">
-    <el-upload
-      class="upload-demo"
-      action="/"
-      :http-request="selectFiles"
-      :on-preview="handlePreview"
-      multiple
-      drag
-      :on-remove="handleRemove"
-      :before-upload="beforeAvatarUpload"
-      :file-list="fileList"
-      list-type="picture"
-    >
+    <el-upload class="upload-demo" action="/" :http-request="selectFiles" :on-preview="handlePreview" multiple drag
+      :on-remove="handleRemove" :before-upload="beforeAvatarUpload" :file-list="fileList" list-type="picture">
       <el-icon class="el-icon--upload"><upload-filled /></el-icon>
       <div class="el-upload__text">拖拽文件或 <em>点击这里上传</em></div>
     </el-upload>
@@ -52,19 +42,23 @@ export default {
   },
   props: {
     filePath: {
-      type: String,
-      default: "",
+      type: Array,
+      default: function () {
+        return []
+      },
     },
   },
-  created() {
-    this.getHistoryPic();
+  watch: {
+    filePath: 'getHistoryFiles'
   },
   methods: {
-    async getHistoryPic() {
+    async getHistoryFiles() {
       if (!this.filePath) return;
-      const res = await getFileLists(this.filePath).then((res) => res.data);
-      if (res.filePathList.length === 0) return;
-      this.fileList = res.filePathList.map((item, inx) => {
+      const picRes = await getFileLists(this.filePath[0]).then((res) => res.data);
+      const vidRes = await getFileLists(this.filePath[1]).then((res) => res.data);
+      let res = picRes.filePathList.concat(vidRes.filePathList);
+      if (res.length === 0) return;
+      this.fileList = res.map((item, inx) => {
         const typeInx = item.lastIndexOf(".") + 1;
         const type = this.supportedPictureTypes.includes(item.slice(typeInx))
           ? "图片"
@@ -116,7 +110,7 @@ export default {
         console.log("file.filePath", file.filePath);
         await deleteFile(file.filePath);
       }
-      this.getHistoryPic();
+      this.getHistoryFiles();
     },
     handlePreview(file) {
       console.log(file);
@@ -124,14 +118,14 @@ export default {
     selectFiles(param) {
       const formData = new FormData();
       formData.append("file", param.file);
-      formData.append("filePath", this.filePath);
+      formData.append("filePath", this.supportedPictureTypes.includes(this.getFileSuffix(param.file.name).toLowerCase()) ? this.filePath[0] : this.filePath[1]);
       this.fileList.push(formData);
     },
     async onSubmit() {
       this.fileList.forEach(async (file) => {
         if (typeof file.url === "string") return;
         await uploadFile(file.get("file"), file.get("filePath"));
-        this.getHistoryPic();
+        this.getHistoryFiles();
       });
     },
   },
