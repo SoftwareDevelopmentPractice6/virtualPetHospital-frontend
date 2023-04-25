@@ -14,10 +14,7 @@
 				style="max-width: 460px"
 			>
 				<el-form-item label="问题类别">
-					<el-select v-model="questionlist.questiontype">
-						<el-option label="单选" value="单选" />
-						<el-option label="多选" value="多选" />
-					</el-select>
+					<el-input v-model="questionlist.questiontype" />
 				</el-form-item>
 
 				<el-form-item label="问题内容">

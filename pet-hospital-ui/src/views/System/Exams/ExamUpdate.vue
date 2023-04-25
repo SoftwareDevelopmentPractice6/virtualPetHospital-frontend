@@ -14,24 +14,24 @@
 				style="max-width: 460px"
 			>
 				<el-form-item label="考试名称">
-					<el-input v-model="examlist.examname" />
+					<el-input v-model="examlist.examSessionPaper.paperExam.examName" />
 				</el-form-item>
 				<el-form-item label="考试时长">
-					<el-input v-model="examlist.examduration" />
+					<el-input v-model="examlist.examSessionPaper.paperDuration" />
 				</el-form-item>
 
 				<el-form-item label="考试总分">
-					<el-input v-model="examlist.examtotalscore" />
+					<el-input v-model="examlist.examSessionPaper.paperTotalScore" />
 				</el-form-item>
 
 				<el-form-item label="考试开始时间">
-					<el-input v-model="examlist.examstart" />
+					<el-input v-model="examlist.examSessionStartTime" />
 				</el-form-item>
 				<el-form-item label="考试结束时间">
-					<el-input v-model="examlist.examend" />
+					<el-input v-model="examlist.examSessionEndTime" />
 				</el-form-item>
 				<el-form-item label="考试试卷名称">
-					<el-input v-model="examlist.papername" />
+					<el-input v-model="examlist.examSessionPaper.paperName" />
 				</el-form-item>
 				<el-form-item>
 					<el-button class="SubmitButton" type="primary" @click="onSubmit"
@@ -48,14 +48,14 @@
 <script setup>
 import { computed, unref, onMounted, ref } from "vue";
 import { ElMessage } from "element-plus";
-import { updateExamination, getExamSessionById } from "@/api/exam";
+import { updateExamination, getExamList } from "@/api/exam";
 import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
 
 const router = useRouter();
 const id = computed(() => {
-	return route.query.id;
+	return route.query.examId;
 });
 
 const loading = ref(false);
@@ -65,17 +65,21 @@ const examlist = ref({});
 const getExamInfo = async () => {
 	if (!unref(id)) return;
 	loading.value = true;
-	const {
-		examSessionList: [info],
-	} = await getExamSessionById(unref(id)).then((res) => res.data);
-
-	examlist.value = info;
+	const list = ref();
+	await getExamList(unref(id)).then((res) => {
+		list.value = res.data.examSessionList;
+	});
+	for (let item of list.value) {
+		if (item.examSessionId == id.value) {
+			examlist.value = item;
+		}
+	}
+	console.log("examlist.value", examlist.value);
 	loading.value = false;
 };
+getExamInfo();
 
-onMounted(() => {
-	getExamInfo();
-});
+onMounted(() => {});
 
 const onSubmit = async () => {
 	loading.value = true;

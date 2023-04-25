@@ -1,86 +1,92 @@
 <template>
-	<div class="app-container home">
-		<el-container>
-			<el-header>
+	<div class="case-wrapper">
+		<div class="case-container">
+			<!-- 模糊搜索框 -->
+			<div class="header-wrapper wrapper">
 				<el-form :inline="true" :model="paperlist" class="search">
 					<el-form-item label="试卷名称">
 						<el-input v-model="paperlist.papername" placeholder="试卷名称" />
 					</el-form-item>
 					<el-form-item>
 						<el-button type="primary" @click="onSubmit">搜索</el-button>
+						<el-button type="info" @click="resetForm">重置</el-button>
 					</el-form-item>
 				</el-form>
-			</el-header>
-			<el-main class="main">
-				<div class="common-layout">
-					<el-container>
-						<el-header>
-							<el-form-item class="button">
-								<router-link to="/paper/add">
-									<el-button class="AddButton" type="primary">新增</el-button>
-								</router-link>
-							</el-form-item>
-						</el-header>
-						<el-main class="inmain">
-							<el-table
-								ref="multipleTableRef"
-								:data="tableData"
-								style="width: 100%"
-								height="400px"
-								@selection-change="handleSelectionChange"
-							>
-								<el-table-column type="selection" width="55" />
-								<el-table-column
-									prop="papername"
-									label="试卷名称"
-									width="200"
-								/>
-								<el-table-column
-									prop="paperduration"
-									label="试卷时长"
-									width="130"
-								/>
-								<el-table-column
-									prop="papertotalscore"
-									label="试卷总分"
-									width="130"
-								/>
+			</div>
 
-								<el-table-column label="操作" width="200">
-									<template #default="scope">
-										<router-link to="/paper/update">
-											<el-button
-												size="small"
-												@click="handleEdit(scope.$index, scope.row)"
-												>编辑</el-button
-											>
-										</router-link>
-										<el-button
-											size="small"
-											type="danger"
-											@click="handleDelete(scope.row)"
-											>删除</el-button
-										>
-									</template>
-								</el-table-column>
-
-								<el-table-column label="查看试卷内容" width="200">
-									<template #default="scope">
-										<router-link to="/exams/update">
-											<el-button
-												size="small"
-												@click="handleView(scope.$index, scope.row)"
-												>查看</el-button
-											>
-										</router-link>
-									</template>
-								</el-table-column>
-							</el-table>
-						</el-main>
-					</el-container>
+			<div class="btns-wrapper wrapper">
+				<div class="btn-container">
+					<router-link to="/paper/add">
+						<el-button class="AddButton" type="success" plain>新增</el-button>
+					</router-link>
 				</div>
-			</el-main>
-		</el-container>
+				<div class="btn-container"></div>
+				<div class="btn-container">
+					<el-button
+						class="DeleteButton"
+						@click="handleMultiDelete"
+						type="danger"
+						plain
+						>删除</el-button
+					>
+				</div>
+			</div>
+			<div class="table-wrapper wrapper">
+				<div class="table-container">
+					<el-table
+						ref="multipleTableRef"
+						:data="tableData"
+						height="500px"
+						:header-cell-style="{ 'text-align': 'center' }"
+						:cell-style="{ 'text-align': 'center' }"
+						@selection-change="handleSelectionChange"
+					>
+						<el-table-column type="selection" width="55" />
+						<el-table-column type="index" label="序号" width="55" />
+
+						<el-table-column prop="papername" label="试卷名称" width="200" />
+						<el-table-column
+							prop="paperduration"
+							label="试卷时长"
+							width="130"
+						/>
+						<el-table-column
+							prop="papertotalscore"
+							label="试卷总分"
+							width="130"
+						/>
+
+						<el-table-column label="操作" width="320">
+							<template #default="scope">
+								<el-button
+									size="small"
+									type="info"
+									plain
+									@click="handleView(scope.row)"
+									>查看试卷内容</el-button
+								>
+								<router-link to="/paper/content">
+									<el-button
+										size="small"
+										type="warning"
+										plain
+										@click="handleEdit(scope.row)"
+										>编辑</el-button
+									></router-link
+								>
+								<el-button
+									size="small"
+									type="danger"
+									plain
+									@click="handleDelete(scope.row)"
+									>删除</el-button
+								>
+							</template>
+						</el-table-column>
+					</el-table>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 <script setup>
@@ -163,56 +169,76 @@ const onSubmit = async () => {
 
 	console.log("tabledata", tableData);
 };
+
+const handleMultiDelete = async () => {
+	let rows = multipleTableRef.value.getSelectionRows();
+	for (let item of rows) {
+		await deleteExaminationById(item.examrealid)
+			.then((res) => console.log("删除试卷成功", res))
+			.catch((err) => console.log("删除试卷失败", err));
+	}
+	getAll();
+};
+const resetForm = () => {
+	paperlist.examrealid = "";
+	paperlist.paperid = "";
+	paperlist.papername = "";
+	paperlist.paperduration = "";
+	paperlist.papertotalscore = "";
+};
+
+const handleEdit = (examSessionList) => {
+	const paperid = examSessionList.paperid;
+	// router.push(`/exams/update?examSessionId=${id}`);
+	router.push({ path: "update", query: { paperId: paperid } });
+};
+
+const handleView = (examSessionList) => {
+	const paperid = examSessionList.paperid;
+	// router.push(`/exams/update?examSessionId=${id}`);
+	router.push({ path: "content", query: { paperId: paperid } });
+};
 </script>
 <style lang="scss" scoped>
-.page {
-	display: flex;
-	justify-content: flex-end;
-	align-items: flex-end;
-	padding: 30px 0px 0px 0px;
+.case-wrapper {
+	width: 100%;
+	height: calc(100vh - 50px);
+	padding: 30px;
+	.case-container {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		.wrapper {
+			width: 100%;
+			margin-bottom: 10px;
+		}
+		.header-wrapper {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 25px;
+			.search-form {
+				width: 800px;
+				height: 32px;
+			}
+		}
+		.btns-wrapper {
+			margin-left: 75px;
+			.btn-container {
+				display: inline-block;
+				margin-right: 7px;
+			}
+		}
+		.table-wrapper {
+			display: flex;
+			justify-content: center;
+			width: 100%;
+			.table-container {
+				width: 95%;
+			}
+		}
+	}
 }
-.search {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 100%;
-}
-.main {
-	display: flex;
-	justify-content: flex-start;
-	align-items: flex-start;
-	padding: 10px 10px 0px 10px;
-}
-.inmain {
-	display: flex;
-	justify-content: flex-start;
-	align-items: flex-start;
-	padding: 10px 0px 0px 0px;
-}
-.button {
-	display: flex;
-	justify-content: flex-start;
-	align-items: flex-start;
-}
-.AddButton {
-	width: 80px;
-	height: 40px;
-	margin: 0px 90px 30px 30px;
-}
-.DeleteButton {
-	width: 80px;
-	height: 40px;
-	margin: 0px 30px 30px 90px;
-}
-.ChangeButton {
-	width: 80px;
-	height: 40px;
-	margin: 0px 60px 30px 60px;
-}
-body {
-	margin: 0;
-}
-.example-showcase .el-loading-mask {
-	z-index: 9;
+/deep/ .el-dialog {
+	width: 90% !important;
 }
 </style>

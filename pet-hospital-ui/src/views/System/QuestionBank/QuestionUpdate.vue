@@ -1,7 +1,7 @@
 <template>
 	<el-container v-loading="loading">
 		<el-header class="header" height="20px">
-			<router-link to="/paper/list">
+			<router-link to="/question/list">
 				<el-button type="plain" @click="back">Back</el-button>
 			</router-link>
 		</el-header>
@@ -13,22 +13,26 @@
 				:model="formLabelAlign"
 				style="max-width: 460px"
 			>
-				<el-form-item label="试卷名称">
-					<el-input v-model="paperlist.examSessionPaper.paperName" />
-				</el-form-item>
-				<el-form-item label="试卷时长">
-					<el-input v-model="paperlist.examSessionPaper.paperDuration" />
+				<el-form-item label="问题类别">
+					<el-input v-model="questionlist.questionType"> </el-input>
 				</el-form-item>
 
-				<el-form-item label="试卷总分">
-					<el-input v-model="paperlist.examSessionPaper.paperTotalScore" />
+				<el-form-item label="问题内容">
+					<el-input
+						v-model="questionlist.questionContent"
+						:autosize="{ minRows: 4 }"
+						type="textarea"
+					/>
+				</el-form-item>
+				<el-form-item label="问题答案">
+					<el-input v-model="questionlist.questionAnswer"> </el-input>
 				</el-form-item>
 
 				<el-form-item>
 					<el-button class="SubmitButton" type="primary" @click="onSubmit"
 						>保存</el-button
 					>
-					<router-link to="/paper/list">
+					<router-link to="/question/list">
 						<el-button class="CancelButton">取消</el-button>
 					</router-link>
 				</el-form-item>
@@ -36,45 +40,46 @@
 		</el-main>
 	</el-container>
 </template>
-
 <script setup>
 import { computed, unref, onMounted, ref } from "vue";
 import { ElMessage } from "element-plus";
-import { updatePaper, getPaperList } from "@/api/exam";
+import { updateQuestion, getQuestionList } from "@/api/exam";
 import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
 
 const router = useRouter();
 const id = computed(() => {
-	return route.query.paperId;
+	return route.query.questionId;
 });
 
 const loading = ref(false);
 
-const paperlist = ref({});
+const questionlist = ref({});
 
-const getPaperInfo = async () => {
+const getQuestionInfo = async () => {
 	if (!unref(id)) return;
 	loading.value = true;
 	const list = ref();
-	await getPaperList(unref(id)).then((res) => {
-		list.value = res.data.examSessionList;
+	await getQuestionList(unref(id)).then((res) => {
+		list.value = res.data.questionList;
 	});
 	for (let item of list.value) {
-		if (item.examSessionPaper.paperId == id.value) {
-			paperlist.value = item;
+		if (item.questionId == id.value) {
+			questionlist.value = item;
 		}
 	}
-	console.log("paperlist.value", paperlist.value);
+	console.log("questionlist.value", questionlist.value);
 	loading.value = false;
 };
-getPaperInfo();
-onMounted(() => {});
+
+onMounted(() => {
+	getQuestionInfo();
+});
 
 const onSubmit = async () => {
 	loading.value = true;
-	await updatePaper(unref(paperlist));
+	await updateQuestion(unref(questionlist));
 	ElMessage.success("提交成功！");
 	loading.value = false;
 	router.back();

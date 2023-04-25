@@ -1,50 +1,40 @@
 <template>
-	<div class="app-container home">
-		<el-container>
-			<el-header>
+	<div class="case-wrapper">
+		<div class="case-container">
+			<div class="header-wrapper wrapper">
 				<el-form :inline="true" :model="paperlist" class="search">
-					<el-form-item label="试卷名称：宠物医院实习生测试卷">
-						<el-input size="small" v-model="paperlist.examSessionId"></el-input>
+					<el-form-item label="试卷名称:">
+						<el-input v-model="paperlist.examSessionPaper.paperName"></el-input>
 					</el-form-item>
 				</el-form>
-			</el-header>
-			<el-main class="main">
-				<div class="common-layout">
-					<el-container>
-						<el-main class="inmain">
-							<el-table
-								:data="tableData"
-								style="width: 100%"
-								height="400px"
-								@selection-change="handleSelectionChange"
-							>
-								<el-table-column type="index" label="序号" width="60" />
+			</div>
+			<div class="table-wrapper wrapper">
+				<div class="table-container">
+					<el-table
+						:data="tableData"
+						style="width: 100%"
+						height="400px"
+						:header-cell-style="{ 'text-align': 'center' }"
+						:cell-style="{ 'text-align': 'center' }"
+						@selection-change="handleSelectionChange"
+					>
+						<el-table-column type="index" label="序号" width="60" />
 
-								<el-table-column
-									prop="questiontype"
-									label="问题类别"
-									width="100"
-								/>
-								<el-table-column
-									prop="questioncontent"
-									label="问题内容"
-									width="700"
-								/>
-
-								<el-table-column label="输入答案" width="100">
-									<el-input v-model="input" class="answer" width="50" />
-								</el-table-column>
-								<el-table-column label="查看答案" width="100">
-									<el-button size="small" @click="handleEdit(item)"
-										>查看</el-button
-									>
-								</el-table-column>
-							</el-table>
-						</el-main>
-					</el-container>
+						<el-table-column prop="questiontype" label="问题类别" width="100" />
+						<el-table-column
+							prop="questioncontent"
+							label="问题内容"
+							width="700"
+						/>
+						<el-table-column
+							prop="questionanswer"
+							label="问题答案"
+							width="100"
+						/>
+					</el-table>
 				</div>
-			</el-main>
-		</el-container>
+			</div>
+		</div>
 	</div>
 </template>
 <script setup>
@@ -54,6 +44,7 @@ import {
 	deleteQuestion,
 	getQuestionByType,
 	getPaperList,
+	getQuestionInPaperList,
 } from "@/api/exam";
 import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
@@ -82,13 +73,14 @@ const getPaperInfo = async () => {
 	loading.value = false;
 };
 getPaperInfo();
-onMounted(() => {});
+
 // let tableData = reactive([]);
 const questionlist = reactive({
 	categoryid: "",
 	questionid: "",
 	questiontype: "",
 	questioncontent: "",
+	questionanswer: "",
 });
 const tableData = ref([]);
 
@@ -108,7 +100,7 @@ const getAll = async () => {
 			questioncontent: item.questionContent,
 			questionid: item.questionId,
 			categoryname: item.questionCategory.categoryName,
-
+			questionanswer: item.questionAnswer,
 			categoryid: item.questionCategory.categoryId,
 			questiontype: item.questionType,
 		};
@@ -142,6 +134,7 @@ const onSubmit = async () => {
 			questioncontent: item.questionContent,
 			questionid: item.questionId,
 			categoryname: item.questionCategory.categoryName,
+			questionanswer: item.questionAnswer,
 
 			categoryid: item.questionCategory.categoryId,
 			questiontype: item.questionType,
@@ -154,55 +147,45 @@ const onSubmit = async () => {
 };
 </script>
 <style lang="scss" scoped>
-.page {
-	display: flex;
-	justify-content: flex-end;
-	align-items: flex-end;
-	padding: 30px 0px 0px 0px;
+.case-wrapper {
+	width: 100%;
+	height: calc(100vh - 50px);
+	padding: 30px;
+	.case-container {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		.wrapper {
+			width: 100%;
+			margin-bottom: 10px;
+		}
+		.header-wrapper {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 25px;
+			.search-form {
+				width: 800px;
+				height: 32px;
+			}
+		}
+		.btns-wrapper {
+			margin-left: 75px;
+			.btn-container {
+				display: inline-block;
+				margin-right: 7px;
+			}
+		}
+		.table-wrapper {
+			display: flex;
+			justify-content: center;
+			width: 100%;
+			.table-container {
+				width: 95%;
+			}
+		}
+	}
 }
-.search {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-bottom: 25px;
-	height: 100%;
-}
-.main {
-	display: flex;
-	justify-content: flex-start;
-	align-items: flex-start;
-	padding: 10px 10px 0px 10px;
-}
-.inmain {
-	display: flex;
-	justify-content: flex-start;
-	align-items: flex-start;
-	padding: 10px 0px 0px 0px;
-}
-.button {
-	display: flex;
-	justify-content: flex-start;
-	align-items: flex-start;
-}
-.AddButton {
-	width: 80px;
-	height: 40px;
-	margin: 0px 90px 30px 30px;
-}
-.DeleteButton {
-	width: 80px;
-	height: 40px;
-	margin: 0px 30px 30px 90px;
-}
-.ChangeButton {
-	width: 80px;
-	height: 40px;
-	margin: 0px 60px 30px 60px;
-}
-body {
-	margin: 0;
-}
-.example-showcase .el-loading-mask {
-	z-index: 9;
+/deep/ .el-dialog {
+	width: 90% !important;
 }
 </style>

@@ -6,7 +6,7 @@
 			<template #title>
 				<el-icon><user /></el-icon> <span>用户管理</span></template
 			>
-			<el-menu-item index="1-1"
+			<el-menu-item index="/user/studentuser/list"
 				><template #title>
 					<el-icon><reading /></el-icon> <span>学生管理</span></template
 				></el-menu-item
