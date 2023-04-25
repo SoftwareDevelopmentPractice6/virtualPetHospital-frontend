@@ -50,9 +50,9 @@
             :header-cell-style="{ 'text-align': 'center' }"
             :cell-style="{ 'text-align': 'center' }"
           >
-            <el-table-column type="selection" width="100" />
-            <el-table-column type="index" label="序号" width="105" />
-            <el-table-column prop="diseaseNameId" label="病名 ID" width="105" />
+            <el-table-column type="selection" width="90" />
+            <el-table-column type="index" label="序号" width="90" />
+            <el-table-column prop="diseaseNameId" label="病名 ID" width="90" />
             <el-table-column
               prop="diseaseNameContent"
               label="疾病名称"
@@ -60,22 +60,29 @@
             />
             <el-table-column
               prop="diseaseNameCategory"
-              label="疾病类型"
+              label="疾病种类"
               width="310"
             />
-            <el-table-column label="操作" width="300">
+            <el-table-column label="操作" width="320">
               <template #default="scope">
-                <!-- <el-button
+                <el-button
                   size="small"
-                  @click.prevent="handleEdit(scope.$index)"
-                  >编辑</el-button
-                > -->
-                <el-button size="small" @click.prevent="showCases(scope.$index)"
+                  type="info"
+                  plain
+                  @click.prevent="showCases(scope.$index)"
                   >查看病例</el-button
                 >
                 <el-button
                   size="small"
+                  type="warning"
+                  plain
+                  @click.prevent="editDisease(scope.$index)"
+                  >编辑</el-button
+                >
+                <el-button
+                  size="small"
                   type="danger"
+                  plain
                   @click.prevent="handleDelete(scope.$index)"
                   >删除</el-button
                 >
@@ -129,25 +136,23 @@
           />
           <el-table-column label="操作" width="180">
             <template #default="scope">
-              <el-button size="small" @click.prevent="handleEdit(scope.$index)"
+              <el-button
+                size="small"
+                type="warning"
+                plain
+                @click.prevent="editCase(scope.$index)"
                 >编辑</el-button
               >
               <el-button
                 size="small"
                 type="danger"
+                plain
                 @click.prevent="handleDeleteCase(scope.$index)"
                 >删除</el-button
               >
             </template>
           </el-table-column>
         </el-table>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button type="primary" @click="dialogTableVisible = false"
-              >确定</el-button
-            >
-          </span>
-        </template>
       </el-dialog>
     </div>
   </div>
@@ -249,15 +254,20 @@ const showCases = async (val) => {
     curItem.value.diseaseNameCategory +
     " > " +
     curItem.value.diseaseNameContent +
-    " 病例 :";
+    " 全部病例 :";
   await getCaseData(curItem.value.diseaseNameId);
   dialogTableVisible.value = true;
 };
 
 // 编辑
-const handleEdit = (row) => {
-  const diseaseNameId = row.id;
-  router.push(`/cases/detail?diseaseNameId=${diseaseNameId}`);
+const editCase = (id) => {
+  router.push({
+    path: "detail",
+    query: {
+      diseaseNameId: caseData.value[id].medicalCaseDiseaseName.diseaseNameId,
+      medicalCaseId: caseData.value[id].medicalCaseId,
+    },
+  });
 };
 
 // 搜索
@@ -307,10 +317,10 @@ const resetForm = () => {
       }
     }
     .btns-wrapper {
-      margin-left: 80px;
+      margin-left: 75px;
       .btn-container {
         display: inline-block;
-        margin-right: 8px;
+        margin-right: 7px;
       }
     }
     .table-wrapper {
