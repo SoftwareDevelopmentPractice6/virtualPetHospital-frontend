@@ -102,15 +102,14 @@
             </div>
 
             <!-- 操作视频 -->
-            <div class="feature-video-wrapper wrapper">
+            <div v-if="video != ''" class="feature-video-wrapper wrapper">
               <div class="sub-title">
                 <div class="dot purple"></div>
                 <span>操作视频</span>
               </div>
               <div class="video-wrapper subwrapper">
                 <div class="video-container">
-                  <video width="680" height="420" controls>
-                    <source src="video" type="video/mp4" />
+                  <video width="680" height="420" :src="video" controls>
                     您的浏览器不支持 video 标签。
                   </video>
                   <div>{{ curFeature.funcName }}</div>
@@ -163,6 +162,10 @@ sessionStorage.setItem("featureList", JSON.stringify(featureList));
 // 初始化视频
 async function initVideo() {
   await getFileLists(curFeature.funcVideo).then((res) => {
+    if (res.data.filePathList.length == 0) {
+      video = '';
+      return;
+    }
     let item = res.data.filePathList[0];
     video.value =
       process.env.VUE_APP_INTERFACE_URL +
