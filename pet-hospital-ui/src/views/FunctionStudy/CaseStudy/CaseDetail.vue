@@ -429,6 +429,8 @@ async function getCaseList() {
           list[i].flag = false;
         }
         caseData.caseList.push(list[i]);
+        cards.push({diseaseName: [], admission: [], caseCheck: [], diagnosticRes: [], treatmentProgram: []});
+        videos.push({diseaseName: [], admission: [], caseCheck: [], diagnosticRes: [], treatmentProgram: []});
       }
     })
     .catch((error) => {
