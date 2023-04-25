@@ -31,6 +31,15 @@ export function getDiseaseByKeyword(diseaseNameKeyword, diseaseNameCategory) {
   });
 }
 
+// 更改疾病信息
+export function updateDisease(data) {
+  return request({
+    url: base + "disease",
+    method: "put",
+    data: data,
+  });
+}
+
 // 删除疾病
 export function deleteDiseaseById(diseaseNameId) {
   return request({
@@ -83,5 +92,13 @@ export function updateCase(data) {
     url: base + "medical-case",
     method: "put",
     data: data,
+  });
+}
+
+// 删除病例
+export function deleteCaseById(id) {
+  return request({
+    url: `${base}medical-case/${id}`,
+    method: "delete",
   });
 }

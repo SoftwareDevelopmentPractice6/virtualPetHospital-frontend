@@ -1,3 +1,5 @@
+<!-- 疾病/病例管理首页 -->
+
 <template>
   <div class="case-wrapper">
     <div class="case-container">
@@ -93,11 +95,17 @@
       </div>
 
       <!-- 病例表格 -->
-      <el-dialog
-        :width="dialogWidth"
-        v-model="dialogTableVisible"
-        :title="curItem.title"
-      >
+      <el-dialog v-model="dialogTableVisible" :title="curItem.title">
+        <el-button type="success" plain @click="addCase" class="addcase-btn"
+          >新增病例</el-button
+        >
+        <el-button
+          type="danger"
+          plain
+          @click="multiDeleteCase"
+          class="deletecase-btn"
+          >删除病例</el-button
+        >
         <el-table
           ref="singleTableRef"
           :data="caseData"
@@ -113,29 +121,36 @@
           <el-table-column
             property="medicalCaseAdmission.admissionContent"
             label="接诊"
-            width="230"
+            width="210"
             :show-overflow-tooltip="true"
           />
           <el-table-column
             property="medicalCaseCaseCheck.caseCheckContent"
             label="病例检查"
-            width="250"
+            width="230"
             :show-overflow-tooltip="true"
           />
           <el-table-column
             property="medicalCaseDiagnosticResult.diagnosticResultContent"
             label="诊断结果"
-            width="250"
+            width="230"
             :show-overflow-tooltip="true"
           />
           <el-table-column
             property="medicalCaseTreatmentProgram.treatmentProgramContent"
             label="治疗方案"
-            width="250"
+            width="280"
             :show-overflow-tooltip="true"
           />
-          <el-table-column label="操作" width="180">
+          <el-table-column label="操作" width="230">
             <template #default="scope">
+              <el-button
+                size="small"
+                type="info"
+                plain
+                @click.prevent="detailedCase(scope.$index)"
+                >查看详情</el-button
+              >
               <el-button
                 size="small"
                 type="warning"
@@ -154,6 +169,32 @@
           </el-table-column>
         </el-table>
       </el-dialog>
+
+      <!-- 编辑疾病表单 -->
+      <el-dialog
+        v-model="dialogFormVisible"
+        title="编辑疾病信息："
+        style="max-width: 600px"
+        class="dialog-form"
+      >
+        <el-form :model="form" label-width="70px">
+          <el-form-item label="疾病 ID">
+            <el-input v-model="form.diseaseId" disabled />
+          </el-form-item>
+          <el-form-item label="疾病名称">
+            <el-input v-model="form.diseaseName" />
+          </el-form-item>
+          <el-form-item label="疾病种类">
+            <el-input v-model="form.diseaseCategory" />
+          </el-form-item>
+          <el-form-item>
+            <div class="btn-container">
+              <el-button type="primary" @click="onSubmitForm">确定</el-button>
+              <el-button @click="cancelForm">取消</el-button>
+            </div>
+          </el-form-item>
+        </el-form>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -165,13 +206,10 @@ import {
   deleteDiseaseById,
   getDiseaseByKeyword,
   getCase,
+  deleteCaseById,
+  updateDisease,
 } from "@/api/case";
 import { useRouter } from "vue-router";
-
-const dialogWidth = reactive({
-  type: String,
-  default: "80%",
-});
 
 const router = useRouter();
 
@@ -180,8 +218,18 @@ const loading = ref(true); // 病名表格加载
 const diseaseData = ref([]); // 病名数据
 const curItem = ref({}); // 当前选中项
 
+const singleTableRef = ref(); // 病例表格引用
 const dialogTableVisible = ref(false); // 病例表格可见性
 const caseData = ref([]); // 病例数据
+
+const dialogFormVisible = ref(false); // 编辑疾病表单可见性
+const form = reactive({
+  // 编辑疾病表单数据
+  diseaseId: "",
+  diseaseName: "",
+  diseaseCategory: "",
+});
+const curDisease = ref(); // 编辑疾病对象
 
 const cases = reactive({
   // 搜索框内容
@@ -228,7 +276,36 @@ const getCaseData = async (id) => {
 };
 getDiseaseData();
 
-// 单个删除
+// 编辑疾病
+const editDisease = (val) => {
+  dialogFormVisible.value = true;
+  curDisease.value = diseaseData.value[val];
+  const cueVal = curDisease.value;
+  form.diseaseId = cueVal.diseaseNameId;
+  form.diseaseName = cueVal.diseaseNameContent;
+  form.diseaseCategory = cueVal.diseaseNameCategory;
+};
+
+// 提交编辑疾病表单
+const onSubmitForm = () => {
+  const info = {
+    diseaseNameId: curDisease.value.diseaseNameId,
+    diseaseNameContent: form.diseaseName,
+    diseaseNameCategory: form.diseaseCategory,
+  };
+  updateDisease(info).then((res) => {
+    console.log("编辑疾病成功", res);
+  });
+  cancelForm();
+  getDiseaseData();
+};
+
+// 关闭编辑疾病表格
+const cancelForm = () => {
+  dialogFormVisible.value = false;
+};
+
+// 单个删除疾病
 const handleDelete = async (val) => {
   await deleteDiseaseById(diseaseData.value[val].diseaseNameId)
     .then((res) => console.log("删除病例成功", res))
@@ -236,7 +313,7 @@ const handleDelete = async (val) => {
   getDiseaseData();
 };
 
-// 批量删除
+// 批量删除疾病
 const handleMultiDelete = async () => {
   let rows = multipleTableRef.value.getSelectionRows();
   for (let item of rows) {
@@ -259,10 +336,10 @@ const showCases = async (val) => {
   dialogTableVisible.value = true;
 };
 
-// 编辑
+// 编辑病例
 const editCase = (id) => {
   router.push({
-    path: "detail",
+    path: "editCase",
     query: {
       diseaseNameId: caseData.value[id].medicalCaseDiseaseName.diseaseNameId,
       medicalCaseId: caseData.value[id].medicalCaseId,
@@ -270,7 +347,47 @@ const editCase = (id) => {
   });
 };
 
-// 搜索
+// 查看病例详情
+const detailedCase = (id) => {
+  router.push({
+    path: "caseDetail",
+    query: {
+      diseaseNameId: caseData.value[id].medicalCaseDiseaseName.diseaseNameId,
+      medicalCaseId: caseData.value[id].medicalCaseId,
+    },
+  });
+};
+
+// 新增病例
+const addCase = () => {
+  router.push({
+    path: "addCase",
+    query: {
+      diseaseNameId: curItem.value.diseaseNameId,
+    },
+  });
+};
+
+// 单个删除病例
+const handleDeleteCase = async (val) => {
+  await deleteCaseById(caseData.value[val].medicalCaseId)
+    .then((res) => console.log("删除病例成功", res))
+    .catch((err) => console.log("删除病例失败", err));
+  getCaseData(curItem.value.diseaseNameId);
+};
+
+// 批量删除病例
+const multiDeleteCase = async () => {
+  let rows = singleTableRef.value.getSelectionRows();
+  for (let item of rows) {
+    await deleteCaseById(item.medicalCaseId)
+      .then((res) => console.log("删除病例成功", res))
+      .catch((err) => console.log("删除病例失败", err));
+  }
+  getCaseData(curItem.value.diseaseNameId);
+};
+
+// 模糊搜索
 const onSubmit = async () => {
   if (cases.category === "") return;
   diseaseData.value = [];
@@ -331,10 +448,37 @@ const resetForm = () => {
         width: 95%;
       }
     }
+    .addcase-btn,
+    .deletecase-btn {
+      float: right;
+      position: relative;
+      right: 65px;
+      bottom: 25px;
+    }
+    .deletecase-btn {
+      right: 80px;
+    }
   }
 }
-
 ::v-deep .el-dialog {
   width: 90% !important;
+}
+::v-deep .el-dialog__body {
+  padding: 0 20px 30px;
+}
+::v-deep .el-dialog__header {
+  padding-bottom: 0;
+}
+
+.dialog-form {
+  .el-form {
+    padding: 35px 50px 0;
+    .el-form-item {
+      margin-bottom: 25px;
+      .btn-container {
+        margin-top: 10px;
+      }
+    }
+  }
 }
 </style>
