@@ -11,6 +11,11 @@
       </div>
     </div>
 
+    <!-- 返回键 -->
+    <div class="header-wrapper">
+      <el-button type="plain" @click="cancel">返回</el-button>
+    </div>
+
     <!-- 视频列表 -->
     <div class="content-wrapper">
       <div class="video-wrapper">
@@ -37,6 +42,9 @@
 <script setup>
 import { caseStore } from "@/store/case";
 import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 // 获取疾病 id, name, category
 const store = caseStore();
@@ -57,6 +65,10 @@ if (!diseaseId.value || !diseaseName.value || !diseaseCategory.value) {
 
 // 视频列表数据
 let videos = reactive(store.videos);
+
+const cancel = () => {
+  router.back();
+};
 </script>
 
 <style lang="scss" scoped>
@@ -83,6 +95,9 @@ let videos = reactive(store.videos);
         color: rgb(255, 203, 107);
       }
     }
+  }
+  .header-wrapper {
+    margin: 10px;
   }
   .content-wrapper {
     display: flex;
