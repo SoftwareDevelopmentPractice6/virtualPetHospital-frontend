@@ -2,7 +2,7 @@
  * @Author: pikapikapi pikapikapi_kaori@icloud.com
  * @Date: 2023-04-14 14:58:58
  * @LastEditors: pikapikapikaori pikapikapi_kaori@icloud.com
- * @LastEditTime: 2023-04-25 19:46:20
+ * @LastEditTime: 2023-04-25 23:27:16
  * @FilePath: /virtualPetHospital-frontend/pet-hospital-ui/src/components/FileUpload.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -47,6 +47,9 @@ export default {
         return []
       },
     },
+  },
+  created() {
+    this.getHistoryFiles();
   },
   watch: {
     filePath: 'getHistoryFiles'
