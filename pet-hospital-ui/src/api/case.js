@@ -15,11 +15,27 @@ export function getDisease() {
 // 根据 id 获取病名
 export function getDiseaseById(id) {
   return request({
-    url: base + "disease/sys",
+    url: `${base}disease/sys/${id}`,
+    method: "get",
+  });
+}
+
+// 根据疾名&病种关键词搜索
+export function getDiseaseByKeyword(diseaseNameKeyword, diseaseNameCategory) {
+  return request({
+    url: `${base}disease/${diseaseNameKeyword}`,
     method: "get",
     params: {
-      id,
+      diseaseNameCategory,
     },
+  });
+}
+
+// 删除疾病
+export function deleteDiseaseById(diseaseNameId) {
+  return request({
+    url: `${base}disease/${diseaseNameId}`,
+    method: "delete",
   });
 }
 
@@ -47,34 +63,8 @@ export function getCase(
 // 根据 id 获取病例
 export function getCaseById(id) {
   return request({
-    url: base + "medical-case/sys",
+    url: `${base}medical-case/sys/${id}`,
     method: "get",
-    params: {
-      id,
-    },
-  });
-}
-
-// 根据疾病名称关键词搜索
-export function getMedicineByKeyword(diseaseNameKeyword, diseaseNameCategory) {
-  return request({
-    url: base + "disease",
-    method: "get",
-    params: {
-      diseaseNameKeyword,
-      diseaseNameCategory,
-    },
-  });
-}
-
-// 根据药品名称获取药品信息
-export function getCaseByName(medicineName) {
-  return request({
-    url: base + "medical-case",
-    method: "get",
-    params: {
-      medicineName,
-    },
   });
 }
 
@@ -87,31 +77,11 @@ export function insertCase(data) {
   });
 }
 
-// 更改药品信息
+// 更改病例信息
 export function updateCase(data) {
   return request({
     url: base + "medical-case",
     method: "put",
     data: data,
-  });
-}
-
-// 删除疾病信息
-export function deleteDiseaseById(diseaseNameId) {
-  return request({
-    url: base + "disease",
-    method: "delete",
-    param: {
-      diseaseNameId,
-    },
-  });
-}
-
-// 修改病例信息
-export function updateMedicalCase(data) {
-  return request({
-    url: base + "medical-case",
-    method: "put",
-    data,
   });
 }
