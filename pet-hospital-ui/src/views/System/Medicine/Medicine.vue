@@ -5,7 +5,7 @@
       <div class="header-wrapper wrapper">
         <el-form :inline="true" :model="cases" class="search-form">
           <!--药名 -->
-          <el-form-item label="疾病名称:">
+          <el-form-item label="药品名称:">
             <el-input v-model="medicine.name" placeholder="请输入药品名称" />
           </el-form-item>
           <!-- 搜索 -->

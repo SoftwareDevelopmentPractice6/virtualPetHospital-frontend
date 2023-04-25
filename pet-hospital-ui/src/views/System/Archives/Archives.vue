@@ -115,7 +115,7 @@ onMounted(() => {
 const handleMultiDelete = async () => {
   let rows = multipleTableRef.value.getSelectionRows();
   for (let item of rows) {
-    await deleteArchiveById(item.archiveId)
+    await deleteArchiveById(item.id)
       .then((res) => console.log("删除档案成功", res))
       .catch((err) => console.log("删除档案失败", err));
   }
@@ -149,6 +149,7 @@ const handleDelete = (val) => {
     getAll();
   });
 };
+
 // 删除接口
 const deleteArchive = async (id) => {
   await deleteArchiveById(id).then((res) => console.log("res", res));
