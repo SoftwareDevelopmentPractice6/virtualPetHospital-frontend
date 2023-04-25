@@ -65,7 +65,7 @@
 <script  setup>
 import { ref, computed, onMounted, unref } from "vue";
 import InputFile from "./InputFile.vue";
-import { getMedicalCase, putMedicalCase, insertCase } from "@/api/case";
+import { getMedicalCase, updateCase, insertCase } from "@/api/case";
 
 import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
@@ -108,7 +108,7 @@ const onSubmit = async () => {
   };
 
   if (unref(diseaseNameId)) {
-    await putMedicalCase(p);
+    await updateCase(p);
   } else {
     await insertCase(p);
   }

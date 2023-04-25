@@ -333,7 +333,8 @@ const resetForm = () => {
     }
   }
 }
-/deep/ .el-dialog {
+::v-deep .el-dialog {
   width: 90% !important;
 }
 </style>
+
