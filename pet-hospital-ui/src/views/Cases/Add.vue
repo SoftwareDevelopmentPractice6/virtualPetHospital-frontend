@@ -62,10 +62,10 @@
   </div>
 </template>
 
-<script  setup>
+<script setup>
 import { ref, computed, onMounted, unref } from "vue";
 import InputFile from "./InputFile.vue";
-import { getMedicalCase, updateCase, insertCase } from "@/api/case";
+import { getCaseById, updateCase, insertCase } from "@/api/case";
 
 import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
@@ -82,9 +82,9 @@ const submitInfo = ref({
 const diseaseNameId = computed(() => {
   return route.query.diseaseNameId.toString();
 });
-const getMedicalCaseApi = async () => {
+const getCaseByIdApi = async () => {
   if (!unref(diseaseNameId)) return;
-  const res = await getMedicalCase({ diseaseNameId: unref(diseaseNameId) });
+  const res = await getCaseById({ diseaseNameId: unref(diseaseNameId) });
   console.log("res", res);
   submitInfo.value = res.data.medicalCaseList.medicalCaseList[0];
 };
@@ -116,7 +116,7 @@ const onSubmit = async () => {
 };
 
 onMounted(() => {
-  getMedicalCaseApi();
+  getCaseByIdApi();
 });
 </script>
 <style lang="scss" scoped>
