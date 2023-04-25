@@ -17,22 +17,24 @@
           <div class="demo-collapse">
             <el-collapse v-model="activeNames">
               <el-collapse-item title="接诊" name="接诊">
-                <InputFile :filePath="submitInfo.medicalCaseAdmission.admissionPhoto" v-model:value="submitInfo.medicalCaseAdmission.admissionContent
+                <InputFile :filePath="[submitInfo.medicalCaseAdmission.admissionPhoto, submitInfo.medicalCaseAdmission.admissionVideo]" v-model:value="submitInfo.medicalCaseAdmission.admissionContent
                   " />
               </el-collapse-item>
               <el-collapse-item title="病例检查" name="病例检查">
-                <InputFile :filePath="submitInfo.medicalCaseCaseCheck.caseCheckPhoto" v-model:value="submitInfo.medicalCaseCaseCheck.caseCheckContent
+                <InputFile :filePath="[submitInfo.medicalCaseCaseCheck.caseCheckPhoto, submitInfo.medicalCaseCaseCheck.caseCheckVideo]" v-model:value="submitInfo.medicalCaseCaseCheck.caseCheckContent
                   " />
               </el-collapse-item>
               <el-collapse-item title="诊断结果" name="诊断结果">
-                <InputFile :filePath="submitInfo.medicalCaseDiagnosticResult
-                    .diagnosticResultPhoto" v-model:value="submitInfo.medicalCaseDiagnosticResult
+                <InputFile :filePath="[submitInfo.medicalCaseDiagnosticResult
+                    .diagnosticResultPhoto, submitInfo.medicalCaseDiagnosticResult
+                    .diagnosticResultVideo]" v-model:value="submitInfo.medicalCaseDiagnosticResult
         .diagnosticResultContent
       " />
               </el-collapse-item>
               <el-collapse-item title="治疗方案" name="治疗方案">
-                <InputFile :filePath="submitInfo.medicalCaseTreatmentProgram
-                    .treatmentProgramPhoto" v-model:value="submitInfo.medicalCaseTreatmentProgram
+                <InputFile :filePath="[submitInfo.medicalCaseTreatmentProgram
+                    .treatmentProgramPhoto, submitInfo.medicalCaseTreatmentProgram
+                    .treatmentProgramVideo]" v-model:value="submitInfo.medicalCaseTreatmentProgram
         .treatmentProgramContent
       " />
               </el-collapse-item>
