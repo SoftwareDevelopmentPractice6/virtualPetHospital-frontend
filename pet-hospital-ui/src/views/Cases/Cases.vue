@@ -163,7 +163,7 @@ import { reactive, ref } from "vue";
 import {
   getDisease,
   deleteDiseaseById,
-  getMedicineByKeyword,
+  getDiseaseByKeyword,
   getCase,
 } from "@/api/case";
 import { useRouter } from "vue-router";
@@ -275,7 +275,7 @@ const onSubmit = async () => {
   if (cases.category === "") return;
   diseaseData.value = [];
   loading.value = true;
-  await getMedicineByKeyword(cases.category, cases.name)
+  await getDiseaseByKeyword(cases.category, cases.name)
     .then((res) => {
       res.data.diseaseNameList.forEach((item) => {
         diseaseData.value.push(item);
