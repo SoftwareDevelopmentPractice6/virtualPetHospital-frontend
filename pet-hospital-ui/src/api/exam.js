@@ -55,15 +55,7 @@ export function getExamSessionById(id) {
 		},
 	});
 }
-export function getExamByScore(paperTotalScore) {
-	return request({
-		url: base + "examinations",
-		method: "get",
-		params: {
-			paperTotalScore,
-		},
-	});
-}
+
 //更改考试信息
 export function updateExamination(val) {
 	return request({
@@ -101,6 +93,14 @@ export function insertPaper(val) {
 	return request({
 		url: base + "examinations",
 		method: "post",
+		data: val,
+	});
+}
+//更改试卷信息
+export function updatePaper(val) {
+	return request({
+		url: base + "examinations",
+		method: "put",
 		data: val,
 	});
 }
@@ -144,5 +144,20 @@ export function insertQuestion(val) {
 		url: base + "question",
 		method: "post",
 		data: val,
+	});
+}
+//更改问题信息
+export function updateQuestion(val) {
+	return request({
+		url: base + "question",
+		method: "put",
+		data: val,
+	});
+}
+//获取试卷中问题列表接口
+export function getQuestionInPaperList() {
+	return request({
+		url: base + "question-in-paper",
+		method: "get",
 	});
 }

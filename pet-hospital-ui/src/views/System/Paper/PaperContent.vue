@@ -1,82 +1,36 @@
 <template>
 	<div class="case-wrapper">
 		<div class="case-container">
-			<!-- 模糊搜索框 -->
 			<div class="header-wrapper wrapper">
-				<el-form :inline="true" :model="questionlist" class="search">
-					<el-form-item label="问题类别">
-						<el-input
-							v-model="questionlist.questiontype"
-							placeholder="问题类别"
-						/>
-					</el-form-item>
-
-					<el-form-item>
-						<el-button type="primary" @click="onSubmit">搜索</el-button>
-						<el-button type="info" @click="resetForm">重置</el-button>
+				<el-form :inline="true" :model="paperlist" class="search">
+					<el-form-item label="试卷名称:">
+						<el-input v-model="paperlist.examSessionPaper.paperName"></el-input>
 					</el-form-item>
 				</el-form>
-			</div>
-			<!-- 操作按键 -->
-			<div class="btns-wrapper wrapper">
-				<div class="btn-container">
-					<router-link to="/question/add">
-						<el-button class="AddButton" type="success" plain>新增</el-button>
-					</router-link>
-				</div>
-				<div class="btn-container"></div>
-				<div class="btn-container">
-					<el-button
-						class="DeleteButton"
-						@click="handleMultiDelete"
-						type="danger"
-						plain
-						>删除</el-button
-					>
-				</div>
 			</div>
 			<div class="table-wrapper wrapper">
 				<div class="table-container">
 					<el-table
-						ref="multipleTableRef"
 						:data="tableData"
-						height="500px"
+						style="width: 100%"
+						height="400px"
 						:header-cell-style="{ 'text-align': 'center' }"
 						:cell-style="{ 'text-align': 'center' }"
 						@selection-change="handleSelectionChange"
 					>
-						<el-table-column type="selection" width="55" />
-						<el-table-column type="index" label="序号" width="55" />
+						<el-table-column type="index" label="序号" width="60" />
 
 						<el-table-column prop="questiontype" label="问题类别" width="100" />
 						<el-table-column
 							prop="questioncontent"
 							label="问题内容"
-							width="500"
+							width="700"
 						/>
 						<el-table-column
 							prop="questionanswer"
 							label="问题答案"
 							width="100"
 						/>
-
-						<el-table-column label="操作" width="200">
-							<template #default="scope">
-								<el-button
-									size="small"
-									type="warning"
-									plain
-									@click="handleEdit(scope.row)"
-									>编辑</el-button
-								>
-								<el-button
-									size="small"
-									type="danger"
-									@click="handleDelete(scope.row)"
-									>删除</el-button
-								>
-							</template>
-						</el-table-column>
 					</el-table>
 				</div>
 			</div>
@@ -84,11 +38,41 @@
 	</div>
 </template>
 <script setup>
-import { onMounted, reactive, ref } from "vue";
-import { getQuestionList, deleteQuestion, getQuestionByType } from "@/api/exam";
-import { useRouter } from "vue-router";
+import { computed, unref, onMounted, reactive, ref } from "vue";
+import {
+	getQuestionList,
+	deleteQuestion,
+	getQuestionByType,
+	getPaperList,
+	getQuestionInPaperList,
+} from "@/api/exam";
+import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
+const route = useRoute();
+
 const loading = ref();
+const id = computed(() => {
+	return route.query.paperId;
+});
+
+const paperlist = ref({});
+
+const getPaperInfo = async () => {
+	if (!unref(id)) return;
+	loading.value = true;
+	const list = ref();
+	await getPaperList(unref(id)).then((res) => {
+		list.value = res.data.examSessionList;
+	});
+	for (let item of list.value) {
+		if (item.examSessionPaper.paperId == id.value) {
+			paperlist.value = item;
+		}
+	}
+	console.log("paperlist.value", paperlist.value);
+	loading.value = false;
+};
+getPaperInfo();
 
 // let tableData = reactive([]);
 const questionlist = reactive({
@@ -114,9 +98,9 @@ const getAll = async () => {
 	data.questionList.forEach((item) => {
 		var value = {
 			questioncontent: item.questionContent,
-			questionanswer: item.questionAnswer,
 			questionid: item.questionId,
 			categoryname: item.questionCategory.categoryName,
+			questionanswer: item.questionAnswer,
 			categoryid: item.questionCategory.categoryId,
 			questiontype: item.questionType,
 		};
@@ -148,9 +132,9 @@ const onSubmit = async () => {
 	data.questionList.forEach((item) => {
 		var value = {
 			questioncontent: item.questionContent,
-			questionanswer: item.questionAnswer,
 			questionid: item.questionId,
 			categoryname: item.questionCategory.categoryName,
+			questionanswer: item.questionAnswer,
 
 			categoryid: item.questionCategory.categoryId,
 			questiontype: item.questionType,
@@ -160,27 +144,6 @@ const onSubmit = async () => {
 	loading.value = false;
 
 	console.log("tabledata", tableData);
-};
-const handleMultiDelete = async () => {
-	let rows = multipleTableRef.value.getSelectionRows();
-	for (let item of rows) {
-		await deleteQuestion(item.questionid)
-			.then((res) => console.log("删除问题成功", res))
-			.catch((err) => console.log("删除问题失败", err));
-	}
-	getAll();
-};
-const resetForm = () => {
-	questionlist.categoryid = "";
-	questionlist.questionid = "";
-	questionlist.questiontype = "";
-	questionlist.questioncontent = "";
-	questionlist.questionanswer = "";
-};
-const handleEdit = (questionList) => {
-	const questionid = questionList.questionid;
-	// router.push(`/exams/update?examSessionId=${id}`);
-	router.push({ path: "update", query: { questionId: questionid } });
 };
 </script>
 <style lang="scss" scoped>

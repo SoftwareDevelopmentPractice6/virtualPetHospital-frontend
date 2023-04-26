@@ -1,168 +1,232 @@
 <template>
-	<div class="ExamContent">
-		<h1 class="title">试卷内容</h1>
-		<div class="Select">
-			<h2 class="title1">一、选择题</h2>
-			<el-row>
-				<el-text class="selection1"
-					>1、第一个选择题巴拉巴拉巴拉不知道是什么题</el-text
-				></el-row
-			>
-			<el-radio-group class="seleAnswer1" v-model="radio">
-				<el-radio :label="1">A.第一个选项阿巴阿巴</el-radio>
-				<el-radio :label="2">B.第二个选项阿巴阿巴</el-radio>
-				<el-radio :label="3">C.第三个选项阿巴阿巴</el-radio>
-			</el-radio-group>
-		</div>
-		<div class="Essay">
-			<h2 class="title2">二、简答题</h2>
-			<el-row>
-				<el-text class="essay1"
-					>1、第一个简答题题干信息巴拉巴拉</el-text
-				></el-row
-			>
-			<el-input
-				class="essayAnswer1"
-				v-model="textarea"
-				:rows="3"
-				type="textarea"
-				placeholder="Please input"
-			/>
-		</div>
-		<div class="button">
-			<el-button class="submitButton" type="primary" @click="open"
-				>提交</el-button
-			>
-			<div v-if="show">
-				<div class="mask"></div>
-				<div class="confirm">
-					<p>你确定要跳转到详情页吗？</p>
-					<button @click="confirm">确定</button>
-					<button @click="cancel">取消</button>
+	<div class="app-container home" v-loading="loading">
+		<el-container>
+			<el-header>
+				<el-form :inline="true" :model="examlist" class="search">
+					<el-form-item label="试卷名称:">
+						<el-input v-model="examlist.examSessionPaper.paperName"></el-input>
+					</el-form-item>
+				</el-form>
+			</el-header>
+			<el-main class="main">
+				<div class="common-layout">
+					<el-container>
+						<el-main class="inmain">
+							<el-table
+								:data="tableData"
+								style="width: 100%"
+								height="400px"
+								@selection-change="handleSelectionChange"
+							>
+								<el-table-column type="index" label="序号" width="60" />
+
+								<el-table-column
+									prop="questiontype"
+									label="问题类别"
+									width="100"
+								/>
+								<el-table-column
+									prop="questioncontent"
+									label="问题内容"
+									width="700"
+								/>
+
+								<el-table-column label="输入答案" width="100">
+									<el-input v-model="input" class="answer" width="50" />
+								</el-table-column>
+								<el-table-column label="查看答案" width="100">
+									<el-button size="small" @click="handleOpen(item)"
+										>查看</el-button
+									>
+								</el-table-column>
+							</el-table>
+						</el-main>
+					</el-container>
 				</div>
-			</div>
-			<router-link to="/StudentExam/ExamSelection">
-				<el-button class="cancelButton">取消</el-button></router-link
-			>
-		</div>
+			</el-main>
+		</el-container>
 	</div>
 </template>
-
 <script setup>
-import { ref } from "vue";
+import { computed, unref, onMounted, reactive, ref } from "vue";
+import {
+	getQuestionList,
+	deleteQuestion,
+	getQuestionByType,
+	getExamList,
+} from "@/api/exam";
 import { ElMessageBox } from "element-plus";
-import { useRoute } from "vue-router";
-// import router from "@/router";
 
-// data 重新定义（用 ref 或 reactive）
-// methods 重新定义
-// this 全部删掉，this.$router, this.$route, this.$emit 去查一下 vue3 的语法
-// Mounted, BeforeDestroy 去查一下 vue3 的语法
-import { useRouter } from "vue-router";
-
-
+import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
-let show = ref(false);
-// const showConfirm = () => {
-// 	show = true;
-// };
-const confirm = () => {
-	show = false;
-	router.push({name: '/StudentExam/ExamSelection'});
-	// this.$router.push({ name: "detail" });
+const route = useRoute();
+
+const loading = ref();
+const id = computed(() => {
+	return route.query.examId;
+});
+
+const examlist = ref({});
+
+const getExamInfo = async () => {
+	if (!unref(id)) return;
+	loading.value = true;
+	const list = ref();
+	await getExamList(unref(id)).then((res) => {
+		list.value = res.data.examSessionList;
+	});
+	for (let item of list.value) {
+		if (item.examSessionPaper.paperExam.examId == id.value) {
+			examlist.value = item;
+		}
+	}
+	console.log("examlist.value", examlist.value);
+	loading.value = false;
 };
-const cancel = () => {
-	show = false;
+getExamInfo();
+
+// let tableData = reactive([]);
+const questionlist = reactive({
+	categoryid: "",
+	questionid: "",
+	questiontype: "",
+	questioncontent: "",
+	questionanswer: "",
+});
+const tableData = ref([]);
+
+onMounted(() => {
+	getAll();
+});
+const handleSelectionChange = (val) => {
+	console.log(val);
+};
+// 获取全部信息
+const getAll = async () => {
+	tableData.value = [];
+	// loading.value = true;
+	let data = await getQuestionList().then((res) => res.data);
+	data.questionList.forEach((item) => {
+		var value = {
+			questioncontent: item.questionContent,
+			questionid: item.questionId,
+			categoryname: item.questionCategory.categoryName,
+			questionanswer: item.questionAnswer,
+			categoryid: item.questionCategory.categoryId,
+			questiontype: item.questionType,
+		};
+		tableData.value.push(value);
+	});
+	console.log("tabledata", tableData);
 };
 
-// export default {
-//   data() {
-//     return {
-//       show: false,
-// 	  obj: {
-// 		a: 'a',
-// 		b: 'b'
-// 	  }
-//     };
-//   },
-//   methods: {
-//     showConfirm() {
-//       this.show = true;
-//     },
-//     confirm() {
-//       this.show = false;
-//       this.$router.push({ name: "detail" });
-//     },
-//     cancel() {
-//       this.show = false;
-//     },
-//   },
-// }
-const radio = ref(3);
-const textarea = ref("");
-// data = () => {
-// 	return {
-// 		show: false,
-// 	};
-// },
-// open = () => {
-// 	this.show = true;
-// };
-// confirm = () => {
-// 	this.show = false;
-// 	this.$router.push("/StudentExam/ExamSelection");
-// };
-// cancel = () => {
-// 	this.show = false;
-// };
+const handleDelete = (val) => {
+	console.log("val", val);
+	deletequestion(val.questionid).then(() => {
+		tableData = reactive([]);
+		getAll();
+	});
+};
+// 删除接口
+const deletequestion = async (questionid) => {
+	await deleteQuestion(questionid).then((res) => console.log("res", res));
+};
+//模糊搜索
+const onSubmit = async () => {
+	// console.log("submit!");
+	if (questionlist.questiontype === "") return;
+	tableData.value = [];
+	loading.value = true;
+	const data = await getQuestionByType(questionlist.questiontype).then(
+		(res) => res.data
+	);
+	data.questionList.forEach((item) => {
+		var value = {
+			questioncontent: item.questionContent,
+			questionid: item.questionId,
+			categoryname: item.questionCategory.categoryName,
+			questionanswer: item.questionAnswer,
 
-// const open = () => {
-// 	// ElMessageBox.alert("提交成功", "Success", {
-// 	// 	// if you want to disable its autofocus
-// 	// 	autofocus: false,
-// 	// 	confirmButtonText: "OK",
-// 	// });
-// 	ElMessageBox.confirm("提交成功", "Success", {
-// 		confirmButtonText: "OK",
-// 		showCancelButton: false,
-// 		type: "success"
-// 	}).then(() => {
-// 		// 用户点击了确认按钮，执行页面跳转的操作
-// 		this.$router.replace('/StudentExam/ExamSelection');
-// 	});
+			categoryid: item.questionCategory.categoryId,
+			questiontype: item.questionType,
+		};
+		tableData.value.push(value);
+	});
+	loading.value = false;
+
+	console.log("tabledata", tableData);
+};
+const handleOpen = () => {
+	ElMessageBox.alert("This is a message", "答案", {
+		// if you want to disable its autofocus
+		// autofocus: false,
+		const { questionAnswer } = getQuestionList(),
+// 你可以像这样传递参数：
+ElMessageBox({}, questionAnswer),
+confirmButtonText: "OK",
+	});
+};
+
+// // 或者正在使用不同的调用方式
+// ElMessageBox.alert('Hello world!', 'Title', {}, appContext)
+// // 查看病例
+// const handleOpen = async (val) => {
+// 	curItem.value = tableData.value[val];
+// 	// curItem.value.title = "答案";
+// 	await getQuestionList(curItem.value.questionanswer);
+// 	dialogTableVisible.value = true;
 // };
 </script>
-
 <style lang="scss" scoped>
-.title {
-	margin: 30px auto 30px auto;
-	text-align: center;
+.page {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+	padding: 30px 0px 0px 0px;
 }
-
-.Select {
-	margin: 30px 30px 30px 30px;
+.search {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 25px;
+	height: 100%;
 }
-
-.Essay {
-	margin: 30px 30px 30px 30px;
+.main {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	padding: 10px 10px 0px 10px;
 }
-
-.essayAnswer1 {
-	margin: 20px auto 20px auto;
+.inmain {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+	padding: 10px 0px 0px 0px;
 }
-
 .button {
-	text-align: center;
-	margin-block-end: 10px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
 }
-.submitButton {
-	width: 150px;
+.AddButton {
+	width: 80px;
 	height: 40px;
-	margin: auto 100px auto auto;
+	margin: 0px 90px 30px 30px;
 }
-
-.cancelButton {
-	width: 150px;
+.DeleteButton {
+	width: 80px;
 	height: 40px;
+	margin: 0px 30px 30px 90px;
+}
+.ChangeButton {
+	width: 80px;
+	height: 40px;
+	margin: 0px 60px 30px 60px;
+}
+body {
+	margin: 0;
+}
+.example-showcase .el-loading-mask {
+	z-index: 9;
 }
 </style>
