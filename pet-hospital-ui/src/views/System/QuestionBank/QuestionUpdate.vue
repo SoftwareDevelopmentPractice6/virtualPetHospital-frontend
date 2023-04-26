@@ -13,10 +13,9 @@
 				:model="formLabelAlign"
 				style="max-width: 460px"
 			>
-				<el-form-item label="问题类别">
-					<el-input v-model="questionlist.questionType"> </el-input>
+				<el-form-item label="问题ID">
+					<el-input v-model="questionlist.questionId"> </el-input>
 				</el-form-item>
-
 				<el-form-item label="问题内容">
 					<el-input
 						v-model="questionlist.questionContent"
@@ -26,6 +25,14 @@
 				</el-form-item>
 				<el-form-item label="问题答案">
 					<el-input v-model="questionlist.questionAnswer"> </el-input>
+				</el-form-item>
+
+				<el-form-item label="问题种类">
+					<el-input v-model="questionlist.questionType"> </el-input>
+				</el-form-item>
+				<el-form-item label="问题类别ID">
+					<el-input v-model="questionlist.questionCategory.categoryId">
+					</el-input>
 				</el-form-item>
 
 				<el-form-item>
@@ -72,14 +79,23 @@ const getQuestionInfo = async () => {
 	console.log("questionlist.value", questionlist.value);
 	loading.value = false;
 };
-
-onMounted(() => {
-	getQuestionInfo();
-});
+getQuestionInfo();
+onMounted(() => {});
 
 const onSubmit = async () => {
 	loading.value = true;
-	await updateQuestion(unref(questionlist));
+	console.log(
+		"questionlist.questionCategory",
+		questionlist.value.questionCategory
+	);
+	const info = {
+		questionId: questionlist.value.questionId,
+		questionContent: questionlist.value.questionContent,
+		questionAnswer: questionlist.value.questionAnswer,
+		questionType: questionlist.value.questionType,
+		categoryId: questionlist.value.questionCategory.categoryId,
+	};
+	await updateQuestion(info);
 	ElMessage.success("提交成功！");
 	loading.value = false;
 	router.back();

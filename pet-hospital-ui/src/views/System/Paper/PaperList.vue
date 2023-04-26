@@ -65,14 +65,13 @@
 									@click="handleView(scope.row)"
 									>查看试卷内容</el-button
 								>
-								<router-link to="/paper/content">
-									<el-button
-										size="small"
-										type="warning"
-										plain
-										@click="handleEdit(scope.row)"
-										>编辑</el-button
-									></router-link
+
+								<el-button
+									size="small"
+									type="warning"
+									plain
+									@click="handleEdit(scope.row)"
+									>编辑</el-button
 								>
 								<el-button
 									size="small"

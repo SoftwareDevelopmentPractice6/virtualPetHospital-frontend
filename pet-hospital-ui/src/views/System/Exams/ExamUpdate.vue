@@ -13,8 +13,14 @@
 				:model="formLabelAlign"
 				style="max-width: 460px"
 			>
+				<el-form-item label="考试Id">
+					<el-input v-model="examlist.examSessionPaper.paperExam.examId" />
+				</el-form-item>
 				<el-form-item label="考试名称">
 					<el-input v-model="examlist.examSessionPaper.paperExam.examName" />
+				</el-form-item>
+				<el-form-item label="考试试卷名称">
+					<el-input v-model="examlist.examSessionPaper.paperName" />
 				</el-form-item>
 				<el-form-item label="考试时长">
 					<el-input v-model="examlist.examSessionPaper.paperDuration" />
@@ -30,9 +36,7 @@
 				<el-form-item label="考试结束时间">
 					<el-input v-model="examlist.examSessionEndTime" />
 				</el-form-item>
-				<el-form-item label="考试试卷名称">
-					<el-input v-model="examlist.examSessionPaper.paperName" />
-				</el-form-item>
+
 				<el-form-item>
 					<el-button class="SubmitButton" type="primary" @click="onSubmit"
 						>保存</el-button
@@ -83,7 +87,17 @@ onMounted(() => {});
 
 const onSubmit = async () => {
 	loading.value = true;
-	await updateExamination(unref(examlist));
+	console.log("examlist.examSessionPaper", examlist.value.examSessionPaper);
+	const info = {
+		examid: examlist.value.examSessionPaper.paperExam.examId,
+		examname: examlist.value.examSessionPaper.paperExam.examName,
+		papername: examlist.value.examSessionPaper.paperName,
+		paperduration: examlist.value.examSessionPaper.paperDuration,
+		papertotalscore: examlist.value.examSessionPaper.paperTotalScore,
+		examstart: examlist.value.examSessionStartTime,
+		examend: examlist.value.examSessionEndTime,
+	};
+	await updateExamination(info);
 	ElMessage.success("提交成功！");
 	loading.value = false;
 	router.back();

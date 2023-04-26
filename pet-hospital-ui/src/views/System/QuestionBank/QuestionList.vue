@@ -92,11 +92,11 @@ const loading = ref();
 
 // let tableData = reactive([]);
 const questionlist = reactive({
-	categoryid: "",
 	questionid: "",
-	questiontype: "",
 	questioncontent: "",
 	questionanswer: "",
+	questiontype: "",
+	categoryid: "",
 });
 const tableData = ref([]);
 
@@ -113,12 +113,11 @@ const getAll = async () => {
 	let data = await getQuestionList().then((res) => res.data);
 	data.questionList.forEach((item) => {
 		var value = {
+			questionid: item.questionId,
 			questioncontent: item.questionContent,
 			questionanswer: item.questionAnswer,
-			questionid: item.questionId,
-			categoryname: item.questionCategory.categoryName,
-			categoryid: item.questionCategory.categoryId,
 			questiontype: item.questionType,
+			categoryid: item.questionCategory.categoryId,
 		};
 		tableData.value.push(value);
 	});
@@ -147,13 +146,11 @@ const onSubmit = async () => {
 	);
 	data.questionList.forEach((item) => {
 		var value = {
+			questionid: item.questionId,
 			questioncontent: item.questionContent,
 			questionanswer: item.questionAnswer,
-			questionid: item.questionId,
-			categoryname: item.questionCategory.categoryName,
-
-			categoryid: item.questionCategory.categoryId,
 			questiontype: item.questionType,
+			categoryid: item.questionCategory.categoryId,
 		};
 		tableData.value.push(value);
 	});
@@ -171,11 +168,11 @@ const handleMultiDelete = async () => {
 	getAll();
 };
 const resetForm = () => {
-	questionlist.categoryid = "";
 	questionlist.questionid = "";
-	questionlist.questiontype = "";
 	questionlist.questioncontent = "";
 	questionlist.questionanswer = "";
+	questionlist.questiontype = "";
+	questionlist.categoryid = "";
 };
 const handleEdit = (questionList) => {
 	const questionid = questionList.questionid;
