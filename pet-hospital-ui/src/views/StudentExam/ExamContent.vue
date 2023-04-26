@@ -35,8 +35,10 @@
 									<el-input v-model="input" class="answer" width="50" />
 								</el-table-column>
 								<el-table-column label="查看答案" width="100">
-									<el-button size="small" @click="handleOpen(item)"
-										>查看</el-button
+									<template #default="scope">
+										<el-button size="small" @click="handleOpen(scope.$index)"
+											>查看</el-button
+										></template
 									>
 								</el-table-column>
 							</el-table>
@@ -156,8 +158,8 @@ const onSubmit = async () => {
 
 	console.log("tabledata", tableData);
 };
-const handleOpen = () => {
-	ElMessageBox.alert("This is a message", "答案", {
+const handleOpen = (curIndex) => {
+	ElMessageBox.alert(tableData.value[curIndex].questionanswer, "答案", {
 		// if you want to disable its autofocus
 		// autofocus: false,
 		confirmButtonText: "OK",

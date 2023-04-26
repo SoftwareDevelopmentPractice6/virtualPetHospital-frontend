@@ -74,7 +74,16 @@ onMounted(() => {});
 
 const onSubmit = async () => {
 	loading.value = true;
-	await updatePaper(unref(paperlist));
+	const info = {
+		examid: paperlist.value.examSessionPaper.paperExam.examId,
+		examname: paperlist.value.examSessionPaper.paperExam.examName,
+		papername: paperlist.value.examSessionPaper.paperName,
+		paperduration: paperlist.value.examSessionPaper.paperDuration,
+		papertotalscore: paperlist.value.examSessionPaper.paperTotalScore,
+		examstart: paperlist.value.examSessionStartTime,
+		examend: paperlist.value.examSessionEndTime,
+	};
+	await updatePaper(unref(info));
 	ElMessage.success("提交成功！");
 	loading.value = false;
 	router.back();
