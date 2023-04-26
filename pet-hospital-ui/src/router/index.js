@@ -151,27 +151,25 @@ const routes = [
 			},
 		],
 	},
-	// 学生用户管理
+	// 用户管理
 	{
-		path: "/user/studentuser",
+		path: "/user",
 		component: Layout,
-		redirect: "/user/studentuser/list",
+		redirect: "/user/list",
 		children: [
 			{
 				path: "list",
-				component: () => import("@/views/System/User/StudentUser/studentuser"),
+				component: () => import("@/views/System/User/user"),
 				beforeEnter: myBeforeEnter,
 			},
 			{
 				path: "add",
-				component: () =>
-					import("@/views/System/User/StudentUser/studentuseradd"),
+				component: () => import("@/views/System/User/useradd"),
 				beforeEnter: myBeforeEnter,
 			},
 			{
 				path: "update",
-				component: () =>
-					import("@/views/System/User/StudentUser/studentuserupdate"),
+				component: () => import("@/views/System/User/userupdate"),
 				beforeEnter: myBeforeEnter,
 			},
 		],

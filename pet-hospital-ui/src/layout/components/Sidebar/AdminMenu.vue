@@ -6,19 +6,14 @@
 			<template #title>
 				<el-icon><user /></el-icon> <span>用户管理</span></template
 			>
-			<el-menu-item index="/user/studentuser/list"
+			<el-menu-item index="/user/list"
 				><template #title>
-					<el-icon><reading /></el-icon> <span>学生管理</span></template
+					<el-icon><reading /></el-icon> <span>用户列表</span></template
 				></el-menu-item
 			>
-			<el-menu-item index="1-2"
+			<el-menu-item index="/user/add"
 				><template #title>
-					<el-icon><service /></el-icon> <span>老师管理</span></template
-				></el-menu-item
-			>
-			<el-menu-item index="1-3"
-				><template #title>
-					<el-icon><DataBoard /></el-icon> <span>管理员管理</span></template
+					<el-icon><service /></el-icon> <span>用户添加</span></template
 				></el-menu-item
 			>
 		</el-sub-menu>

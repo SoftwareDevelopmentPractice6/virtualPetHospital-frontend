@@ -160,13 +160,12 @@ const handleOpen = () => {
 	ElMessageBox.alert("This is a message", "答案", {
 		// if you want to disable its autofocus
 		// autofocus: false,
-		const { questionAnswer } = getQuestionList(),
-// 你可以像这样传递参数：
-ElMessageBox({}, questionAnswer),
-confirmButtonText: "OK",
+		confirmButtonText: "OK",
 	});
 };
-
+//const { questionAnswer } = getQuestionList()
+// 你可以像这样传递参数：
+// ElMessageBox({}, questionAnswer)
 // // 或者正在使用不同的调用方式
 // ElMessageBox.alert('Hello world!', 'Title', {}, appContext)
 // // 查看病例
