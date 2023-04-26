@@ -1,177 +1,195 @@
 <template>
-	<div class="ExamSelection">
-	<h1 class="title">考试选择</h1>
-	<el-form :inline="true" :model="formInline" class="examSelectionForm">
-		<el-form-item label="考试类别">
-			<el-select v-model="formInline.ExamCategory" placeholder="考试类别">
-				<el-option
-					v-for="item in options"
-					:key="item.value"
-					:label="item.label"
-					:value="item.value"
-				/>
-			</el-select>
-		</el-form-item>
+	<div class="case-wrapper">
+		<div class="case-container">
+			<!-- 模糊搜索框 -->
+			<div class="header-wrapper wrapper">
+				<el-form :inline="true" :model="examlist" class="search">
+					<el-form-item label="考试名称">
+						<el-input v-model="examlist.examname" placeholder="考试名称" />
+					</el-form-item>
+					<el-form-item>
+						<el-button type="primary" @click="onSubmit">搜索</el-button>
+						<el-button type="info" @click="resetForm">重置</el-button>
+					</el-form-item>
+				</el-form>
+			</div>
 
-		<el-form-item label="考试名称">
-			<el-input v-model="formInline.ExamName" placeholder="考试名称" />
-		</el-form-item>
-		<el-form-item>
-			<el-button type="primary" @click="onSubmit">搜索</el-button>
-		</el-form-item>
-	</el-form>
-
-	<div class="table-container">
-		<el-table :data="examTableData" height="250" class="examTable">
-			<el-table-column prop="Num" label="序号" width="180"></el-table-column>
-			<el-table-column
-				prop="ExamCategory"
-				label="考试类别"
-				width="180"
-			></el-table-column>
-			<el-table-column
-				prop="ExamName"
-				label="考试名称"
-				width="180"
-			></el-table-column>
-			<el-table-column
-				prop="ExamDuration"
-				label="考试时长（分钟）"
-				width="180"
-			></el-table-column>
-			<el-table-column
-				prop="ExamTotalScore"
-				label="考试总分"
-				width="180"
-			></el-table-column>
-
-			<el-table-column prop="Operations" label="操作">
-				<template #default="scope">
-					<router-link to="/StudentExam/ExamContent">
-						<el-button
-							size="small"
-							@click="handleAnwser(scope.$index, scope.row)"
-							>答题</el-button
-						>
-					</router-link>
-					<router-link to="/StudentExam/ScoreQuery">
-						<el-button
-							size="small"
-							@click="handleScoreQuery(scope.$index, scope.row)"
-							>成绩查询</el-button
-						></router-link
+			<div class="table-wrapper wrapper">
+				<div class="table-container">
+					<el-table
+						ref="multipleTableRef"
+						:data="tableData"
+						height="400px"
+						:header-cell-style="{ 'text-align': 'center' }"
+						:cell-style="{ 'text-align': 'center' }"
+						@selection-change="handleSelectionChange"
 					>
-				</template>
-			</el-table-column>
-		</el-table>
+						<el-table-column type="selection" width="55" />
+						<el-table-column type="index" label="序号" width="55" />
+
+						<el-table-column prop="examname" label="考试名称" width="120" />
+						<el-table-column prop="examduration" label="考试时长" width="110" />
+						<el-table-column
+							prop="examtotalscore"
+							label="考试总分"
+							width="110"
+						/>
+						<el-table-column
+							prop="examstart"
+							label="考试开始时间"
+							width="170"
+						/>
+						<el-table-column prop="examend" label="考试结束时间" width="170" />
+						<el-table-column
+							prop="papername"
+							label="考试试卷名称"
+							width="120"
+						/>
+
+						<el-table-column label="操作" width="200">
+							<template #default="scope">
+								<el-button
+									size="small"
+									type="warning"
+									plain
+									@click="handleEdit(scope.row)"
+									>开始考试</el-button
+								>
+							</template>
+						</el-table-column>
+					</el-table>
+				</div>
+			</div>
+		</div>
 	</div>
-</div>
 </template>
 <script setup>
-//import { reactive } from 'vue'
+import { onMounted, reactive, ref } from "vue";
+import { getExamList, getExamByName } from "@/api/exam";
+import { useRouter } from "vue-router";
+const router = useRouter();
+const loading = ref();
 
-import { reactive } from "@vue/reactivity";
-
-const formInline = reactive({
-	ExamCategory: "",
-	ExamName: "",
+// let tableData = reactive([]);
+const examlist = reactive({
+	id: "",
+	examname: "",
+	examrealid: "",
+	examduration: "",
+	examtotalscore: "",
+	examstart: "",
+	examend: "",
+	papername: "",
 });
-const options = [
-	{
-		value: "骨科",
-		label: "骨科",
-	},
-	{
-		value: "眼科",
-		label: "眼科",
-	},
-	{
-		value: "牙科",
-		label: "牙科",
-	},
-	{
-		value: "内科",
-		label: "内科",
-	},
-	{
-		value: "妇科",
-		label: "妇科",
-	},
-];
+const tableData = ref([]);
 
-const onSubmit = () => {
-	console.log("submit!");
+onMounted(() => {
+	getAll();
+});
+const handleSelectionChange = (val) => {
+	console.log(val);
+};
+// 获取全部信息
+const getAll = async () => {
+	tableData.value = [];
+	loading.value = true;
+	let data = await getExamList().then((res) => res.data);
+	data.examSessionList.forEach((item) => {
+		var value = {
+			id: item.examSessionId,
+			examname: item.examSessionPaper.paperExam.examName,
+			examrealid: item.examSessionPaper.paperExam.examId,
+			examduration: item.examSessionPaper.paperDuration,
+			examtotalscore: item.examSessionPaper.paperTotalScore,
+			examstart: item.examSessionStartTime,
+			examend: item.examSessionEndTime,
+			papername: item.examSessionPaper.paperName,
+		};
+		tableData.value.push(value);
+	});
+	console.log("tabledata", tableData);
 };
 
-// const handleEdit = (index, row) => {
-//   console.log(index, row)
-// }
-// const handleDelete = (index, row) => {
-//   console.log(index, row)
-// }
+const onSubmit = async () => {
+	// console.log("submit!");
+	if (examlist.examname === "") return;
+	tableData.value = [];
+	loading.value = true;
+	const data = await getExamByName(examlist.examname).then((res) => res.data);
+	data.examSessionList.forEach((item) => {
+		var value = {
+			examname: item.examSessionPaper.paperExam.examName,
+			examrealid: item.examSessionPaper.paperExam.examId,
+			examduration: item.examSessionPaper.paperDuration,
+			examtotalscore: item.examSessionPaper.paperTotalScore,
+			examstart: item.examSessionStartTime,
+			examend: item.examSessionEndTime,
+			papername: item.examSessionPaper.paperName,
+		};
+		tableData.value.push(value);
+	});
+	loading.value = false;
 
-const examTableData = [
-	{
-		Num: "1",
-		ExamCategory: "内科",
-		ExamName: "鼻炎治疗",
-		ExamDuration: "60",
-		ExamTotalScore: "100",
-	},
-	{
-		Num: "2",
-		ExamCategory: "内科",
-		ExamName: "肺炎治疗",
-		ExamDuration: "70",
-		ExamTotalScore: "120",
-	},
-	{
-		Num: "3",
-		ExamCategory: "内科",
-		ExamName: "感冒治疗",
-		ExamDuration: "70",
-		ExamTotalScore: "150",
-	},
-	{
-		Num: "4",
-		ExamCategory: "内科",
-		ExamName: "",
-		ExamDuration: "",
-		ExamTotalScore: "",
-	},
-	{
-		Num: "5",
-		ExamCategory: "妇科",
-		ExamName: "",
-		ExamDuration: "",
-		ExamTotalScore: "",
-	},
-	{
-		Num: "6",
-		ExamCategory: "妇科",
-		ExamName: "",
-		ExamDuration: "",
-		ExamTotalScore: "",
-	},
-];
+	console.log("tabledata", tableData);
+};
+
+const resetForm = () => {
+	examlist.id = "";
+	examlist.examname = "";
+	examlist.examrealid = "";
+	examlist.examduration = "";
+	examlist.examtotalscore = "";
+	examlist.examstart = "";
+	examlist.examend = "";
+	examlist.papername = "";
+};
+
+const handleEdit = (examSessionList) => {
+	const examrealid = examSessionList.examrealid;
+	// router.push(`/exams/update?examSessionId=${id}`);
+	router.push({ path: "ExamContent", query: { examId: examrealid } });
+};
 </script>
 <style lang="scss" scoped>
-.title {
-	margin: 30px auto 30px auto;
-	text-align: center;
+.case-wrapper {
+	width: 100%;
+	height: calc(100vh - 50px);
+	padding: 30px;
+	.case-container {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		.wrapper {
+			width: 100%;
+			margin-bottom: 10px;
+		}
+		.header-wrapper {
+			display: flex;
+			justify-content: center;
+			margin-bottom: 25px;
+			.search-form {
+				width: 800px;
+				height: 32px;
+			}
+		}
+		.btns-wrapper {
+			margin-left: 75px;
+			.btn-container {
+				display: inline-block;
+				margin-right: 7px;
+			}
+		}
+		.table-wrapper {
+			display: flex;
+			justify-content: center;
+			width: 100%;
+			.table-container {
+				width: 95%;
+			}
+		}
+	}
 }
-
-.examSelectionForm {
-	text-align: center;
-}
-
-.examTable {
-	vertical-align: center;
-	padding: 30px 30px 300px 30px;
-}
-
-.table-container {
-  position: absolute;
-  width: 100%;
+/deep/ .el-dialog {
+	width: 90% !important;
 }
 </style>

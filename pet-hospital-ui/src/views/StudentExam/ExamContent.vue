@@ -1,10 +1,10 @@
 <template>
-	<div class="app-container home">
+	<div class="app-container home" v-loading="loading">
 		<el-container>
 			<el-header>
-				<el-form :inline="true" :model="paperlist" class="search">
-					<el-form-item label="试卷名称：宠物医院实习生测试卷">
-						<el-input size="small" v-model="paperlist.examSessionId"></el-input>
+				<el-form :inline="true" :model="examlist" class="search">
+					<el-form-item label="试卷名称:">
+						<el-input v-model="examlist.examSessionPaper.paperName"></el-input>
 					</el-form-item>
 				</el-form>
 			</el-header>
@@ -35,7 +35,7 @@
 									<el-input v-model="input" class="answer" width="50" />
 								</el-table-column>
 								<el-table-column label="查看答案" width="100">
-									<el-button size="small" @click="handleEdit(item)"
+									<el-button size="small" @click="handleOpen(item)"
 										>查看</el-button
 									>
 								</el-table-column>
@@ -53,42 +53,45 @@ import {
 	getQuestionList,
 	deleteQuestion,
 	getQuestionByType,
-	getPaperList,
+	getExamList,
 } from "@/api/exam";
+import { ElMessageBox } from "element-plus";
+
 import { useRoute, useRouter } from "vue-router";
 const router = useRouter();
 const route = useRoute();
 
 const loading = ref();
 const id = computed(() => {
-	return route.query.paperId;
+	return route.query.examId;
 });
 
-const paperlist = ref({});
+const examlist = ref({});
 
-const getPaperInfo = async () => {
+const getExamInfo = async () => {
 	if (!unref(id)) return;
 	loading.value = true;
 	const list = ref();
-	await getPaperList(unref(id)).then((res) => {
+	await getExamList(unref(id)).then((res) => {
 		list.value = res.data.examSessionList;
 	});
 	for (let item of list.value) {
-		if (item.examSessionPaper.paperId == id.value) {
-			paperlist.value = item;
+		if (item.examSessionPaper.paperExam.examId == id.value) {
+			examlist.value = item;
 		}
 	}
-	console.log("paperlist.value", paperlist.value);
+	console.log("examlist.value", examlist.value);
 	loading.value = false;
 };
-getPaperInfo();
-onMounted(() => {});
+getExamInfo();
+
 // let tableData = reactive([]);
 const questionlist = reactive({
 	categoryid: "",
 	questionid: "",
 	questiontype: "",
 	questioncontent: "",
+	questionanswer: "",
 });
 const tableData = ref([]);
 
@@ -101,14 +104,14 @@ const handleSelectionChange = (val) => {
 // 获取全部信息
 const getAll = async () => {
 	tableData.value = [];
-	loading.value = true;
+	// loading.value = true;
 	let data = await getQuestionList().then((res) => res.data);
 	data.questionList.forEach((item) => {
 		var value = {
 			questioncontent: item.questionContent,
 			questionid: item.questionId,
 			categoryname: item.questionCategory.categoryName,
-
+			questionanswer: item.questionAnswer,
 			categoryid: item.questionCategory.categoryId,
 			questiontype: item.questionType,
 		};
@@ -142,6 +145,7 @@ const onSubmit = async () => {
 			questioncontent: item.questionContent,
 			questionid: item.questionId,
 			categoryname: item.questionCategory.categoryName,
+			questionanswer: item.questionAnswer,
 
 			categoryid: item.questionCategory.categoryId,
 			questiontype: item.questionType,
@@ -152,6 +156,26 @@ const onSubmit = async () => {
 
 	console.log("tabledata", tableData);
 };
+const handleOpen = () => {
+	ElMessageBox.alert("This is a message", "答案", {
+		// if you want to disable its autofocus
+		// autofocus: false,
+		const { questionAnswer } = getQuestionList(),
+// 你可以像这样传递参数：
+ElMessageBox({}, questionAnswer),
+confirmButtonText: "OK",
+	});
+};
+
+// // 或者正在使用不同的调用方式
+// ElMessageBox.alert('Hello world!', 'Title', {}, appContext)
+// // 查看病例
+// const handleOpen = async (val) => {
+// 	curItem.value = tableData.value[val];
+// 	// curItem.value.title = "答案";
+// 	await getQuestionList(curItem.value.questionanswer);
+// 	dialogTableVisible.value = true;
+// };
 </script>
 <style lang="scss" scoped>
 .page {
