@@ -18,7 +18,7 @@
             :cell-style="{ 'text-align': 'center' }"
             @selection-change="handleSelectionChange"
           >
-            <el-table-column type="index" label="序号" width="60" />
+            <el-table-column type="index" label="序号" width="80" />
 
             <el-table-column prop="questiontype" label="问题类别" width="100" />
             <el-table-column

@@ -44,7 +44,7 @@
             <el-table-column type="selection" width="55" />
             <el-table-column type="index" label="序号" width="55" />
 
-            <el-table-column prop="papername" label="试卷名称" width="200" />
+            <el-table-column prop="papername" label="试卷名称" width="300" />
             <el-table-column
               prop="paperduration"
               label="试卷时长"
@@ -214,7 +214,6 @@ const handleView = (examSessionList) => {
     .header-wrapper {
       display: flex;
       justify-content: center;
-      margin-bottom: 25px;
       .search-form {
         width: 800px;
         height: 32px;

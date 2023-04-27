@@ -52,7 +52,7 @@
             <el-table-column
               prop="questioncontent"
               label="问题内容"
-              width="500"
+              width="750"
             />
             <el-table-column
               prop="questionanswer"
@@ -196,7 +196,6 @@ const handleEdit = (questionList) => {
     .header-wrapper {
       display: flex;
       justify-content: center;
-      margin-bottom: 25px;
       .search-form {
         width: 800px;
         height: 32px;

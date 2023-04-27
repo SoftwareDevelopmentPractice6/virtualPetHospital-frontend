@@ -46,18 +46,18 @@
           >
             <el-table-column type="selection" width="55" />
             <el-table-column prop="id" label="药品编号" width="100" />
-            <el-table-column prop="name" label="药品名称" width="100" />
+            <el-table-column prop="name" label="药品名称" width="150" />
             <el-table-column
               prop="classification"
               label="药品类别"
               width="100"
             />
             <el-table-column prop="price" label="药品价格" width="100" />
-            <el-table-column prop="manufacturer" label="生产厂家" width="100" />
+            <el-table-column prop="manufacturer" label="生产厂家" width="200" />
             <el-table-column
               prop="specifications"
               label="药品规格"
-              width="100"
+              width="180"
             />
             <el-table-column prop="vaccine" label="是否是疫苗" width="100" />
             <el-table-column label="操作" width="200">
