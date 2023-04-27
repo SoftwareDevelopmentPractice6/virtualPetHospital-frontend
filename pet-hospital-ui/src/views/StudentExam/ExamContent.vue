@@ -1,11 +1,9 @@
 <template>
   <div class="app-container home" v-loading="loading">
     <el-container>
-      <el-header>
-        <el-form :inline="true" :model="examlist" class="search">
-          <el-form-item label="试卷名称:">
-            <el-input v-model="examlist.examSessionPaper.paperName"></el-input>
-          </el-form-item>
+      <el-header style="margin-top: 10px">
+        <el-form class="search">
+          <strong>试卷名称：</strong>{{ examlist.examSessionPaper.paperName }}
         </el-form>
       </el-header>
       <el-main class="main">
@@ -15,26 +13,25 @@
               <el-table
                 :data="tableData"
                 style="width: 100%"
-                height="400px"
+                height="530px"
                 @selection-change="handleSelectionChange"
               >
-                <el-table-column type="index" label="序号" width="60" />
+                <el-table-column type="index" label="序号" width="70" />
 
                 <el-table-column
                   prop="questiontype"
                   label="问题类别"
-                  width="100"
+                  width="120"
                 />
                 <el-table-column
                   prop="questioncontent"
                   label="问题内容"
-                  width="700"
+                  width="920"
                 />
-
                 <el-table-column label="输入答案" width="100">
-                  <el-input v-model="input" class="answer" width="50" />
+                  <input type="text" style="width: 65px" />
                 </el-table-column>
-                <el-table-column label="查看答案" width="100">
+                <el-table-column label="查看答案" width="120">
                   <template #default="scope">
                     <el-button size="small" @click="handleOpen(scope.$index)"
                       >查看</el-button
@@ -92,7 +89,6 @@ const handleSelectionChange = (val) => {
 // 获取全部信息
 const getAll = async () => {
   tableData.value = [];
-  // loading.value = true;
   let data = await getQuestionList().then((res) => res.data);
   data.questionList.forEach((item) => {
     var value = {
@@ -102,6 +98,7 @@ const getAll = async () => {
       questionanswer: item.questionAnswer,
       categoryid: item.questionCategory.categoryId,
       questiontype: item.questionType,
+      inputValue: "",
     };
     tableData.value.push(value);
   });
@@ -134,7 +131,7 @@ const handleOpen = (curIndex) => {
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 10px 10px 0px 10px;
+  padding: 0px 10px 0px 10px;
 }
 .inmain {
   display: flex;

@@ -213,7 +213,6 @@ const handleEdit = (examSessionList) => {
     .header-wrapper {
       display: flex;
       justify-content: center;
-      margin-bottom: 25px;
       .search-form {
         width: 800px;
         height: 32px;
