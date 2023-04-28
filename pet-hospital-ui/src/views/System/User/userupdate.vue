@@ -79,6 +79,10 @@ const onSubmit = async () => {
   loading.value = false;
   router.back();
 };
+
+const back = () => {
+  router.back();
+};
 </script>
 <style lang="scss" scoped>
 .demo-date-picker {

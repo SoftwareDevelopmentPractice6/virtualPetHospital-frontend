@@ -210,6 +210,7 @@ import {
   updateDisease,
 } from "@/api/case";
 import { useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
 
 const router = useRouter();
 
@@ -389,10 +390,20 @@ const multiDeleteCase = async () => {
 
 // 模糊搜索
 const onSubmit = async () => {
-  if (cases.category === "") return;
   diseaseData.value = [];
   loading.value = true;
-  await getDiseaseByKeyword(cases.category, cases.name)
+  if (!cases.name && !cases.category) {
+    getDiseaseData();
+    return;
+  } else if (!cases.name && cases.category) {
+    ElMessage({
+      message: "疾病名称为必填项",
+      type: "warning",
+    });
+    getDiseaseData();
+    return;
+  }
+  await getDiseaseByKeyword(cases.name, cases.category)
     .then((res) => {
       res.data.diseaseNameList.forEach((item) => {
         diseaseData.value.push(item);
