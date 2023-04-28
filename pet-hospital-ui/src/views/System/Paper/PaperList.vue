@@ -137,7 +137,6 @@ const getAll = async () => {
 const handleDelete = (val) => {
   console.log("val", val);
   deletePaper(val.examrealid).then(() => {
-    tableData = reactive([]);
     getAll();
   });
 };

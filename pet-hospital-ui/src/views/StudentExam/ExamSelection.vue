@@ -24,10 +24,9 @@
             :cell-style="{ 'text-align': 'center' }"
             @selection-change="handleSelectionChange"
           >
-            <el-table-column type="selection" width="55" />
             <el-table-column type="index" label="序号" width="55" />
 
-            <el-table-column prop="examname" label="考试名称" width="160" />
+            <el-table-column prop="examname" label="考试名称" width="220" />
             <el-table-column prop="examduration" label="考试时长" width="110" />
             <el-table-column
               prop="examtotalscore"
@@ -37,13 +36,13 @@
             <el-table-column
               prop="examstart"
               label="考试开始时间"
-              width="170"
+              width="190"
             />
-            <el-table-column prop="examend" label="考试结束时间" width="170" />
+            <el-table-column prop="examend" label="考试结束时间" width="190" />
             <el-table-column
               prop="papername"
               label="考试试卷名称"
-              width="180"
+              width="220"
             />
 
             <el-table-column label="操作" width="200">

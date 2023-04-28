@@ -25,6 +25,14 @@
           />
         </el-form-item>
 
+        <el-form-item label="问题答案">
+          <el-input
+            v-model="questionlist.questionanswer"
+            :autosize="{ minRows: 4 }"
+            type="textarea"
+          />
+        </el-form-item>
+
         <el-form-item>
           <el-button class="SubmitButton" type="primary" @click="onSubmit"
             >保存</el-button
@@ -54,19 +62,14 @@ const onSubmit = () => {
   var data = {
     questionContent: questionlist.questioncontent,
     questionType: questionlist.questiontype,
-    categoryId: questionlist.categoryid,
+    categoryId: "1",
+    questionAnswer: questionlist.questionanswer,
   };
-  console.log("data", data);
-  insert(data).then(() => {
+  insertQuestion(data).then((res) => {
+    console.log("insert susccess", res.data);
     ElMessage.success("提交成功！");
     back();
   });
-};
-const insert = async (val) => {
-  let value = await insertQuestion(val).then((res) => {
-    res.data;
-  });
-  console.log("val", value);
 };
 
 const back = () => {

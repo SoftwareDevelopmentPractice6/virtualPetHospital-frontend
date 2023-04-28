@@ -77,18 +77,19 @@ onMounted(() => {});
 const onSubmit = async () => {
   loading.value = true;
   const info = {
-    examid: paperlist.value.examSessionPaper.paperExam.examId,
-    examname: paperlist.value.examSessionPaper.paperExam.examName,
-    papername: paperlist.value.examSessionPaper.paperName,
-    paperduration: paperlist.value.examSessionPaper.paperDuration,
-    papertotalscore: paperlist.value.examSessionPaper.paperTotalScore,
-    examstart: paperlist.value.examSessionStartTime,
-    examend: paperlist.value.examSessionEndTime,
+    examId: paperlist.value.examSessionPaper.paperExam.examId,
+    examName: paperlist.value.examSessionPaper.paperExam.examName,
+    paperName: paperlist.value.examSessionPaper.paperName,
+    paperDuration: paperlist.value.examSessionPaper.paperDuration,
+    paperTotalScore: paperlist.value.examSessionPaper.paperTotalScore,
+    examSessionStartTime: paperlist.value.examSessionStartTime,
+    examSessionEndTime: paperlist.value.examSessionEndTime,
   };
-  await updatePaper(unref(info));
-  ElMessage.success("提交成功！");
-  loading.value = false;
-  back();
+  updatePaper(info).then(() => {
+    ElMessage.success("提交成功！");
+    loading.value = false;
+    back();
+  });
 };
 </script>
 

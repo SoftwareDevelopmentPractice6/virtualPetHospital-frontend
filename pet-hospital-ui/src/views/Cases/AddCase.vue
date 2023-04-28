@@ -139,8 +139,8 @@ const onSubmit = async () => {
   };
   updateCase(info).then((res) => {
     console.log("新增病例成功1", res);
+    router.back();
   });
-  cancel();
 };
 </script>
 
