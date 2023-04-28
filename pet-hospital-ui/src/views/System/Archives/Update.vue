@@ -28,35 +28,9 @@
         <el-form-item label="宠物类别">
           <el-input v-model="archive.petType" />
         </el-form-item>
-
         <el-form-item label="宠物性别">
           <el-input v-model="archive.petSex" />
         </el-form-item>
-        <!-- <el-form-item label="保存时间">
-          <el-col :span="11">
-            <div class="block">
-              <el-date-picker
-                v-model="archive.storeTime"
-                type="date"
-                placeholder="选择一个日期"
-                :size="size"
-              />
-            </div>
-          </el-col>
-        </el-form-item> -->
-        <!-- <el-form-item label="宠物类别">
-          <el-select
-            v-model="archive.petType"
-            placeholder="请选择宠物类别"
-          >
-            <el-option label="哺乳类动物" value="哺乳类动物" />
-            <el-option label="爬行类宠物" value="爬行类宠物" />
-            <el-option label="鸟类宠物" value="鸟类宠物" />
-            <el-option label="鱼类宠物" value="鱼类宠物" />
-            <el-option label="昆虫类宠物" value="昆虫类宠物" />
-          </el-select>
-        </el-form-item> -->
-
         <el-form-item label="主人联系方式">
           <el-input v-model="archive.ownerTel" />
         </el-form-item>
@@ -64,9 +38,7 @@
           <el-button class="SubmitButton" type="primary" @click="onSubmit"
             >保存</el-button
           >
-          <router-link to="/archive/list">
-            <el-button class="CancelButton">取消</el-button>
-          </router-link>
+          <el-button class="CancelButton" @click="back">取消</el-button>
         </el-form-item>
       </el-form>
     </el-main>

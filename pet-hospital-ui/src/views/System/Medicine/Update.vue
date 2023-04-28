@@ -22,19 +22,6 @@
         <el-form-item label="药品类别">
           <el-input v-model="medicine.medicineCategory" />
         </el-form-item>
-        <!-- <el-form-item label="疾病类别">
-          <el-select
-            v-model="medicine.medicineCategory"
-            placeholder="请选择药品类别"
-          >
-            <el-option label="传染病" value="传染病" />
-            <el-option label="寄生虫病" value="寄生虫病" />
-            <el-option label="内科" value="内科" />
-            <el-option label="外产科" value="外产科" />
-            <el-option label="常用手术" value="常用手术" />
-            <el-option label="免疫" value="免疫" />
-          </el-select>
-        </el-form-item> -->
         <el-form-item label="生产厂家">
           <el-input v-model="medicine.manufacturer" />
         </el-form-item>
@@ -55,9 +42,7 @@
           <el-button class="SubmitButton" type="primary" @click="onSubmit">
             保存
           </el-button>
-          <router-link to="/medicine/list">
-            <el-button class="CancelButton"> 取消 </el-button>
-          </router-link>
+          <el-button class="CancelButton" @click="back"> 取消 </el-button>
         </el-form-item>
       </el-form>
     </el-main>
@@ -76,6 +61,10 @@ const router = useRouter();
 const medicineName = computed(() => {
   return route.query.medicineName;
 });
+
+const back = () => {
+  router.back();
+};
 
 const loading = ref(false);
 
@@ -100,7 +89,7 @@ const onSubmit = async () => {
   await updateMedicine(unref(medicine));
   ElMessage.success("提交成功！");
   loading.value = false;
-  router.back();
+  back();
 };
 </script>
 

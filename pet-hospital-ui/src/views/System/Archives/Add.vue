@@ -14,9 +14,6 @@
           :model="formLabelAlign"
           style="max-width: 460px"
         >
-          <!-- <el-form-item label="档案编号">
-            <el-input v-model="archive.id" />
-          </el-form-item> -->
           <el-form-item label="宠物名称">
             <el-input v-model="archive.name" />
           </el-form-item>
@@ -58,9 +55,7 @@
             <el-button class="SubmitButton" type="primary" @click="onSubmit"
               >保存</el-button
             >
-            <router-link to="/archive/list">
-              <el-button class="CancelButton">取消</el-button>
-            </router-link>
+            <el-button class="CancelButton" @click="back">取消</el-button>
           </el-form-item>
         </el-form>
       </el-main>
@@ -72,6 +67,13 @@
 import { reactive } from "vue";
 import { ElMessage } from "element-plus";
 import { insertArchive } from "../../../api/system";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const back = () => {
+  router.back();
+};
 
 const onSubmit = () => {
   console.log(archive);
@@ -86,10 +88,8 @@ const onSubmit = () => {
   };
   console.log("data", data);
   insert(data).then(() => {
-    // console.log(res);
-    // if(res.code !== 200) return  ElMessage.error('提交失败！')
-    // medicine = {}
-    ElMessage("提交成功！");
+    ElMessage.success("提交成功！");
+    back();
   });
 };
 const insert = async (val) => {

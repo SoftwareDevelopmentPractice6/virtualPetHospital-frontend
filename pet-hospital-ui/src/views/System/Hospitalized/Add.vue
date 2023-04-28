@@ -13,28 +13,12 @@
         :model="formLabelAlign"
         style="max-width: 460px"
       >
-        <!--  <el-form-item label="病房编号">
-          <el-input v-model="admission.id" />
-        </el-form-item> -->
         <el-form-item label="病房标准">
           <el-input v-model="admission.roomclassification" />
         </el-form-item>
         <el-form-item label="护理级别">
           <el-input v-model="admission.classification" />
         </el-form-item>
-        <!-- <el-form-item label="护理级别">
-          <el-select
-            v-model="admission.classification"
-            placeholder="请选择药品类别"
-          >
-            <el-option label="传染病" value="传染病" />
-            <el-option label="寄生虫病" value="寄生虫病" />
-            <el-option label="内科" value="内科" />
-            <el-option label="外产科" value="外产科" />
-            <el-option label="常用手术" value="常用手术" />
-            <el-option label="免疫" value="免疫" />
-          </el-select>
-        </el-form-item> -->
         <el-form-item label="收费价格">
           <el-input v-model="admission.price" />
         </el-form-item>
@@ -48,9 +32,7 @@
           <el-button class="SubmitButton" type="primary" @click="onSubmit"
             >保存</el-button
           >
-          <router-link to="/hospitalized/list">
-            <el-button class="CancelButton">取消</el-button>
-          </router-link>
+          <el-button class="CancelButton" @click="back">取消</el-button>
         </el-form-item>
       </el-form>
     </el-main>
@@ -61,6 +43,13 @@
 import { reactive } from "vue";
 import { ElMessage } from "element-plus";
 import { insertAdmission } from "@/api/system";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const back = () => {
+  router.back();
+};
 
 const onSubmit = () => {
   console.log(admission);
@@ -74,10 +63,8 @@ const onSubmit = () => {
   };
   console.log("data", data);
   insert(data).then(() => {
-    // console.log(res);
-    // if(res.code !== 200) return  ElMessage.error('提交失败！')
-    // medicine = {}
-    ElMessage("提交成功！");
+    ElMessage.success("提交成功！");
+    back();
   });
 };
 const insert = async (val) => {
