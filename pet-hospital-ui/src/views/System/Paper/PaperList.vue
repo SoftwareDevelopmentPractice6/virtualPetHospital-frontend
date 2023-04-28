@@ -41,22 +41,22 @@
             :cell-style="{ 'text-align': 'center' }"
             @selection-change="handleSelectionChange"
           >
-            <el-table-column type="selection" width="55" />
-            <el-table-column type="index" label="序号" width="55" />
+            <el-table-column type="selection" width="70" />
+            <el-table-column type="index" label="序号" width="80" />
 
-            <el-table-column prop="papername" label="试卷名称" width="300" />
+            <el-table-column prop="papername" label="试卷名称" width="400" />
             <el-table-column
               prop="paperduration"
               label="试卷时长"
-              width="130"
+              width="160"
             />
             <el-table-column
               prop="papertotalscore"
               label="试卷总分"
-              width="130"
+              width="160"
             />
 
-            <el-table-column label="操作" width="320">
+            <el-table-column label="操作" width="400">
               <template #default="scope">
                 <el-button
                   size="small"

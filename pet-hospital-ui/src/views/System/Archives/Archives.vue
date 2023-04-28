@@ -49,7 +49,7 @@
           >
             <el-table-column type="selection" width="55" />
             <el-table-column prop="id" label="档案编号" width="120" />
-            <el-table-column prop="date" label="保存时间" width="120" />
+            <el-table-column prop="date" label="保存时间" width="250" />
             <el-table-column prop="name" label="宠物名称" width="120" />
             <el-table-column
               prop="classification"

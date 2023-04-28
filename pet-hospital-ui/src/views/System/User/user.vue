@@ -5,7 +5,7 @@
       <div class="header-wrapper wrapper">
         <el-form :inline="true" :model="userlist" class="search">
           <el-form-item label="用户名称">
-            <el-input v-model="userlist.userauthority" placeholder="用户名称" />
+            <el-input v-model="userlist.username" placeholder="用户名称" />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">搜索</el-button>
@@ -42,16 +42,16 @@
             :cell-style="{ 'text-align': 'center' }"
             @selection-change="handleSelectionChange"
           >
-            <el-table-column type="selection" width="55" />
-            <el-table-column type="index" label="序号" width="55" />
+            <el-table-column type="selection" width="60" />
+            <el-table-column type="index" label="序号" width="130" />
 
-            <el-table-column prop="userid" label="用户ID" width="200" />
-            <el-table-column prop="username" label="用户名称" width="200" />
-            <el-table-column prop="userpassword" label="用户密码" width="200" />
+            <el-table-column prop="userid" label="用户ID" width="130" />
+            <el-table-column prop="username" label="用户名称" width="260" />
+            <el-table-column prop="userpassword" label="用户密码" width="260" />
             <el-table-column
               prop="userauthority"
               label="用户身份类别"
-              width="200"
+              width="150"
             />
 
             <el-table-column label="操作" width="300">
@@ -84,7 +84,6 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const loading = ref();
 
-// let tableData = reactive([]);
 const userlist = reactive({
   userid: "",
   username: "",
@@ -130,20 +129,24 @@ const handleDelete = (val) => {
 const deleteUser = async (userid) => {
   await deleteUserById(userid).then((res) => console.log("res", res));
 };
-const onSubmit = async () => {
-  // console.log("submit!");
-  if (userlist.username === "") return;
+const onSubmit = () => {
+  console.log("onSubmit调用");
+  if (userlist.username === "") {
+    getAll();
+    return;
+  }
   tableData.value = [];
   loading.value = true;
-  const data = await getUserByName(userlist.username).then((res) => res.data);
-  data.userList.forEach((item) => {
-    var value = {
-      userid: item.userId,
-      username: item.userName,
-      userpassword: item.userPassword,
-      userauthority: item.userAuthority,
-    };
-    tableData.value.push(value);
+  getUserByName(userlist.username).then((res) => {
+    res.data.userList.forEach((item) => {
+      let value = {
+        userid: item.userId,
+        username: item.userName,
+        userpassword: item.userPassword,
+        userauthority: item.userAuthority,
+      };
+      tableData.value.push(value);
+    });
   });
 
   loading.value = false;

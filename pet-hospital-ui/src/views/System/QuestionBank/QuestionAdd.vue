@@ -30,7 +30,7 @@
             >保存</el-button
           >
           <router-link to="/question/list">
-            <el-button class="CancelButton">取消</el-button>
+            <el-button class="CancelButton" @click="back">取消</el-button>
           </router-link>
         </el-form-item>
       </el-form>
@@ -42,8 +42,11 @@
 import { reactive } from "vue";
 import { ElMessage } from "element-plus";
 import { insertQuestion } from "../../../api/exam";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
 const questionlist = reactive({
-  // questionid: "",
   questioncontent: "",
   questiontype: "",
   categoryid: "",
@@ -51,16 +54,12 @@ const questionlist = reactive({
 const onSubmit = () => {
   console.log(questionlist);
   var data = {
-    // questionId: questionlist.questionid,
     questionContent: questionlist.questioncontent,
     questionType: questionlist.questiontype,
     categoryId: questionlist.categoryid,
   };
   console.log("data", data);
   insert(data).then(() => {
-    // console.log(res);
-    // if(res.code !== 200) return  ElMessage.error('提交失败！')
-    // medicine = {}
     ElMessage("提交成功！");
   });
 };
@@ -69,6 +68,10 @@ const insert = async (val) => {
     res.data;
   });
   console.log("val", value);
+};
+
+const back = () => {
+  router.back();
 };
 </script>
 

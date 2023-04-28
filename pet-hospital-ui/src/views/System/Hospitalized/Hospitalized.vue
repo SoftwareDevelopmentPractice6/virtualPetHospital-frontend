@@ -59,17 +59,17 @@
             <el-table-column
               prop="roomclassification"
               label="病房标准"
-              width="150"
+              width="180"
             />
             <el-table-column
               prop="classification"
               label="护理级别"
-              width="150"
+              width="160"
             />
-            <el-table-column prop="price" label="收费价格" width="150" />
-            <el-table-column prop="position" label="病房位置" width="150" />
-            <el-table-column prop="text" label="备注" width="150" />
-            <el-table-column label="操作" width="250">
+            <el-table-column prop="price" label="收费价格" width="160" />
+            <el-table-column prop="position" label="病房位置" width="160" />
+            <el-table-column prop="text" label="备注" width="160" />
+            <el-table-column label="操作" width="260">
               <template #default="scope">
                 <el-button size="small" @click="handleEdit(scope.row)">
                   编辑

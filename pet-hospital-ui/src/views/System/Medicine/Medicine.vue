@@ -50,10 +50,10 @@
             <el-table-column
               prop="classification"
               label="药品类别"
-              width="100"
+              width="150"
             />
             <el-table-column prop="price" label="药品价格" width="100" />
-            <el-table-column prop="manufacturer" label="生产厂家" width="200" />
+            <el-table-column prop="manufacturer" label="生产厂家" width="230" />
             <el-table-column
               prop="specifications"
               label="药品规格"

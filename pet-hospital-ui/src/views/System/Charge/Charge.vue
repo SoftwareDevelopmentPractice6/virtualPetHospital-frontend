@@ -47,9 +47,9 @@
           >
             <el-table-column type="selection" width="55" />
             <el-table-column prop="id" label="收费编号" width="220" />
-            <el-table-column prop="name" label="收费项目名称" width="250" />
+            <el-table-column prop="name" label="收费项目名称" width="420" />
             <el-table-column prop="price" label="收费价格" width="250" />
-            <el-table-column label="操作" width="250">
+            <el-table-column label="操作" width="300">
               <template #default="scope">
                 <el-button size="small" @click="handleEdit(scope.row)">
                   编辑
