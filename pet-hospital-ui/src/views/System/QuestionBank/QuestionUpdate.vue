@@ -39,9 +39,7 @@
           <el-button class="SubmitButton" type="primary" @click="onSubmit"
             >保存</el-button
           >
-          <router-link to="/question/list">
-            <el-button class="CancelButton" @click="bakc">取消</el-button>
-          </router-link>
+          <el-button class="CancelButton" @click="bakc">取消</el-button>
         </el-form-item>
       </el-form>
     </el-main>
@@ -98,7 +96,7 @@ const onSubmit = async () => {
   await updateQuestion(info);
   ElMessage.success("提交成功！");
   loading.value = false;
-  router.back();
+  back();
 };
 
 const back = () => {

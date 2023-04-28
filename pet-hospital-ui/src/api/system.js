@@ -136,7 +136,7 @@ export function insertExamine(val) {
   });
 }
 //更改化验信息
-export function updateExamine(val) {
+export function updateExamination(val) {
   return request({
     url: base + "examine",
     method: "put",

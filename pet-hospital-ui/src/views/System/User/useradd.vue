@@ -28,9 +28,7 @@
           <el-button class="SubmitButton" type="primary" @click="onSubmit"
             >保存</el-button
           >
-          <router-link to="/user/list">
-            <el-button class="back">取消</el-button>
-          </router-link>
+          <el-button class="back" @click="back">取消</el-button>
         </el-form-item>
       </el-form>
     </el-main>
@@ -61,7 +59,8 @@ const onSubmit = () => {
   };
   console.log("data", data);
   insert(data).then(() => {
-    ElMessage("提交成功！");
+    ElMessage.success("提交成功！");
+    back();
   });
 };
 const insert = async (val) => {

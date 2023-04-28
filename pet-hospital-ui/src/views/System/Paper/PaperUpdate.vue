@@ -28,9 +28,7 @@
           <el-button class="SubmitButton" type="primary" @click="onSubmit"
             >保存</el-button
           >
-          <router-link to="/paper/list">
-            <el-button class="CancelButton">取消</el-button>
-          </router-link>
+          <el-button class="CancelButton" @click="back">取消</el-button>
         </el-form-item>
       </el-form>
     </el-main>
@@ -44,11 +42,15 @@ import { updatePaper, getPaperList } from "@/api/exam";
 import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
-
 const router = useRouter();
+
 const id = computed(() => {
   return route.query.paperId;
 });
+
+const back = () => {
+  router.back();
+};
 
 const loading = ref(false);
 
@@ -86,7 +88,7 @@ const onSubmit = async () => {
   await updatePaper(unref(info));
   ElMessage.success("提交成功！");
   loading.value = false;
-  router.back();
+  back();
 };
 </script>
 
